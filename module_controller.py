@@ -13,6 +13,28 @@ Key Features:
 - Versioned API contract enforcement
 - Integration with ResilienceManager for fault tolerance
 
+Registered Modules:
+- PolicyProcessorAdapter (34 methods)
+- PolicySegmenterAdapter (35 methods + 5 classes + 3 dataclasses + 1 enum + 2 functions)
+  * All components from policy_segmenter.py including:
+    - SpanishSentenceSegmenter, BayesianBoundaryScorer, StructureDetector,
+      DPSegmentOptimizer, DocumentSegmenter
+    - SegmentMetrics, SegmentationStats, SegmenterConfig
+    - SectionType enum (24 members)
+    - create_segmenter(), example_pdm_segmentation()
+- AnalyzerOneAdapter (39 methods)
+- EmbeddingPolicyAdapter (37 methods)
+- SemanticChunkingPolicyAdapter (18 methods)
+- FinancialViabilityAdapter (60 methods)
+- DerekBeachAdapter (89 methods)
+- ContradictionDetectionAdapter (52 methods)
+- ModulosAdapter (51 methods)
+
+Total: 415 methods across 9 adapters
+
+Module registration is managed by ModuleAdapterRegistry in modules_adapters.py.
+All policy_segmenter components are accessible through the PolicySegmenterAdapter.
+
 Author: FARFAN 3.0 - Industrial Orchestrator
 Version: 1.0.0
 Python: 3.10+

@@ -4,7 +4,7 @@ Complete Module Adapters Framework - ALL 9 ADAPTERS MERGED
 
 This module provides COMPLETE integration of all 9 module adapters:
 1. PolicyProcessorAdapter - 34 methods
-2. PolicySegmenterAdapter - 33 methods
+2. PolicySegmenterAdapter - 35 methods (5 classes, 3 dataclasses, 1 enum, 2 functions)
 3. AnalyzerOneAdapter - 39 methods
 4. EmbeddingPolicyAdapter - 37 methods
 5. SemanticChunkingPolicyAdapter - 18 methods
@@ -13,7 +13,7 @@ This module provides COMPLETE integration of all 9 module adapters:
 8. ContradictionDetectionAdapter - 52 methods
 9. ModulosAdapter - 51 methods
 
-TOTAL: 413 methods across 9 complete adapters
+TOTAL: 415 methods across 9 complete adapters
 
 This is the FINAL MERGED version combining:
 - Detailed implementations from script_1_original.py for adapters 3-9
@@ -1118,11 +1118,11 @@ if __name__ == "__main__":
     print("  - PolicyAnalysisPipeline: 3 methods")
 
 # ============================================================================
-# ADAPTER 2: PolicySegmenterAdapter (33 methods)
+# ADAPTER 2: PolicySegmenterAdapter (35 methods + 5 classes + 3 dataclasses + 1 enum + 2 functions)
 # ============================================================================
 
 # ============================================================================
-# ADAPTADOR 2: PolicySegmenterAdapter - 33 methods
+# ADAPTADOR 2: PolicySegmenterAdapter - 35 methods + ALL components
 # ============================================================================
 
 
@@ -1130,10 +1130,15 @@ class PolicySegmenterAdapter(BaseAdapter):
     """
     Complete adapter for policy_segmenter.py - Document Segmentation System.
 
-    This adapter provides access to ALL classes and methods from the policy
-    segmentation framework including Spanish sentence segmentation, Bayesian
-    boundary scoring, structure detection, dynamic programming optimization,
-    and comprehensive document segmentation.
+    This adapter provides access to ALL classes, dataclasses, enums, functions,
+    and methods from the policy segmentation framework including:
+    - 5 Classes: SpanishSentenceSegmenter, BayesianBoundaryScorer, 
+      StructureDetector, DPSegmentOptimizer, DocumentSegmenter
+    - 3 Dataclasses: SegmentMetrics, SegmentationStats, SegmenterConfig
+    - 1 Enum: SectionType (24 members aligned with DECALOGO D1-D6)
+    - 2 Factory Functions: create_segmenter, example_pdm_segmentation
+    
+    Total: 35 methods covering complete document segmentation pipeline.
     """
 
     def __init__(self):
@@ -1144,22 +1149,46 @@ class PolicySegmenterAdapter(BaseAdapter):
         """Load all components from policy_segmenter module"""
         try:
             from policy_segmenter import (
+                # Classes
                 SpanishSentenceSegmenter,
                 BayesianBoundaryScorer,
                 StructureDetector,
                 DPSegmentOptimizer,
                 DocumentSegmenter,
+                # Dataclasses
+                SegmentMetrics,
+                SegmentationStats,
+                SegmenterConfig,
+                # Enum
+                SectionType,
+                # Functions
+                create_segmenter,
+                example_pdm_segmentation,
             )
 
+            # Store classes
             self.SpanishSentenceSegmenter = SpanishSentenceSegmenter
             self.BayesianBoundaryScorer = BayesianBoundaryScorer
             self.StructureDetector = StructureDetector
             self.DPSegmentOptimizer = DPSegmentOptimizer
             self.DocumentSegmenter = DocumentSegmenter
+            
+            # Store dataclasses
+            self.SegmentMetrics = SegmentMetrics
+            self.SegmentationStats = SegmentationStats
+            self.SegmenterConfig = SegmenterConfig
+            
+            # Store enum
+            self.SectionType = SectionType
+            
+            # Store functions
+            self.create_segmenter = create_segmenter
+            self.example_pdm_segmentation = example_pdm_segmentation
 
             self.available = True
             self.logger.info(
-                f"✓ {self.module_name} loaded with ALL segmentation components"
+                f"✓ {self.module_name} loaded with ALL components: "
+                f"5 classes, 3 dataclasses, 1 enum, 2 functions"
             )
 
         except ImportError as e:
@@ -1172,7 +1201,7 @@ class PolicySegmenterAdapter(BaseAdapter):
         """
         Execute a method from policy_segmenter module.
 
-        COMPLETE METHOD LIST (33 methods):
+        COMPLETE METHOD LIST (35 methods):
 
         === SpanishSentenceSegmenter Methods (3) ===
         - segment(text: str) -> List[str]
@@ -1220,6 +1249,10 @@ class PolicySegmenterAdapter(BaseAdapter):
         - _compute_sentence_distribution(segments: List) -> dict
         - _compute_consistency_score(segments: List) -> float
         - _compute_adherence_score(segments: List, target_size: int) -> float
+
+        === Factory Functions (2) ===
+        - create_segmenter(target_char_min: int, target_char_max: int, target_sentences: int, model: str) -> DocumentSegmenter
+        - example_pdm_segmentation() -> None
         """
         start_time = time.time()
 
@@ -1296,6 +1329,12 @@ class PolicySegmenterAdapter(BaseAdapter):
                 result = self._execute_compute_consistency_score(*args, **kwargs)
             elif method_name == "_compute_adherence_score":
                 result = self._execute_compute_adherence_score(*args, **kwargs)
+
+            # Factory functions
+            elif method_name == "create_segmenter":
+                result = self._execute_create_segmenter(*args, **kwargs)
+            elif method_name == "example_pdm_segmentation":
+                result = self._execute_example_pdm_segmentation(*args, **kwargs)
 
             else:
                 raise ValueError(f"Unknown method: {method_name}")
@@ -1876,6 +1915,71 @@ class PolicySegmenterAdapter(BaseAdapter):
             execution_time=0.0,
         )
 
+    # ========================================================================
+    # Factory Functions
+    # ========================================================================
+
+    def _execute_create_segmenter(
+        self,
+        target_char_min: int = 700,
+        target_char_max: int = 900,
+        target_sentences: int = 3,
+        model: str = "paraphrase-multilingual-mpnet-base-v2",
+        **kwargs
+    ) -> ModuleResult:
+        """Execute create_segmenter() factory function"""
+        segmenter = self.create_segmenter(
+            target_char_min=target_char_min,
+            target_char_max=target_char_max,
+            target_sentences=target_sentences,
+            model=model,
+        )
+
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="factory",
+            method_name="create_segmenter",
+            status="success",
+            data={
+                "segmenter": segmenter,
+                "config": {
+                    "target_char_min": target_char_min,
+                    "target_char_max": target_char_max,
+                    "target_sentences": target_sentences,
+                    "model": model,
+                },
+            },
+            evidence=[{"type": "segmenter_created", "config": segmenter.config}],
+            confidence=1.0,
+            execution_time=0.0,
+        )
+
+    def _execute_example_pdm_segmentation(self, **kwargs) -> ModuleResult:
+        """Execute example_pdm_segmentation() demonstration function"""
+        # Note: This function prints output, so we capture it
+        import io
+        import sys
+        
+        old_stdout = sys.stdout
+        sys.stdout = io.StringIO()
+        
+        try:
+            self.example_pdm_segmentation()
+            output = sys.stdout.getvalue()
+        finally:
+            sys.stdout = old_stdout
+
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="factory",
+            method_name="example_pdm_segmentation",
+            status="success",
+            data={"output": output, "example_completed": True},
+            evidence=[{"type": "example_execution", "output_length": len(output)}],
+            confidence=1.0,
+            execution_time=0.0,
+        )
+
 
 # ============================================================================
 # USAGE EXAMPLE
@@ -1888,13 +1992,19 @@ if __name__ == "__main__":
     print("POLICY SEGMENTER ADAPTER - COMPLETE IMPLEMENTATION")
     print("=" * 80)
     print(f"Module Available: {adapter.available}")
-    print(f"Total Methods Implemented: 33")
+    print(f"Total Methods Implemented: 35")
     print("\nMethod Categories:")
     print("  - SpanishSentenceSegmenter: 3 methods")
     print("  - BayesianBoundaryScorer: 5 methods")
     print("  - StructureDetector: 3 methods")
     print("  - DPSegmentOptimizer: 4 methods")
     print("  - DocumentSegmenter: 18 methods")
+    print("  - Factory Functions: 2 functions")
+    print("\nComponents Loaded:")
+    print("  - 5 Classes")
+    print("  - 3 Dataclasses (SegmentMetrics, SegmentationStats, SegmenterConfig)")
+    print("  - 1 Enum (SectionType with 24 members)")
+    print("  - 2 Functions (create_segmenter, example_pdm_segmentation)")
 
 # ============================================================================
 # ADAPTER 3: AnalyzerOneAdapter (39 methods)
