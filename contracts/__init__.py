@@ -32,6 +32,7 @@ from .routing_contract import (
     CanonicalInput,
     DeterministicRouter,
     RouteExplanation,
+    TiebreakingStrategy,
 )
 from .snapshot_contract import (
     SnapshotContract,
@@ -48,16 +49,22 @@ from .monotonicity_contracts import (
     MonotoneConsistencyContract,
     BudgetMonotonicityContract,
     MonotonicValidator,
+    Evidence,
+    Decision,
+    BudgetAllocation,
 )
 from .permutation_invariance_contract import (
     PermutationInvarianceContract,
     InvariantAggregator,
     NumericalStabilityValidator,
+    AggregationType,
 )
 from .fault_free_contract import (
     FaultFreeContract,
     DeterministicFaultInjector,
     ConservativeFallback,
+    FaultSpec,
+    FaultType,
 )
 from .context_immutability_contract import (
     ContextImmutabilityContract,
@@ -71,6 +78,7 @@ __all__ = [
     "CanonicalInput",
     "DeterministicRouter",
     "RouteExplanation",
+    "TiebreakingStrategy",
     # Snapshot Contract (SC)
     "SnapshotContract",
     "ImmutableSnapshot",
@@ -84,14 +92,20 @@ __all__ = [
     "MonotoneConsistencyContract",
     "BudgetMonotonicityContract",
     "MonotonicValidator",
+    "Evidence",
+    "Decision",
+    "BudgetAllocation",
     # Permutation Invariance (PIC)
     "PermutationInvarianceContract",
     "InvariantAggregator",
     "NumericalStabilityValidator",
+    "AggregationType",
     # Fault-Free Contracts (FFC)
     "FaultFreeContract",
     "DeterministicFaultInjector",
     "ConservativeFallback",
+    "FaultSpec",
+    "FaultType",
     # Context Immutability (CIC)
     "ContextImmutabilityContract",
     "CanonicalJSONValidator",
