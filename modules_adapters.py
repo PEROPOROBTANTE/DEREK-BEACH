@@ -10411,41 +10411,77 @@ class ContradictionDetectionAdapter(BaseAdapter):
         dimension: PolicyDimension = PolicyDimension.ESTRATEGICO,
         **kwargs,
     ) -> ModuleResult:
-        """Ejecuta PolicyContradictionDetector.detect()"""
-        # Simulación de detección de contradicciones
-        contradictions = []
-
-        # Generar contradicciones simuladas
-        for i in range(random.randint(1, 5)):
-            contradictions.append(
-                {
-                    "type": random.choice(list(ContradictionType)),
-                    "description": f"Descripción de contradicción {i+1}",
-                    "severity": random.uniform(0.3, 0.9),
-                    "confidence": random.uniform(0.6, 0.95),
-                }
+        """Ejecuta PolicyContradictionDetector.detect() - Using real contradiction detection"""
+        try:
+            # Use real PolicyContradictionDetector with actual model
+            model_name = kwargs.get('model_name', 'sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+            detector = self.PolicyContradictionDetector(model_name)
+            
+            # Run real contradiction detection
+            result = detector.detect(text, plan_name=plan_name, dimension=dimension)
+            
+            contradictions = result.get('contradictions', [])
+            
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="PolicyContradictionDetector",
+                method_name="detect",
+                status="success",
+                data={
+                    "contradictions": contradictions,
+                    "contradiction_count": len(contradictions),
+                    "plan_name": plan_name,
+                    "dimension": dimension.value,
+                    "coherence_metrics": result.get('coherence_metrics', {}),
+                    "recommendations": result.get('recommendations', [])
+                },
+                evidence=[
+                    {
+                        "type": "real_contradiction_detection",
+                        "contradictions": len(contradictions),
+                        "model": model_name
+                    }
+                ],
+                confidence=0.92,
+                execution_time=0.0,
             )
+        except Exception as e:
+            # Fallback to simple simulation if real implementation fails
+            self.logger.warning(f"Real contradiction detection failed: {e}, using fallback")
+            contradictions = []
 
-        return ModuleResult(
-            module_name=self.module_name,
-            class_name="PolicyContradictionDetector",
-            method_name="detect",
-            status="success",
-            data={
-                "contradictions": contradictions,
-                "contradiction_count": len(contradictions),
-                "plan_name": plan_name,
-                "dimension": dimension.value,
-            },
-            evidence=[
-                {
-                    "type": "contradiction_detection",
-                    "contradictions": len(contradictions),
-                }
-            ],
-            confidence=0.85,
-            execution_time=0.0,
-        )
+            # Generate simple simulated contradictions
+            for i in range(random.randint(1, 5)):
+                contradictions.append(
+                    {
+                        "type": random.choice(list(self.ContradictionType)),
+                        "description": f"Descripción de contradicción {i+1}",
+                        "severity": random.uniform(0.3, 0.9),
+                        "confidence": random.uniform(0.6, 0.95),
+                    }
+                )
+
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="PolicyContradictionDetector",
+                method_name="detect",
+                status="partial",
+                data={
+                    "contradictions": contradictions,
+                    "contradiction_count": len(contradictions),
+                    "plan_name": plan_name,
+                    "dimension": dimension.value if hasattr(dimension, 'value') else str(dimension),
+                },
+                evidence=[
+                    {
+                        "type": "fallback_contradiction_detection",
+                        "contradictions": len(contradictions),
+                    }
+                ],
+                confidence=0.5,
+                execution_time=0.0,
+                warnings=[f"Used fallback due to: {str(e)}"]
+            )
 
     def _execute_extract_policy_statements(
         self, text: str, dimension: PolicyDimension, **kwargs
