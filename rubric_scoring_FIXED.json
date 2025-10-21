@@ -8,7 +8,6 @@
     "thematic_points": 10,
     "dimensions": 6,
     "notation_format": "P#-D#-Q#",
-    "question_numbering": "per-dimension (Q1-Q5 for each dimension)",
     "updated_notation": true
   },
   "scoring_modalities": {
@@ -437,9 +436,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D2-Q1",
+      "id": "P1-D2-Q6",
       "dimension": "D2",
-      "question_no": 1,
+      "question_no": 6,
       "template": "¿Las actividades para {PUNTO_TEMATICO} están formalizadas en tablas (responsable, insumo, output, calendario, costo unitario) y no sólo en narrativa?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -471,9 +470,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D2-Q2",
+      "id": "P1-D2-Q7",
       "dimension": "D2",
-      "question_no": 2,
+      "question_no": 7,
       "template": "¿Cada actividad especifica el instrumento y su mecanismo causal pretendido y la población diana en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -507,9 +506,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D2-Q3",
+      "id": "P1-D2-Q8",
       "dimension": "D2",
-      "question_no": 3,
+      "question_no": 8,
       "template": "¿Cada problema priorizado en {PUNTO_TEMATICO} tiene al menos una actividad que ataca el eslabón causal relevante (causa raíz o mediador)?",
       "scoring_modality": "TYPE_F",
       "max_score": 3.0,
@@ -558,9 +557,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D2-Q4",
+      "id": "P1-D2-Q9",
       "dimension": "D2",
-      "question_no": 4,
+      "question_no": 9,
       "template": "¿Se identifican riesgos de desplazamiento de efectos, cuñas de implementación y conflictos entre actividades en {PUNTO_TEMATICO}, con mitigaciones?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -588,9 +587,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D2-Q5",
+      "id": "P1-D2-Q10",
       "dimension": "D2",
-      "question_no": 5,
+      "question_no": 10,
       "template": "¿Las actividades de {PUNTO_TEMATICO} forman una teoría de intervención coherente (complementariedades, secuenciación, no redundancias)?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -618,9 +617,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D3-Q1",
+      "id": "P1-D3-Q11",
       "dimension": "D3",
-      "question_no": 1,
+      "question_no": 11,
       "template": "¿Se mencionan estándares técnicos o protocolos para los productos de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -648,9 +647,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D3-Q2",
+      "id": "P1-D3-Q12",
       "dimension": "D3",
-      "question_no": 2,
+      "question_no": 12,
       "template": "¿La meta de productos es proporcional a la magnitud del problema en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -693,9 +692,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D3-Q3",
+      "id": "P1-D3-Q13",
       "dimension": "D3",
-      "question_no": 3,
+      "question_no": 13,
       "template": "¿Las metas de productos en {PUNTO_TEMATICO} están cuantificadas?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -723,9 +722,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D3-Q4",
+      "id": "P1-D3-Q14",
       "dimension": "D3",
-      "question_no": 4,
+      "question_no": 14,
       "template": "¿Cada producto en {PUNTO_TEMATICO} tiene una dependencia responsable asignada?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -755,9 +754,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D3-Q5",
+      "id": "P1-D3-Q15",
       "dimension": "D3",
-      "question_no": 5,
+      "question_no": 15,
       "template": "¿Los productos de {PUNTO_TEMATICO} tienen justificación causal (relación con resultados esperados)?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -785,9 +784,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D4-Q1",
+      "id": "P1-D4-Q16",
       "dimension": "D4",
-      "question_no": 1,
+      "question_no": 16,
       "template": "¿Existe un indicador de resultado formalizado para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -827,9 +826,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D4-Q2",
+      "id": "P1-D4-Q17",
       "dimension": "D4",
-      "question_no": 2,
+      "question_no": 17,
       "template": "¿El indicador de resultado de {PUNTO_TEMATICO} es diferente de los indicadores de producto?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -873,9 +872,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D4-Q3",
+      "id": "P1-D4-Q18",
       "dimension": "D4",
-      "question_no": 3,
+      "question_no": 18,
       "template": "¿Cuál es la magnitud del cambio esperado en el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -915,9 +914,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D4-Q4",
+      "id": "P1-D4-Q19",
       "dimension": "D4",
-      "question_no": 4,
+      "question_no": 19,
       "template": "¿Se reconoce que el resultado en {PUNTO_TEMATICO} depende de múltiples factores?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -948,9 +947,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D4-Q5",
+      "id": "P1-D4-Q20",
       "dimension": "D4",
-      "question_no": 5,
+      "question_no": 20,
       "template": "¿Se especifica cómo se monitoreará el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -978,9 +977,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D5-Q1",
+      "id": "P1-D5-Q21",
       "dimension": "D5",
-      "question_no": 1,
+      "question_no": 21,
       "template": "¿Existe un indicador de impacto de largo plazo para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -1020,9 +1019,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D5-Q2",
+      "id": "P1-D5-Q22",
       "dimension": "D5",
-      "question_no": 2,
+      "question_no": 22,
       "template": "¿Se menciona el horizonte temporal de los impactos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -1050,9 +1049,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D5-Q3",
+      "id": "P1-D5-Q23",
       "dimension": "D5",
-      "question_no": 3,
+      "question_no": 23,
       "template": "¿Se mencionan efectos indirectos o sistémicos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -1080,9 +1079,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D5-Q4",
+      "id": "P1-D5-Q24",
       "dimension": "D5",
-      "question_no": 4,
+      "question_no": 24,
       "template": "¿Se menciona la sostenibilidad de las acciones en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -1119,9 +1118,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D5-Q5",
+      "id": "P1-D5-Q25",
       "dimension": "D5",
-      "question_no": 5,
+      "question_no": 25,
       "template": "¿Se menciona un enfoque diferencial o de equidad en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -1155,9 +1154,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D6-Q1",
+      "id": "P1-D6-Q26",
       "dimension": "D6",
-      "question_no": 1,
+      "question_no": 26,
       "template": "¿Existe un diagrama o narrativa de teoría de cambio para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -1195,9 +1194,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D6-Q2",
+      "id": "P1-D6-Q27",
       "dimension": "D6",
-      "question_no": 2,
+      "question_no": 27,
       "template": "¿Se mencionan supuestos o condiciones necesarias para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -1225,9 +1224,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D6-Q3",
+      "id": "P1-D6-Q28",
       "dimension": "D6",
-      "question_no": 3,
+      "question_no": 28,
       "template": "¿Se identifican los niveles del modelo lógico (insumos→productos→resultados→impactos) para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -1258,9 +1257,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D6-Q4",
+      "id": "P1-D6-Q29",
       "dimension": "D6",
-      "question_no": 4,
+      "question_no": 29,
       "template": "¿Se menciona un sistema de seguimiento para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -1294,9 +1293,9 @@
       "policy_area_name": "Derechos de las mujeres e igualdad de género"
     },
     {
-      "id": "P1-D6-Q5",
+      "id": "P1-D6-Q30",
       "dimension": "D6",
-      "question_no": 5,
+      "question_no": 30,
       "template": "¿Se menciona evaluación o documentación de aprendizajes en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -1512,9 +1511,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D2-Q1",
+      "id": "P2-D2-Q6",
       "dimension": "D2",
-      "question_no": 1,
+      "question_no": 6,
       "template": "¿Las actividades para {PUNTO_TEMATICO} están formalizadas en tablas (responsable, insumo, output, calendario, costo unitario) y no sólo en narrativa?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -1546,9 +1545,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D2-Q2",
+      "id": "P2-D2-Q7",
       "dimension": "D2",
-      "question_no": 2,
+      "question_no": 7,
       "template": "¿Cada actividad especifica el instrumento y su mecanismo causal pretendido y la población diana en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -1582,9 +1581,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D2-Q3",
+      "id": "P2-D2-Q8",
       "dimension": "D2",
-      "question_no": 3,
+      "question_no": 8,
       "template": "¿Cada problema priorizado en {PUNTO_TEMATICO} tiene al menos una actividad que ataca el eslabón causal relevante (causa raíz o mediador)?",
       "scoring_modality": "TYPE_F",
       "max_score": 3.0,
@@ -1633,9 +1632,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D2-Q4",
+      "id": "P2-D2-Q9",
       "dimension": "D2",
-      "question_no": 4,
+      "question_no": 9,
       "template": "¿Se identifican riesgos de desplazamiento de efectos, cuñas de implementación y conflictos entre actividades en {PUNTO_TEMATICO}, con mitigaciones?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -1663,9 +1662,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D2-Q5",
+      "id": "P2-D2-Q10",
       "dimension": "D2",
-      "question_no": 5,
+      "question_no": 10,
       "template": "¿Las actividades de {PUNTO_TEMATICO} forman una teoría de intervención coherente (complementariedades, secuenciación, no redundancias)?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -1693,9 +1692,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D3-Q1",
+      "id": "P2-D3-Q11",
       "dimension": "D3",
-      "question_no": 1,
+      "question_no": 11,
       "template": "¿Se mencionan estándares técnicos o protocolos para los productos de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -1723,9 +1722,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D3-Q2",
+      "id": "P2-D3-Q12",
       "dimension": "D3",
-      "question_no": 2,
+      "question_no": 12,
       "template": "¿La meta de productos es proporcional a la magnitud del problema en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -1768,9 +1767,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D3-Q3",
+      "id": "P2-D3-Q13",
       "dimension": "D3",
-      "question_no": 3,
+      "question_no": 13,
       "template": "¿Las metas de productos en {PUNTO_TEMATICO} están cuantificadas?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -1798,9 +1797,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D3-Q4",
+      "id": "P2-D3-Q14",
       "dimension": "D3",
-      "question_no": 4,
+      "question_no": 14,
       "template": "¿Cada producto en {PUNTO_TEMATICO} tiene una dependencia responsable asignada?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -1830,9 +1829,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D3-Q5",
+      "id": "P2-D3-Q15",
       "dimension": "D3",
-      "question_no": 5,
+      "question_no": 15,
       "template": "¿Los productos de {PUNTO_TEMATICO} tienen justificación causal (relación con resultados esperados)?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -1860,9 +1859,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D4-Q1",
+      "id": "P2-D4-Q16",
       "dimension": "D4",
-      "question_no": 1,
+      "question_no": 16,
       "template": "¿Existe un indicador de resultado formalizado para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -1902,9 +1901,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D4-Q2",
+      "id": "P2-D4-Q17",
       "dimension": "D4",
-      "question_no": 2,
+      "question_no": 17,
       "template": "¿El indicador de resultado de {PUNTO_TEMATICO} es diferente de los indicadores de producto?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -1948,9 +1947,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D4-Q3",
+      "id": "P2-D4-Q18",
       "dimension": "D4",
-      "question_no": 3,
+      "question_no": 18,
       "template": "¿Cuál es la magnitud del cambio esperado en el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -1990,9 +1989,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D4-Q4",
+      "id": "P2-D4-Q19",
       "dimension": "D4",
-      "question_no": 4,
+      "question_no": 19,
       "template": "¿Se reconoce que el resultado en {PUNTO_TEMATICO} depende de múltiples factores?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -2023,9 +2022,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D4-Q5",
+      "id": "P2-D4-Q20",
       "dimension": "D4",
-      "question_no": 5,
+      "question_no": 20,
       "template": "¿Se especifica cómo se monitoreará el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -2053,9 +2052,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D5-Q1",
+      "id": "P2-D5-Q21",
       "dimension": "D5",
-      "question_no": 1,
+      "question_no": 21,
       "template": "¿Existe un indicador de impacto de largo plazo para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -2095,9 +2094,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D5-Q2",
+      "id": "P2-D5-Q22",
       "dimension": "D5",
-      "question_no": 2,
+      "question_no": 22,
       "template": "¿Se menciona el horizonte temporal de los impactos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -2125,9 +2124,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D5-Q3",
+      "id": "P2-D5-Q23",
       "dimension": "D5",
-      "question_no": 3,
+      "question_no": 23,
       "template": "¿Se mencionan efectos indirectos o sistémicos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -2155,9 +2154,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D5-Q4",
+      "id": "P2-D5-Q24",
       "dimension": "D5",
-      "question_no": 4,
+      "question_no": 24,
       "template": "¿Se menciona la sostenibilidad de las acciones en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -2194,9 +2193,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D5-Q5",
+      "id": "P2-D5-Q25",
       "dimension": "D5",
-      "question_no": 5,
+      "question_no": 25,
       "template": "¿Se menciona un enfoque diferencial o de equidad en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -2230,9 +2229,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D6-Q1",
+      "id": "P2-D6-Q26",
       "dimension": "D6",
-      "question_no": 1,
+      "question_no": 26,
       "template": "¿Existe un diagrama o narrativa de teoría de cambio para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -2270,9 +2269,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D6-Q2",
+      "id": "P2-D6-Q27",
       "dimension": "D6",
-      "question_no": 2,
+      "question_no": 27,
       "template": "¿Se mencionan supuestos o condiciones necesarias para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -2300,9 +2299,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D6-Q3",
+      "id": "P2-D6-Q28",
       "dimension": "D6",
-      "question_no": 3,
+      "question_no": 28,
       "template": "¿Se identifican los niveles del modelo lógico (insumos→productos→resultados→impactos) para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -2333,9 +2332,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D6-Q4",
+      "id": "P2-D6-Q29",
       "dimension": "D6",
-      "question_no": 4,
+      "question_no": 29,
       "template": "¿Se menciona un sistema de seguimiento para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -2369,9 +2368,9 @@
       "policy_area_name": "Prevención de la violencia y protección frente al conflicto"
     },
     {
-      "id": "P2-D6-Q5",
+      "id": "P2-D6-Q30",
       "dimension": "D6",
-      "question_no": 5,
+      "question_no": 30,
       "template": "¿Se menciona evaluación o documentación de aprendizajes en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -2587,9 +2586,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D2-Q1",
+      "id": "P3-D2-Q6",
       "dimension": "D2",
-      "question_no": 1,
+      "question_no": 6,
       "template": "¿Las actividades para {PUNTO_TEMATICO} están formalizadas en tablas (responsable, insumo, output, calendario, costo unitario) y no sólo en narrativa?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -2621,9 +2620,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D2-Q2",
+      "id": "P3-D2-Q7",
       "dimension": "D2",
-      "question_no": 2,
+      "question_no": 7,
       "template": "¿Cada actividad especifica el instrumento y su mecanismo causal pretendido y la población diana en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -2657,9 +2656,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D2-Q3",
+      "id": "P3-D2-Q8",
       "dimension": "D2",
-      "question_no": 3,
+      "question_no": 8,
       "template": "¿Cada problema priorizado en {PUNTO_TEMATICO} tiene al menos una actividad que ataca el eslabón causal relevante (causa raíz o mediador)?",
       "scoring_modality": "TYPE_F",
       "max_score": 3.0,
@@ -2708,9 +2707,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D2-Q4",
+      "id": "P3-D2-Q9",
       "dimension": "D2",
-      "question_no": 4,
+      "question_no": 9,
       "template": "¿Se identifican riesgos de desplazamiento de efectos, cuñas de implementación y conflictos entre actividades en {PUNTO_TEMATICO}, con mitigaciones?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -2738,9 +2737,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D2-Q5",
+      "id": "P3-D2-Q10",
       "dimension": "D2",
-      "question_no": 5,
+      "question_no": 10,
       "template": "¿Las actividades de {PUNTO_TEMATICO} forman una teoría de intervención coherente (complementariedades, secuenciación, no redundancias)?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -2768,9 +2767,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D3-Q1",
+      "id": "P3-D3-Q11",
       "dimension": "D3",
-      "question_no": 1,
+      "question_no": 11,
       "template": "¿Se mencionan estándares técnicos o protocolos para los productos de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -2798,9 +2797,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D3-Q2",
+      "id": "P3-D3-Q12",
       "dimension": "D3",
-      "question_no": 2,
+      "question_no": 12,
       "template": "¿La meta de productos es proporcional a la magnitud del problema en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -2843,9 +2842,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D3-Q3",
+      "id": "P3-D3-Q13",
       "dimension": "D3",
-      "question_no": 3,
+      "question_no": 13,
       "template": "¿Las metas de productos en {PUNTO_TEMATICO} están cuantificadas?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -2873,9 +2872,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D3-Q4",
+      "id": "P3-D3-Q14",
       "dimension": "D3",
-      "question_no": 4,
+      "question_no": 14,
       "template": "¿Cada producto en {PUNTO_TEMATICO} tiene una dependencia responsable asignada?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -2905,9 +2904,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D3-Q5",
+      "id": "P3-D3-Q15",
       "dimension": "D3",
-      "question_no": 5,
+      "question_no": 15,
       "template": "¿Los productos de {PUNTO_TEMATICO} tienen justificación causal (relación con resultados esperados)?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -2935,9 +2934,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D4-Q1",
+      "id": "P3-D4-Q16",
       "dimension": "D4",
-      "question_no": 1,
+      "question_no": 16,
       "template": "¿Existe un indicador de resultado formalizado para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -2977,9 +2976,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D4-Q2",
+      "id": "P3-D4-Q17",
       "dimension": "D4",
-      "question_no": 2,
+      "question_no": 17,
       "template": "¿El indicador de resultado de {PUNTO_TEMATICO} es diferente de los indicadores de producto?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -3023,9 +3022,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D4-Q3",
+      "id": "P3-D4-Q18",
       "dimension": "D4",
-      "question_no": 3,
+      "question_no": 18,
       "template": "¿Cuál es la magnitud del cambio esperado en el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -3065,9 +3064,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D4-Q4",
+      "id": "P3-D4-Q19",
       "dimension": "D4",
-      "question_no": 4,
+      "question_no": 19,
       "template": "¿Se reconoce que el resultado en {PUNTO_TEMATICO} depende de múltiples factores?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -3098,9 +3097,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D4-Q5",
+      "id": "P3-D4-Q20",
       "dimension": "D4",
-      "question_no": 5,
+      "question_no": 20,
       "template": "¿Se especifica cómo se monitoreará el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -3128,9 +3127,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D5-Q1",
+      "id": "P3-D5-Q21",
       "dimension": "D5",
-      "question_no": 1,
+      "question_no": 21,
       "template": "¿Existe un indicador de impacto de largo plazo para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -3170,9 +3169,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D5-Q2",
+      "id": "P3-D5-Q22",
       "dimension": "D5",
-      "question_no": 2,
+      "question_no": 22,
       "template": "¿Se menciona el horizonte temporal de los impactos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -3200,9 +3199,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D5-Q3",
+      "id": "P3-D5-Q23",
       "dimension": "D5",
-      "question_no": 3,
+      "question_no": 23,
       "template": "¿Se mencionan efectos indirectos o sistémicos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -3230,9 +3229,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D5-Q4",
+      "id": "P3-D5-Q24",
       "dimension": "D5",
-      "question_no": 4,
+      "question_no": 24,
       "template": "¿Se menciona la sostenibilidad de las acciones en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -3269,9 +3268,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D5-Q5",
+      "id": "P3-D5-Q25",
       "dimension": "D5",
-      "question_no": 5,
+      "question_no": 25,
       "template": "¿Se menciona un enfoque diferencial o de equidad en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -3305,9 +3304,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D6-Q1",
+      "id": "P3-D6-Q26",
       "dimension": "D6",
-      "question_no": 1,
+      "question_no": 26,
       "template": "¿Existe un diagrama o narrativa de teoría de cambio para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -3345,9 +3344,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D6-Q2",
+      "id": "P3-D6-Q27",
       "dimension": "D6",
-      "question_no": 2,
+      "question_no": 27,
       "template": "¿Se mencionan supuestos o condiciones necesarias para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -3375,9 +3374,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D6-Q3",
+      "id": "P3-D6-Q28",
       "dimension": "D6",
-      "question_no": 3,
+      "question_no": 28,
       "template": "¿Se identifican los niveles del modelo lógico (insumos→productos→resultados→impactos) para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -3408,9 +3407,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D6-Q4",
+      "id": "P3-D6-Q29",
       "dimension": "D6",
-      "question_no": 4,
+      "question_no": 29,
       "template": "¿Se menciona un sistema de seguimiento para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -3444,9 +3443,9 @@
       "policy_area_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     {
-      "id": "P3-D6-Q5",
+      "id": "P3-D6-Q30",
       "dimension": "D6",
-      "question_no": 5,
+      "question_no": 30,
       "template": "¿Se menciona evaluación o documentación de aprendizajes en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -3662,9 +3661,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D2-Q1",
+      "id": "P4-D2-Q6",
       "dimension": "D2",
-      "question_no": 1,
+      "question_no": 6,
       "template": "¿Las actividades para {PUNTO_TEMATICO} están formalizadas en tablas (responsable, insumo, output, calendario, costo unitario) y no sólo en narrativa?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -3696,9 +3695,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D2-Q2",
+      "id": "P4-D2-Q7",
       "dimension": "D2",
-      "question_no": 2,
+      "question_no": 7,
       "template": "¿Cada actividad especifica el instrumento y su mecanismo causal pretendido y la población diana en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -3732,9 +3731,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D2-Q3",
+      "id": "P4-D2-Q8",
       "dimension": "D2",
-      "question_no": 3,
+      "question_no": 8,
       "template": "¿Cada problema priorizado en {PUNTO_TEMATICO} tiene al menos una actividad que ataca el eslabón causal relevante (causa raíz o mediador)?",
       "scoring_modality": "TYPE_F",
       "max_score": 3.0,
@@ -3783,9 +3782,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D2-Q4",
+      "id": "P4-D2-Q9",
       "dimension": "D2",
-      "question_no": 4,
+      "question_no": 9,
       "template": "¿Se identifican riesgos de desplazamiento de efectos, cuñas de implementación y conflictos entre actividades en {PUNTO_TEMATICO}, con mitigaciones?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -3813,9 +3812,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D2-Q5",
+      "id": "P4-D2-Q10",
       "dimension": "D2",
-      "question_no": 5,
+      "question_no": 10,
       "template": "¿Las actividades de {PUNTO_TEMATICO} forman una teoría de intervención coherente (complementariedades, secuenciación, no redundancias)?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -3843,9 +3842,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D3-Q1",
+      "id": "P4-D3-Q11",
       "dimension": "D3",
-      "question_no": 1,
+      "question_no": 11,
       "template": "¿Se mencionan estándares técnicos o protocolos para los productos de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -3873,9 +3872,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D3-Q2",
+      "id": "P4-D3-Q12",
       "dimension": "D3",
-      "question_no": 2,
+      "question_no": 12,
       "template": "¿La meta de productos es proporcional a la magnitud del problema en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -3918,9 +3917,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D3-Q3",
+      "id": "P4-D3-Q13",
       "dimension": "D3",
-      "question_no": 3,
+      "question_no": 13,
       "template": "¿Las metas de productos en {PUNTO_TEMATICO} están cuantificadas?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -3948,9 +3947,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D3-Q4",
+      "id": "P4-D3-Q14",
       "dimension": "D3",
-      "question_no": 4,
+      "question_no": 14,
       "template": "¿Cada producto en {PUNTO_TEMATICO} tiene una dependencia responsable asignada?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -3980,9 +3979,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D3-Q5",
+      "id": "P4-D3-Q15",
       "dimension": "D3",
-      "question_no": 5,
+      "question_no": 15,
       "template": "¿Los productos de {PUNTO_TEMATICO} tienen justificación causal (relación con resultados esperados)?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -4010,9 +4009,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D4-Q1",
+      "id": "P4-D4-Q16",
       "dimension": "D4",
-      "question_no": 1,
+      "question_no": 16,
       "template": "¿Existe un indicador de resultado formalizado para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -4052,9 +4051,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D4-Q2",
+      "id": "P4-D4-Q17",
       "dimension": "D4",
-      "question_no": 2,
+      "question_no": 17,
       "template": "¿El indicador de resultado de {PUNTO_TEMATICO} es diferente de los indicadores de producto?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -4098,9 +4097,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D4-Q3",
+      "id": "P4-D4-Q18",
       "dimension": "D4",
-      "question_no": 3,
+      "question_no": 18,
       "template": "¿Cuál es la magnitud del cambio esperado en el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -4140,9 +4139,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D4-Q4",
+      "id": "P4-D4-Q19",
       "dimension": "D4",
-      "question_no": 4,
+      "question_no": 19,
       "template": "¿Se reconoce que el resultado en {PUNTO_TEMATICO} depende de múltiples factores?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -4173,9 +4172,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D4-Q5",
+      "id": "P4-D4-Q20",
       "dimension": "D4",
-      "question_no": 5,
+      "question_no": 20,
       "template": "¿Se especifica cómo se monitoreará el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -4203,9 +4202,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D5-Q1",
+      "id": "P4-D5-Q21",
       "dimension": "D5",
-      "question_no": 1,
+      "question_no": 21,
       "template": "¿Existe un indicador de impacto de largo plazo para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -4245,9 +4244,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D5-Q2",
+      "id": "P4-D5-Q22",
       "dimension": "D5",
-      "question_no": 2,
+      "question_no": 22,
       "template": "¿Se menciona el horizonte temporal de los impactos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -4275,9 +4274,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D5-Q3",
+      "id": "P4-D5-Q23",
       "dimension": "D5",
-      "question_no": 3,
+      "question_no": 23,
       "template": "¿Se mencionan efectos indirectos o sistémicos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -4305,9 +4304,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D5-Q4",
+      "id": "P4-D5-Q24",
       "dimension": "D5",
-      "question_no": 4,
+      "question_no": 24,
       "template": "¿Se menciona la sostenibilidad de las acciones en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -4344,9 +4343,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D5-Q5",
+      "id": "P4-D5-Q25",
       "dimension": "D5",
-      "question_no": 5,
+      "question_no": 25,
       "template": "¿Se menciona un enfoque diferencial o de equidad en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -4380,9 +4379,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D6-Q1",
+      "id": "P4-D6-Q26",
       "dimension": "D6",
-      "question_no": 1,
+      "question_no": 26,
       "template": "¿Existe un diagrama o narrativa de teoría de cambio para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -4420,9 +4419,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D6-Q2",
+      "id": "P4-D6-Q27",
       "dimension": "D6",
-      "question_no": 2,
+      "question_no": 27,
       "template": "¿Se mencionan supuestos o condiciones necesarias para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -4450,9 +4449,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D6-Q3",
+      "id": "P4-D6-Q28",
       "dimension": "D6",
-      "question_no": 3,
+      "question_no": 28,
       "template": "¿Se identifican los niveles del modelo lógico (insumos→productos→resultados→impactos) para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -4483,9 +4482,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D6-Q4",
+      "id": "P4-D6-Q29",
       "dimension": "D6",
-      "question_no": 4,
+      "question_no": 29,
       "template": "¿Se menciona un sistema de seguimiento para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -4519,9 +4518,9 @@
       "policy_area_name": "Derechos económicos, sociales y culturales"
     },
     {
-      "id": "P4-D6-Q5",
+      "id": "P4-D6-Q30",
       "dimension": "D6",
-      "question_no": 5,
+      "question_no": 30,
       "template": "¿Se menciona evaluación o documentación de aprendizajes en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -4737,9 +4736,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D2-Q1",
+      "id": "P5-D2-Q6",
       "dimension": "D2",
-      "question_no": 1,
+      "question_no": 6,
       "template": "¿Las actividades para {PUNTO_TEMATICO} están formalizadas en tablas (responsable, insumo, output, calendario, costo unitario) y no sólo en narrativa?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -4771,9 +4770,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D2-Q2",
+      "id": "P5-D2-Q7",
       "dimension": "D2",
-      "question_no": 2,
+      "question_no": 7,
       "template": "¿Cada actividad especifica el instrumento y su mecanismo causal pretendido y la población diana en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -4807,9 +4806,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D2-Q3",
+      "id": "P5-D2-Q8",
       "dimension": "D2",
-      "question_no": 3,
+      "question_no": 8,
       "template": "¿Cada problema priorizado en {PUNTO_TEMATICO} tiene al menos una actividad que ataca el eslabón causal relevante (causa raíz o mediador)?",
       "scoring_modality": "TYPE_F",
       "max_score": 3.0,
@@ -4858,9 +4857,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D2-Q4",
+      "id": "P5-D2-Q9",
       "dimension": "D2",
-      "question_no": 4,
+      "question_no": 9,
       "template": "¿Se identifican riesgos de desplazamiento de efectos, cuñas de implementación y conflictos entre actividades en {PUNTO_TEMATICO}, con mitigaciones?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -4888,9 +4887,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D2-Q5",
+      "id": "P5-D2-Q10",
       "dimension": "D2",
-      "question_no": 5,
+      "question_no": 10,
       "template": "¿Las actividades de {PUNTO_TEMATICO} forman una teoría de intervención coherente (complementariedades, secuenciación, no redundancias)?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -4918,9 +4917,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D3-Q1",
+      "id": "P5-D3-Q11",
       "dimension": "D3",
-      "question_no": 1,
+      "question_no": 11,
       "template": "¿Se mencionan estándares técnicos o protocolos para los productos de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -4948,9 +4947,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D3-Q2",
+      "id": "P5-D3-Q12",
       "dimension": "D3",
-      "question_no": 2,
+      "question_no": 12,
       "template": "¿La meta de productos es proporcional a la magnitud del problema en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -4993,9 +4992,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D3-Q3",
+      "id": "P5-D3-Q13",
       "dimension": "D3",
-      "question_no": 3,
+      "question_no": 13,
       "template": "¿Las metas de productos en {PUNTO_TEMATICO} están cuantificadas?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -5023,9 +5022,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D3-Q4",
+      "id": "P5-D3-Q14",
       "dimension": "D3",
-      "question_no": 4,
+      "question_no": 14,
       "template": "¿Cada producto en {PUNTO_TEMATICO} tiene una dependencia responsable asignada?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -5055,9 +5054,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D3-Q5",
+      "id": "P5-D3-Q15",
       "dimension": "D3",
-      "question_no": 5,
+      "question_no": 15,
       "template": "¿Los productos de {PUNTO_TEMATICO} tienen justificación causal (relación con resultados esperados)?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -5085,9 +5084,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D4-Q1",
+      "id": "P5-D4-Q16",
       "dimension": "D4",
-      "question_no": 1,
+      "question_no": 16,
       "template": "¿Existe un indicador de resultado formalizado para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -5127,9 +5126,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D4-Q2",
+      "id": "P5-D4-Q17",
       "dimension": "D4",
-      "question_no": 2,
+      "question_no": 17,
       "template": "¿El indicador de resultado de {PUNTO_TEMATICO} es diferente de los indicadores de producto?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -5173,9 +5172,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D4-Q3",
+      "id": "P5-D4-Q18",
       "dimension": "D4",
-      "question_no": 3,
+      "question_no": 18,
       "template": "¿Cuál es la magnitud del cambio esperado en el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -5215,9 +5214,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D4-Q4",
+      "id": "P5-D4-Q19",
       "dimension": "D4",
-      "question_no": 4,
+      "question_no": 19,
       "template": "¿Se reconoce que el resultado en {PUNTO_TEMATICO} depende de múltiples factores?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -5248,9 +5247,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D4-Q5",
+      "id": "P5-D4-Q20",
       "dimension": "D4",
-      "question_no": 5,
+      "question_no": 20,
       "template": "¿Se especifica cómo se monitoreará el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -5278,9 +5277,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D5-Q1",
+      "id": "P5-D5-Q21",
       "dimension": "D5",
-      "question_no": 1,
+      "question_no": 21,
       "template": "¿Existe un indicador de impacto de largo plazo para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -5320,9 +5319,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D5-Q2",
+      "id": "P5-D5-Q22",
       "dimension": "D5",
-      "question_no": 2,
+      "question_no": 22,
       "template": "¿Se menciona el horizonte temporal de los impactos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -5350,9 +5349,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D5-Q3",
+      "id": "P5-D5-Q23",
       "dimension": "D5",
-      "question_no": 3,
+      "question_no": 23,
       "template": "¿Se mencionan efectos indirectos o sistémicos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -5380,9 +5379,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D5-Q4",
+      "id": "P5-D5-Q24",
       "dimension": "D5",
-      "question_no": 4,
+      "question_no": 24,
       "template": "¿Se menciona la sostenibilidad de las acciones en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -5419,9 +5418,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D5-Q5",
+      "id": "P5-D5-Q25",
       "dimension": "D5",
-      "question_no": 5,
+      "question_no": 25,
       "template": "¿Se menciona un enfoque diferencial o de equidad en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -5455,9 +5454,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D6-Q1",
+      "id": "P5-D6-Q26",
       "dimension": "D6",
-      "question_no": 1,
+      "question_no": 26,
       "template": "¿Existe un diagrama o narrativa de teoría de cambio para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -5495,9 +5494,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D6-Q2",
+      "id": "P5-D6-Q27",
       "dimension": "D6",
-      "question_no": 2,
+      "question_no": 27,
       "template": "¿Se mencionan supuestos o condiciones necesarias para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -5525,9 +5524,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D6-Q3",
+      "id": "P5-D6-Q28",
       "dimension": "D6",
-      "question_no": 3,
+      "question_no": 28,
       "template": "¿Se identifican los niveles del modelo lógico (insumos→productos→resultados→impactos) para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -5558,9 +5557,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D6-Q4",
+      "id": "P5-D6-Q29",
       "dimension": "D6",
-      "question_no": 4,
+      "question_no": 29,
       "template": "¿Se menciona un sistema de seguimiento para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -5594,9 +5593,9 @@
       "policy_area_name": "Derechos de las víctimas y construcción de paz"
     },
     {
-      "id": "P5-D6-Q5",
+      "id": "P5-D6-Q30",
       "dimension": "D6",
-      "question_no": 5,
+      "question_no": 30,
       "template": "¿Se menciona evaluación o documentación de aprendizajes en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -5812,9 +5811,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D2-Q1",
+      "id": "P6-D2-Q6",
       "dimension": "D2",
-      "question_no": 1,
+      "question_no": 6,
       "template": "¿Las actividades para {PUNTO_TEMATICO} están formalizadas en tablas (responsable, insumo, output, calendario, costo unitario) y no sólo en narrativa?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -5846,9 +5845,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D2-Q2",
+      "id": "P6-D2-Q7",
       "dimension": "D2",
-      "question_no": 2,
+      "question_no": 7,
       "template": "¿Cada actividad especifica el instrumento y su mecanismo causal pretendido y la población diana en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -5882,9 +5881,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D2-Q3",
+      "id": "P6-D2-Q8",
       "dimension": "D2",
-      "question_no": 3,
+      "question_no": 8,
       "template": "¿Cada problema priorizado en {PUNTO_TEMATICO} tiene al menos una actividad que ataca el eslabón causal relevante (causa raíz o mediador)?",
       "scoring_modality": "TYPE_F",
       "max_score": 3.0,
@@ -5933,9 +5932,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D2-Q4",
+      "id": "P6-D2-Q9",
       "dimension": "D2",
-      "question_no": 4,
+      "question_no": 9,
       "template": "¿Se identifican riesgos de desplazamiento de efectos, cuñas de implementación y conflictos entre actividades en {PUNTO_TEMATICO}, con mitigaciones?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -5963,9 +5962,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D2-Q5",
+      "id": "P6-D2-Q10",
       "dimension": "D2",
-      "question_no": 5,
+      "question_no": 10,
       "template": "¿Las actividades de {PUNTO_TEMATICO} forman una teoría de intervención coherente (complementariedades, secuenciación, no redundancias)?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -5993,9 +5992,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D3-Q1",
+      "id": "P6-D3-Q11",
       "dimension": "D3",
-      "question_no": 1,
+      "question_no": 11,
       "template": "¿Se mencionan estándares técnicos o protocolos para los productos de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -6023,9 +6022,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D3-Q2",
+      "id": "P6-D3-Q12",
       "dimension": "D3",
-      "question_no": 2,
+      "question_no": 12,
       "template": "¿La meta de productos es proporcional a la magnitud del problema en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -6068,9 +6067,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D3-Q3",
+      "id": "P6-D3-Q13",
       "dimension": "D3",
-      "question_no": 3,
+      "question_no": 13,
       "template": "¿Las metas de productos en {PUNTO_TEMATICO} están cuantificadas?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -6098,9 +6097,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D3-Q4",
+      "id": "P6-D3-Q14",
       "dimension": "D3",
-      "question_no": 4,
+      "question_no": 14,
       "template": "¿Cada producto en {PUNTO_TEMATICO} tiene una dependencia responsable asignada?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -6130,9 +6129,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D3-Q5",
+      "id": "P6-D3-Q15",
       "dimension": "D3",
-      "question_no": 5,
+      "question_no": 15,
       "template": "¿Los productos de {PUNTO_TEMATICO} tienen justificación causal (relación con resultados esperados)?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -6160,9 +6159,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D4-Q1",
+      "id": "P6-D4-Q16",
       "dimension": "D4",
-      "question_no": 1,
+      "question_no": 16,
       "template": "¿Existe un indicador de resultado formalizado para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -6202,9 +6201,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D4-Q2",
+      "id": "P6-D4-Q17",
       "dimension": "D4",
-      "question_no": 2,
+      "question_no": 17,
       "template": "¿El indicador de resultado de {PUNTO_TEMATICO} es diferente de los indicadores de producto?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -6248,9 +6247,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D4-Q3",
+      "id": "P6-D4-Q18",
       "dimension": "D4",
-      "question_no": 3,
+      "question_no": 18,
       "template": "¿Cuál es la magnitud del cambio esperado en el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -6290,9 +6289,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D4-Q4",
+      "id": "P6-D4-Q19",
       "dimension": "D4",
-      "question_no": 4,
+      "question_no": 19,
       "template": "¿Se reconoce que el resultado en {PUNTO_TEMATICO} depende de múltiples factores?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -6323,9 +6322,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D4-Q5",
+      "id": "P6-D4-Q20",
       "dimension": "D4",
-      "question_no": 5,
+      "question_no": 20,
       "template": "¿Se especifica cómo se monitoreará el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -6353,9 +6352,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D5-Q1",
+      "id": "P6-D5-Q21",
       "dimension": "D5",
-      "question_no": 1,
+      "question_no": 21,
       "template": "¿Existe un indicador de impacto de largo plazo para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -6395,9 +6394,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D5-Q2",
+      "id": "P6-D5-Q22",
       "dimension": "D5",
-      "question_no": 2,
+      "question_no": 22,
       "template": "¿Se menciona el horizonte temporal de los impactos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -6425,9 +6424,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D5-Q3",
+      "id": "P6-D5-Q23",
       "dimension": "D5",
-      "question_no": 3,
+      "question_no": 23,
       "template": "¿Se mencionan efectos indirectos o sistémicos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -6455,9 +6454,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D5-Q4",
+      "id": "P6-D5-Q24",
       "dimension": "D5",
-      "question_no": 4,
+      "question_no": 24,
       "template": "¿Se menciona la sostenibilidad de las acciones en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -6494,9 +6493,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D5-Q5",
+      "id": "P6-D5-Q25",
       "dimension": "D5",
-      "question_no": 5,
+      "question_no": 25,
       "template": "¿Se menciona un enfoque diferencial o de equidad en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -6530,9 +6529,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D6-Q1",
+      "id": "P6-D6-Q26",
       "dimension": "D6",
-      "question_no": 1,
+      "question_no": 26,
       "template": "¿Existe un diagrama o narrativa de teoría de cambio para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -6570,9 +6569,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D6-Q2",
+      "id": "P6-D6-Q27",
       "dimension": "D6",
-      "question_no": 2,
+      "question_no": 27,
       "template": "¿Se mencionan supuestos o condiciones necesarias para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -6600,9 +6599,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D6-Q3",
+      "id": "P6-D6-Q28",
       "dimension": "D6",
-      "question_no": 3,
+      "question_no": 28,
       "template": "¿Se identifican los niveles del modelo lógico (insumos→productos→resultados→impactos) para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -6633,9 +6632,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D6-Q4",
+      "id": "P6-D6-Q29",
       "dimension": "D6",
-      "question_no": 4,
+      "question_no": 29,
       "template": "¿Se menciona un sistema de seguimiento para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -6669,9 +6668,9 @@
       "policy_area_name": "Derecho al buen futuro de la niñez, adolescencia, juventud"
     },
     {
-      "id": "P6-D6-Q5",
+      "id": "P6-D6-Q30",
       "dimension": "D6",
-      "question_no": 5,
+      "question_no": 30,
       "template": "¿Se menciona evaluación o documentación de aprendizajes en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -6887,9 +6886,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D2-Q1",
+      "id": "P7-D2-Q6",
       "dimension": "D2",
-      "question_no": 1,
+      "question_no": 6,
       "template": "¿Las actividades para {PUNTO_TEMATICO} están formalizadas en tablas (responsable, insumo, output, calendario, costo unitario) y no sólo en narrativa?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -6921,9 +6920,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D2-Q2",
+      "id": "P7-D2-Q7",
       "dimension": "D2",
-      "question_no": 2,
+      "question_no": 7,
       "template": "¿Cada actividad especifica el instrumento y su mecanismo causal pretendido y la población diana en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -6957,9 +6956,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D2-Q3",
+      "id": "P7-D2-Q8",
       "dimension": "D2",
-      "question_no": 3,
+      "question_no": 8,
       "template": "¿Cada problema priorizado en {PUNTO_TEMATICO} tiene al menos una actividad que ataca el eslabón causal relevante (causa raíz o mediador)?",
       "scoring_modality": "TYPE_F",
       "max_score": 3.0,
@@ -7008,9 +7007,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D2-Q4",
+      "id": "P7-D2-Q9",
       "dimension": "D2",
-      "question_no": 4,
+      "question_no": 9,
       "template": "¿Se identifican riesgos de desplazamiento de efectos, cuñas de implementación y conflictos entre actividades en {PUNTO_TEMATICO}, con mitigaciones?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -7038,9 +7037,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D2-Q5",
+      "id": "P7-D2-Q10",
       "dimension": "D2",
-      "question_no": 5,
+      "question_no": 10,
       "template": "¿Las actividades de {PUNTO_TEMATICO} forman una teoría de intervención coherente (complementariedades, secuenciación, no redundancias)?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -7068,9 +7067,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D3-Q1",
+      "id": "P7-D3-Q11",
       "dimension": "D3",
-      "question_no": 1,
+      "question_no": 11,
       "template": "¿Se mencionan estándares técnicos o protocolos para los productos de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -7098,9 +7097,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D3-Q2",
+      "id": "P7-D3-Q12",
       "dimension": "D3",
-      "question_no": 2,
+      "question_no": 12,
       "template": "¿La meta de productos es proporcional a la magnitud del problema en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -7143,9 +7142,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D3-Q3",
+      "id": "P7-D3-Q13",
       "dimension": "D3",
-      "question_no": 3,
+      "question_no": 13,
       "template": "¿Las metas de productos en {PUNTO_TEMATICO} están cuantificadas?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -7173,9 +7172,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D3-Q4",
+      "id": "P7-D3-Q14",
       "dimension": "D3",
-      "question_no": 4,
+      "question_no": 14,
       "template": "¿Cada producto en {PUNTO_TEMATICO} tiene una dependencia responsable asignada?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -7205,9 +7204,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D3-Q5",
+      "id": "P7-D3-Q15",
       "dimension": "D3",
-      "question_no": 5,
+      "question_no": 15,
       "template": "¿Los productos de {PUNTO_TEMATICO} tienen justificación causal (relación con resultados esperados)?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -7235,9 +7234,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D4-Q1",
+      "id": "P7-D4-Q16",
       "dimension": "D4",
-      "question_no": 1,
+      "question_no": 16,
       "template": "¿Existe un indicador de resultado formalizado para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -7277,9 +7276,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D4-Q2",
+      "id": "P7-D4-Q17",
       "dimension": "D4",
-      "question_no": 2,
+      "question_no": 17,
       "template": "¿El indicador de resultado de {PUNTO_TEMATICO} es diferente de los indicadores de producto?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -7323,9 +7322,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D4-Q3",
+      "id": "P7-D4-Q18",
       "dimension": "D4",
-      "question_no": 3,
+      "question_no": 18,
       "template": "¿Cuál es la magnitud del cambio esperado en el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -7365,9 +7364,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D4-Q4",
+      "id": "P7-D4-Q19",
       "dimension": "D4",
-      "question_no": 4,
+      "question_no": 19,
       "template": "¿Se reconoce que el resultado en {PUNTO_TEMATICO} depende de múltiples factores?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -7398,9 +7397,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D4-Q5",
+      "id": "P7-D4-Q20",
       "dimension": "D4",
-      "question_no": 5,
+      "question_no": 20,
       "template": "¿Se especifica cómo se monitoreará el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -7428,9 +7427,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D5-Q1",
+      "id": "P7-D5-Q21",
       "dimension": "D5",
-      "question_no": 1,
+      "question_no": 21,
       "template": "¿Existe un indicador de impacto de largo plazo para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -7470,9 +7469,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D5-Q2",
+      "id": "P7-D5-Q22",
       "dimension": "D5",
-      "question_no": 2,
+      "question_no": 22,
       "template": "¿Se menciona el horizonte temporal de los impactos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -7500,9 +7499,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D5-Q3",
+      "id": "P7-D5-Q23",
       "dimension": "D5",
-      "question_no": 3,
+      "question_no": 23,
       "template": "¿Se mencionan efectos indirectos o sistémicos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -7530,9 +7529,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D5-Q4",
+      "id": "P7-D5-Q24",
       "dimension": "D5",
-      "question_no": 4,
+      "question_no": 24,
       "template": "¿Se menciona la sostenibilidad de las acciones en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -7569,9 +7568,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D5-Q5",
+      "id": "P7-D5-Q25",
       "dimension": "D5",
-      "question_no": 5,
+      "question_no": 25,
       "template": "¿Se menciona un enfoque diferencial o de equidad en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -7605,9 +7604,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D6-Q1",
+      "id": "P7-D6-Q26",
       "dimension": "D6",
-      "question_no": 1,
+      "question_no": 26,
       "template": "¿Existe un diagrama o narrativa de teoría de cambio para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -7645,9 +7644,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D6-Q2",
+      "id": "P7-D6-Q27",
       "dimension": "D6",
-      "question_no": 2,
+      "question_no": 27,
       "template": "¿Se mencionan supuestos o condiciones necesarias para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -7675,9 +7674,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D6-Q3",
+      "id": "P7-D6-Q28",
       "dimension": "D6",
-      "question_no": 3,
+      "question_no": 28,
       "template": "¿Se identifican los niveles del modelo lógico (insumos→productos→resultados→impactos) para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -7708,9 +7707,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D6-Q4",
+      "id": "P7-D6-Q29",
       "dimension": "D6",
-      "question_no": 4,
+      "question_no": 29,
       "template": "¿Se menciona un sistema de seguimiento para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -7744,9 +7743,9 @@
       "policy_area_name": "Tierras y territorios"
     },
     {
-      "id": "P7-D6-Q5",
+      "id": "P7-D6-Q30",
       "dimension": "D6",
-      "question_no": 5,
+      "question_no": 30,
       "template": "¿Se menciona evaluación o documentación de aprendizajes en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -7962,9 +7961,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D2-Q1",
+      "id": "P8-D2-Q6",
       "dimension": "D2",
-      "question_no": 1,
+      "question_no": 6,
       "template": "¿Las actividades para {PUNTO_TEMATICO} están formalizadas en tablas (responsable, insumo, output, calendario, costo unitario) y no sólo en narrativa?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -7996,9 +7995,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D2-Q2",
+      "id": "P8-D2-Q7",
       "dimension": "D2",
-      "question_no": 2,
+      "question_no": 7,
       "template": "¿Cada actividad especifica el instrumento y su mecanismo causal pretendido y la población diana en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -8032,9 +8031,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D2-Q3",
+      "id": "P8-D2-Q8",
       "dimension": "D2",
-      "question_no": 3,
+      "question_no": 8,
       "template": "¿Cada problema priorizado en {PUNTO_TEMATICO} tiene al menos una actividad que ataca el eslabón causal relevante (causa raíz o mediador)?",
       "scoring_modality": "TYPE_F",
       "max_score": 3.0,
@@ -8083,9 +8082,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D2-Q4",
+      "id": "P8-D2-Q9",
       "dimension": "D2",
-      "question_no": 4,
+      "question_no": 9,
       "template": "¿Se identifican riesgos de desplazamiento de efectos, cuñas de implementación y conflictos entre actividades en {PUNTO_TEMATICO}, con mitigaciones?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -8113,9 +8112,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D2-Q5",
+      "id": "P8-D2-Q10",
       "dimension": "D2",
-      "question_no": 5,
+      "question_no": 10,
       "template": "¿Las actividades de {PUNTO_TEMATICO} forman una teoría de intervención coherente (complementariedades, secuenciación, no redundancias)?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -8143,9 +8142,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D3-Q1",
+      "id": "P8-D3-Q11",
       "dimension": "D3",
-      "question_no": 1,
+      "question_no": 11,
       "template": "¿Se mencionan estándares técnicos o protocolos para los productos de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -8173,9 +8172,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D3-Q2",
+      "id": "P8-D3-Q12",
       "dimension": "D3",
-      "question_no": 2,
+      "question_no": 12,
       "template": "¿La meta de productos es proporcional a la magnitud del problema en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -8218,9 +8217,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D3-Q3",
+      "id": "P8-D3-Q13",
       "dimension": "D3",
-      "question_no": 3,
+      "question_no": 13,
       "template": "¿Las metas de productos en {PUNTO_TEMATICO} están cuantificadas?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -8248,9 +8247,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D3-Q4",
+      "id": "P8-D3-Q14",
       "dimension": "D3",
-      "question_no": 4,
+      "question_no": 14,
       "template": "¿Cada producto en {PUNTO_TEMATICO} tiene una dependencia responsable asignada?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -8280,9 +8279,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D3-Q5",
+      "id": "P8-D3-Q15",
       "dimension": "D3",
-      "question_no": 5,
+      "question_no": 15,
       "template": "¿Los productos de {PUNTO_TEMATICO} tienen justificación causal (relación con resultados esperados)?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -8310,9 +8309,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D4-Q1",
+      "id": "P8-D4-Q16",
       "dimension": "D4",
-      "question_no": 1,
+      "question_no": 16,
       "template": "¿Existe un indicador de resultado formalizado para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -8352,9 +8351,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D4-Q2",
+      "id": "P8-D4-Q17",
       "dimension": "D4",
-      "question_no": 2,
+      "question_no": 17,
       "template": "¿El indicador de resultado de {PUNTO_TEMATICO} es diferente de los indicadores de producto?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -8398,9 +8397,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D4-Q3",
+      "id": "P8-D4-Q18",
       "dimension": "D4",
-      "question_no": 3,
+      "question_no": 18,
       "template": "¿Cuál es la magnitud del cambio esperado en el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -8440,9 +8439,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D4-Q4",
+      "id": "P8-D4-Q19",
       "dimension": "D4",
-      "question_no": 4,
+      "question_no": 19,
       "template": "¿Se reconoce que el resultado en {PUNTO_TEMATICO} depende de múltiples factores?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -8473,9 +8472,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D4-Q5",
+      "id": "P8-D4-Q20",
       "dimension": "D4",
-      "question_no": 5,
+      "question_no": 20,
       "template": "¿Se especifica cómo se monitoreará el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -8503,9 +8502,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D5-Q1",
+      "id": "P8-D5-Q21",
       "dimension": "D5",
-      "question_no": 1,
+      "question_no": 21,
       "template": "¿Existe un indicador de impacto de largo plazo para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -8545,9 +8544,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D5-Q2",
+      "id": "P8-D5-Q22",
       "dimension": "D5",
-      "question_no": 2,
+      "question_no": 22,
       "template": "¿Se menciona el horizonte temporal de los impactos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -8575,9 +8574,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D5-Q3",
+      "id": "P8-D5-Q23",
       "dimension": "D5",
-      "question_no": 3,
+      "question_no": 23,
       "template": "¿Se mencionan efectos indirectos o sistémicos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -8605,9 +8604,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D5-Q4",
+      "id": "P8-D5-Q24",
       "dimension": "D5",
-      "question_no": 4,
+      "question_no": 24,
       "template": "¿Se menciona la sostenibilidad de las acciones en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -8644,9 +8643,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D5-Q5",
+      "id": "P8-D5-Q25",
       "dimension": "D5",
-      "question_no": 5,
+      "question_no": 25,
       "template": "¿Se menciona un enfoque diferencial o de equidad en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -8680,9 +8679,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D6-Q1",
+      "id": "P8-D6-Q26",
       "dimension": "D6",
-      "question_no": 1,
+      "question_no": 26,
       "template": "¿Existe un diagrama o narrativa de teoría de cambio para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -8720,9 +8719,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D6-Q2",
+      "id": "P8-D6-Q27",
       "dimension": "D6",
-      "question_no": 2,
+      "question_no": 27,
       "template": "¿Se mencionan supuestos o condiciones necesarias para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -8750,9 +8749,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D6-Q3",
+      "id": "P8-D6-Q28",
       "dimension": "D6",
-      "question_no": 3,
+      "question_no": 28,
       "template": "¿Se identifican los niveles del modelo lógico (insumos→productos→resultados→impactos) para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -8783,9 +8782,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D6-Q4",
+      "id": "P8-D6-Q29",
       "dimension": "D6",
-      "question_no": 4,
+      "question_no": 29,
       "template": "¿Se menciona un sistema de seguimiento para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -8819,9 +8818,9 @@
       "policy_area_name": "Líderes y defensores de derechos humanos"
     },
     {
-      "id": "P8-D6-Q5",
+      "id": "P8-D6-Q30",
       "dimension": "D6",
-      "question_no": 5,
+      "question_no": 30,
       "template": "¿Se menciona evaluación o documentación de aprendizajes en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -9037,9 +9036,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D2-Q1",
+      "id": "P9-D2-Q6",
       "dimension": "D2",
-      "question_no": 1,
+      "question_no": 6,
       "template": "¿Las actividades para {PUNTO_TEMATICO} están formalizadas en tablas (responsable, insumo, output, calendario, costo unitario) y no sólo en narrativa?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -9071,9 +9070,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D2-Q2",
+      "id": "P9-D2-Q7",
       "dimension": "D2",
-      "question_no": 2,
+      "question_no": 7,
       "template": "¿Cada actividad especifica el instrumento y su mecanismo causal pretendido y la población diana en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -9107,9 +9106,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D2-Q3",
+      "id": "P9-D2-Q8",
       "dimension": "D2",
-      "question_no": 3,
+      "question_no": 8,
       "template": "¿Cada problema priorizado en {PUNTO_TEMATICO} tiene al menos una actividad que ataca el eslabón causal relevante (causa raíz o mediador)?",
       "scoring_modality": "TYPE_F",
       "max_score": 3.0,
@@ -9158,9 +9157,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D2-Q4",
+      "id": "P9-D2-Q9",
       "dimension": "D2",
-      "question_no": 4,
+      "question_no": 9,
       "template": "¿Se identifican riesgos de desplazamiento de efectos, cuñas de implementación y conflictos entre actividades en {PUNTO_TEMATICO}, con mitigaciones?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -9188,9 +9187,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D2-Q5",
+      "id": "P9-D2-Q10",
       "dimension": "D2",
-      "question_no": 5,
+      "question_no": 10,
       "template": "¿Las actividades de {PUNTO_TEMATICO} forman una teoría de intervención coherente (complementariedades, secuenciación, no redundancias)?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -9218,9 +9217,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D3-Q1",
+      "id": "P9-D3-Q11",
       "dimension": "D3",
-      "question_no": 1,
+      "question_no": 11,
       "template": "¿Se mencionan estándares técnicos o protocolos para los productos de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -9248,9 +9247,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D3-Q2",
+      "id": "P9-D3-Q12",
       "dimension": "D3",
-      "question_no": 2,
+      "question_no": 12,
       "template": "¿La meta de productos es proporcional a la magnitud del problema en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -9293,9 +9292,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D3-Q3",
+      "id": "P9-D3-Q13",
       "dimension": "D3",
-      "question_no": 3,
+      "question_no": 13,
       "template": "¿Las metas de productos en {PUNTO_TEMATICO} están cuantificadas?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -9323,9 +9322,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D3-Q4",
+      "id": "P9-D3-Q14",
       "dimension": "D3",
-      "question_no": 4,
+      "question_no": 14,
       "template": "¿Cada producto en {PUNTO_TEMATICO} tiene una dependencia responsable asignada?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -9355,9 +9354,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D3-Q5",
+      "id": "P9-D3-Q15",
       "dimension": "D3",
-      "question_no": 5,
+      "question_no": 15,
       "template": "¿Los productos de {PUNTO_TEMATICO} tienen justificación causal (relación con resultados esperados)?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -9385,9 +9384,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D4-Q1",
+      "id": "P9-D4-Q16",
       "dimension": "D4",
-      "question_no": 1,
+      "question_no": 16,
       "template": "¿Existe un indicador de resultado formalizado para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -9427,9 +9426,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D4-Q2",
+      "id": "P9-D4-Q17",
       "dimension": "D4",
-      "question_no": 2,
+      "question_no": 17,
       "template": "¿El indicador de resultado de {PUNTO_TEMATICO} es diferente de los indicadores de producto?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -9473,9 +9472,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D4-Q3",
+      "id": "P9-D4-Q18",
       "dimension": "D4",
-      "question_no": 3,
+      "question_no": 18,
       "template": "¿Cuál es la magnitud del cambio esperado en el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -9515,9 +9514,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D4-Q4",
+      "id": "P9-D4-Q19",
       "dimension": "D4",
-      "question_no": 4,
+      "question_no": 19,
       "template": "¿Se reconoce que el resultado en {PUNTO_TEMATICO} depende de múltiples factores?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -9548,9 +9547,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D4-Q5",
+      "id": "P9-D4-Q20",
       "dimension": "D4",
-      "question_no": 5,
+      "question_no": 20,
       "template": "¿Se especifica cómo se monitoreará el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -9578,9 +9577,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D5-Q1",
+      "id": "P9-D5-Q21",
       "dimension": "D5",
-      "question_no": 1,
+      "question_no": 21,
       "template": "¿Existe un indicador de impacto de largo plazo para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -9620,9 +9619,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D5-Q2",
+      "id": "P9-D5-Q22",
       "dimension": "D5",
-      "question_no": 2,
+      "question_no": 22,
       "template": "¿Se menciona el horizonte temporal de los impactos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -9650,9 +9649,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D5-Q3",
+      "id": "P9-D5-Q23",
       "dimension": "D5",
-      "question_no": 3,
+      "question_no": 23,
       "template": "¿Se mencionan efectos indirectos o sistémicos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -9680,9 +9679,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D5-Q4",
+      "id": "P9-D5-Q24",
       "dimension": "D5",
-      "question_no": 4,
+      "question_no": 24,
       "template": "¿Se menciona la sostenibilidad de las acciones en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -9719,9 +9718,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D5-Q5",
+      "id": "P9-D5-Q25",
       "dimension": "D5",
-      "question_no": 5,
+      "question_no": 25,
       "template": "¿Se menciona un enfoque diferencial o de equidad en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -9755,9 +9754,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D6-Q1",
+      "id": "P9-D6-Q26",
       "dimension": "D6",
-      "question_no": 1,
+      "question_no": 26,
       "template": "¿Existe un diagrama o narrativa de teoría de cambio para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -9795,9 +9794,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D6-Q2",
+      "id": "P9-D6-Q27",
       "dimension": "D6",
-      "question_no": 2,
+      "question_no": 27,
       "template": "¿Se mencionan supuestos o condiciones necesarias para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -9825,9 +9824,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D6-Q3",
+      "id": "P9-D6-Q28",
       "dimension": "D6",
-      "question_no": 3,
+      "question_no": 28,
       "template": "¿Se identifican los niveles del modelo lógico (insumos→productos→resultados→impactos) para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -9858,9 +9857,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D6-Q4",
+      "id": "P9-D6-Q29",
       "dimension": "D6",
-      "question_no": 4,
+      "question_no": 29,
       "template": "¿Se menciona un sistema de seguimiento para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -9894,9 +9893,9 @@
       "policy_area_name": "Crisis de derechos de personas privadas de la libertad"
     },
     {
-      "id": "P9-D6-Q5",
+      "id": "P9-D6-Q30",
       "dimension": "D6",
-      "question_no": 5,
+      "question_no": 30,
       "template": "¿Se menciona evaluación o documentación de aprendizajes en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -10112,9 +10111,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D2-Q1",
+      "id": "P10-D2-Q6",
       "dimension": "D2",
-      "question_no": 1,
+      "question_no": 6,
       "template": "¿Las actividades para {PUNTO_TEMATICO} están formalizadas en tablas (responsable, insumo, output, calendario, costo unitario) y no sólo en narrativa?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -10146,9 +10145,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D2-Q2",
+      "id": "P10-D2-Q7",
       "dimension": "D2",
-      "question_no": 2,
+      "question_no": 7,
       "template": "¿Cada actividad especifica el instrumento y su mecanismo causal pretendido y la población diana en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -10182,9 +10181,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D2-Q3",
+      "id": "P10-D2-Q8",
       "dimension": "D2",
-      "question_no": 3,
+      "question_no": 8,
       "template": "¿Cada problema priorizado en {PUNTO_TEMATICO} tiene al menos una actividad que ataca el eslabón causal relevante (causa raíz o mediador)?",
       "scoring_modality": "TYPE_F",
       "max_score": 3.0,
@@ -10233,9 +10232,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D2-Q4",
+      "id": "P10-D2-Q9",
       "dimension": "D2",
-      "question_no": 4,
+      "question_no": 9,
       "template": "¿Se identifican riesgos de desplazamiento de efectos, cuñas de implementación y conflictos entre actividades en {PUNTO_TEMATICO}, con mitigaciones?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -10263,9 +10262,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D2-Q5",
+      "id": "P10-D2-Q10",
       "dimension": "D2",
-      "question_no": 5,
+      "question_no": 10,
       "template": "¿Las actividades de {PUNTO_TEMATICO} forman una teoría de intervención coherente (complementariedades, secuenciación, no redundancias)?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -10293,9 +10292,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D3-Q1",
+      "id": "P10-D3-Q11",
       "dimension": "D3",
-      "question_no": 1,
+      "question_no": 11,
       "template": "¿Se mencionan estándares técnicos o protocolos para los productos de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -10323,9 +10322,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D3-Q2",
+      "id": "P10-D3-Q12",
       "dimension": "D3",
-      "question_no": 2,
+      "question_no": 12,
       "template": "¿La meta de productos es proporcional a la magnitud del problema en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -10368,9 +10367,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D3-Q3",
+      "id": "P10-D3-Q13",
       "dimension": "D3",
-      "question_no": 3,
+      "question_no": 13,
       "template": "¿Las metas de productos en {PUNTO_TEMATICO} están cuantificadas?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -10398,9 +10397,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D3-Q4",
+      "id": "P10-D3-Q14",
       "dimension": "D3",
-      "question_no": 4,
+      "question_no": 14,
       "template": "¿Cada producto en {PUNTO_TEMATICO} tiene una dependencia responsable asignada?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -10430,9 +10429,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D3-Q5",
+      "id": "P10-D3-Q15",
       "dimension": "D3",
-      "question_no": 5,
+      "question_no": 15,
       "template": "¿Los productos de {PUNTO_TEMATICO} tienen justificación causal (relación con resultados esperados)?",
       "scoring_modality": "TYPE_D",
       "max_score": 3.0,
@@ -10460,9 +10459,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D4-Q1",
+      "id": "P10-D4-Q16",
       "dimension": "D4",
-      "question_no": 1,
+      "question_no": 16,
       "template": "¿Existe un indicador de resultado formalizado para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_A",
       "max_score": 3.0,
@@ -10502,9 +10501,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D4-Q2",
+      "id": "P10-D4-Q17",
       "dimension": "D4",
-      "question_no": 2,
+      "question_no": 17,
       "template": "¿El indicador de resultado de {PUNTO_TEMATICO} es diferente de los indicadores de producto?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -10548,9 +10547,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D4-Q3",
+      "id": "P10-D4-Q18",
       "dimension": "D4",
-      "question_no": 3,
+      "question_no": 18,
       "template": "¿Cuál es la magnitud del cambio esperado en el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -10590,9 +10589,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D4-Q4",
+      "id": "P10-D4-Q19",
       "dimension": "D4",
-      "question_no": 4,
+      "question_no": 19,
       "template": "¿Se reconoce que el resultado en {PUNTO_TEMATICO} depende de múltiples factores?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -10623,9 +10622,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D4-Q5",
+      "id": "P10-D4-Q20",
       "dimension": "D4",
-      "question_no": 5,
+      "question_no": 20,
       "template": "¿Se especifica cómo se monitoreará el indicador de resultado de {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -10653,9 +10652,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D5-Q1",
+      "id": "P10-D5-Q21",
       "dimension": "D5",
-      "question_no": 1,
+      "question_no": 21,
       "template": "¿Existe un indicador de impacto de largo plazo para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -10695,9 +10694,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D5-Q2",
+      "id": "P10-D5-Q22",
       "dimension": "D5",
-      "question_no": 2,
+      "question_no": 22,
       "template": "¿Se menciona el horizonte temporal de los impactos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -10725,9 +10724,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D5-Q3",
+      "id": "P10-D5-Q23",
       "dimension": "D5",
-      "question_no": 3,
+      "question_no": 23,
       "template": "¿Se mencionan efectos indirectos o sistémicos en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -10755,9 +10754,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D5-Q4",
+      "id": "P10-D5-Q24",
       "dimension": "D5",
-      "question_no": 4,
+      "question_no": 24,
       "template": "¿Se menciona la sostenibilidad de las acciones en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -10794,9 +10793,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D5-Q5",
+      "id": "P10-D5-Q25",
       "dimension": "D5",
-      "question_no": 5,
+      "question_no": 25,
       "template": "¿Se menciona un enfoque diferencial o de equidad en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -10830,9 +10829,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D6-Q1",
+      "id": "P10-D6-Q26",
       "dimension": "D6",
-      "question_no": 1,
+      "question_no": 26,
       "template": "¿Existe un diagrama o narrativa de teoría de cambio para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -10870,9 +10869,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D6-Q2",
+      "id": "P10-D6-Q27",
       "dimension": "D6",
-      "question_no": 2,
+      "question_no": 27,
       "template": "¿Se mencionan supuestos o condiciones necesarias para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
@@ -10900,9 +10899,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D6-Q3",
+      "id": "P10-D6-Q28",
       "dimension": "D6",
-      "question_no": 3,
+      "question_no": 28,
       "template": "¿Se identifican los niveles del modelo lógico (insumos→productos→resultados→impactos) para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_E",
       "max_score": 3.0,
@@ -10933,9 +10932,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D6-Q4",
+      "id": "P10-D6-Q29",
       "dimension": "D6",
-      "question_no": 4,
+      "question_no": 29,
       "template": "¿Se menciona un sistema de seguimiento para {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_B",
       "max_score": 3.0,
@@ -10969,9 +10968,9 @@
       "policy_area_name": "Migración transfronteriza"
     },
     {
-      "id": "P10-D6-Q5",
+      "id": "P10-D6-Q30",
       "dimension": "D6",
-      "question_no": 5,
+      "question_no": 30,
       "template": "¿Se menciona evaluación o documentación de aprendizajes en {PUNTO_TEMATICO}?",
       "scoring_modality": "TYPE_C",
       "max_score": 3.0,
