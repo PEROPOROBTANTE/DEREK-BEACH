@@ -1873,7 +1873,19 @@ class AnalyzerOneAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo AnalyzerOne"""
         try:
-            # Simulación de carga del módulo
+            # Import real Analyzer_one module
+            from Analyzer_one import (
+                MunicipalOntology,
+                SemanticAnalyzer,
+                QualityControlEngine,
+                PolicyAnalysisPipeline
+            )
+            
+            self.MunicipalOntology = MunicipalOntology
+            self.SemanticAnalyzer = SemanticAnalyzer
+            self.QualityControlEngine = QualityControlEngine
+            self.PolicyAnalysisPipeline = PolicyAnalysisPipeline
+            
             self.available = True
             self.logger.info(
                 f"✓ {self.module_name} cargado con TODOS los componentes de análisis"
@@ -2979,7 +2991,25 @@ class EmbeddingPolicyAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo EmbeddingPolicy"""
         try:
-            # Simulación de carga del módulo
+            # Import real embedding_policy module
+            from embedding_policy import (
+                PolicyDomain,
+                AnalyticalDimension,
+                AdvancedSemanticChunker,
+                BayesianNumericalAnalyzer,
+                PolicyCrossEncoderReranker,
+                PolicyEmbeddingConfig,
+                PolicyAnalysisEmbedder
+            )
+            
+            self.PolicyDomain = PolicyDomain
+            self.AnalyticalDimension = AnalyticalDimension
+            self.AdvancedSemanticChunker = AdvancedSemanticChunker
+            self.BayesianNumericalAnalyzer = BayesianNumericalAnalyzer
+            self.PolicyCrossEncoderReranker = PolicyCrossEncoderReranker
+            self.PolicyEmbeddingConfig = PolicyEmbeddingConfig
+            self.PolicyAnalysisEmbedder = PolicyAnalysisEmbedder
+            
             self.available = True
             self.logger.info(
                 f"✓ {self.module_name} cargado con TODOS los componentes de análisis con embeddings"
@@ -4151,7 +4181,23 @@ class SemanticChunkingPolicyAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo SemanticChunkingPolicy"""
         try:
-            # Simulación de carga del módulo
+            # Import real semantic_chunking_policy module
+            from semantic_chunking_policy import (
+                CausalDimension,
+                PDMSection,
+                SemanticConfig,
+                SemanticProcessor,
+                BayesianEvidenceIntegrator,
+                PolicyDocumentAnalyzer
+            )
+            
+            self.CausalDimension = CausalDimension
+            self.PDMSection = PDMSection
+            self.SemanticConfig = SemanticConfig
+            self.SemanticProcessor = SemanticProcessor
+            self.BayesianEvidenceIntegrator = BayesianEvidenceIntegrator
+            self.PolicyDocumentAnalyzer = PolicyDocumentAnalyzer
+            
             self.available = True
             self.logger.info(
                 f"✓ {self.module_name} cargado con TODOS los componentes de segmentación semántica"
@@ -5484,7 +5530,23 @@ class DerekBeachAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo DerekBeach"""
         try:
-            # Simulación de carga del módulo
+            # Import real dereck_beach module
+            from dereck_beach import (
+                BeachEvidentialTest,
+                CDAFConfigSchema,
+                CausalExtractor,
+                MechanismPartExtractor,
+                PDFProcessor,
+                ConfigLoader
+            )
+            
+            self.BeachEvidentialTest = BeachEvidentialTest
+            self.CDAFConfigSchema = CDAFConfigSchema
+            self.CausalExtractor = CausalExtractor
+            self.MechanismPartExtractor = MechanismPartExtractor
+            self.PDFProcessor = PDFProcessor
+            self.ConfigLoader = ConfigLoader
+            
             self.available = True
             self.logger.info(
                 f"✓ {self.module_name} cargado con TODOS los componentes de análisis Derek Beach"
@@ -9992,7 +10054,17 @@ class ContradictionDetectionAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo ContradictionDetection"""
         try:
-            # Importamos las clases del módulo contradiction_detection
+            # Import real contradiction_deteccion module
+            from contradiction_deteccion import (
+                ContradictionType,
+                PolicyDimension,
+                PolicyStatement,
+                ContradictionEvidence,
+                PolicyContradictionDetector,
+                BayesianConfidenceCalculator,
+                TemporalLogicVerifier
+            )
+            
             self.ContradictionType = ContradictionType
             self.PolicyDimension = PolicyDimension
             self.PolicyStatement = PolicyStatement
