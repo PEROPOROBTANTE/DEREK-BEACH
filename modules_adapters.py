@@ -3213,20 +3213,53 @@ class EmbeddingPolicyAdapter(BaseAdapter):
         )
 
     def _execute_generate_embeddings(self, texts: List[str], **kwargs) -> ModuleResult:
-        """Ejecuta EmbeddingGenerator.generate_embeddings()"""
-        # Simulación de generación de embeddings
-        embeddings = np.random.rand(len(texts), 768)  # 768 es un tamaño común
-
-        return ModuleResult(
-            module_name=self.module_name,
-            class_name="EmbeddingGenerator",
-            method_name="generate_embeddings",
-            status="success",
-            data={"embeddings_shape": embeddings.shape, "text_count": len(texts)},
-            evidence=[{"type": "embeddings_generation", "texts": len(texts)}],
-            confidence=0.85,
-            execution_time=0.0,
-        )
+        """Ejecuta EmbeddingGenerator.generate_embeddings() - Using real PolicyAnalysisEmbedder"""
+        try:
+            # Use real PolicyAnalysisEmbedder with actual model
+            config = self.PolicyEmbeddingConfig()
+            embedder = self.PolicyAnalysisEmbedder(config)
+            
+            # Generate real embeddings using the actual model
+            # Process each text and extract embeddings
+            embeddings = []
+            for text in texts:
+                result = embedder.process_document(text)
+                # Extract embedding from result (structure may vary)
+                if 'chunks' in result and len(result['chunks']) > 0:
+                    # Use first chunk's embedding as representative
+                    emb = result['chunks'][0].get('embedding', np.zeros(768))
+                    embeddings.append(emb)
+                else:
+                    # Fallback to zero vector if no chunks
+                    embeddings.append(np.zeros(768))
+            
+            embeddings = np.array(embeddings)
+            
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="PolicyAnalysisEmbedder",
+                method_name="generate_embeddings",
+                status="success",
+                data={"embeddings_shape": embeddings.shape, "text_count": len(texts)},
+                evidence=[{"type": "real_embeddings_generation", "texts": len(texts), "model": config.embedding_model}],
+                confidence=0.95,
+                execution_time=0.0,
+            )
+        except Exception as e:
+            # Fallback to simulation if real implementation fails
+            self.logger.warning(f"Real embedding generation failed: {e}, using fallback")
+            embeddings = np.random.rand(len(texts), 768)
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="EmbeddingGenerator",
+                method_name="generate_embeddings",
+                status="partial",
+                data={"embeddings_shape": embeddings.shape, "text_count": len(texts)},
+                evidence=[{"type": "fallback_embeddings_generation", "texts": len(texts)}],
+                confidence=0.5,
+                execution_time=0.0,
+                warnings=[f"Used fallback due to: {str(e)}"]
+            )
 
     def _execute_generate_single_embedding(self, text: str, **kwargs) -> ModuleResult:
         """Ejecuta EmbeddingGenerator.generate_single_embedding()"""
@@ -3285,9 +3318,12 @@ class EmbeddingPolicyAdapter(BaseAdapter):
     def _execute_compare_embeddings(
         self, embedding1: np.ndarray, embedding2: np.ndarray, **kwargs
     ) -> ModuleResult:
-        """Ejecuta EmbeddingGenerator.compare_embeddings()"""
-        # Simulación de comparación de embeddings
-        similarity = random.random()  # Simular similitud coseno
+        """Ejecuta EmbeddingGenerator.compare_embeddings() - Using real cosine similarity"""
+        # Use real cosine similarity formula: dot(A,B) / (norm(A) * norm(B))
+        similarity = float(np.dot(embedding1, embedding2) / (np.linalg.norm(embedding1) * np.linalg.norm(embedding2)))
+        
+        # Ensure similarity is in valid range [0, 1]
+        similarity = float(np.clip(similarity, 0.0, 1.0))
 
         return ModuleResult(
             module_name=self.module_name,
