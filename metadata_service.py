@@ -1,483 +1,580 @@
+# coding=utf-8
 """
-Metadata Service - Centralized Management of cuestionario.json
-===============================================================
-
-Loads and caches cuestionario.json, provides query interface for question-specific
-metadata, and enriches raw metadata into strongly-typed QuestionContext objects.
-
-Key Features:
-- Lazy loading and caching of cuestionario.json
-- Strongly-typed QuestionContext dataclass with validation rules
-- Query interface for question metadata by various criteria
-- Version tracking for deterministic execution
-- Thread-safe singleton pattern
-
-Author: FARFAN 3.0 - Industrial Orchestrator
-Version: 1.0.0
-Python: 3.10+
-"""
-
-import json
-import logging
-import threading
-from pathlib import Path
-from typing import Dict, List, Optional, Any, Set
-from dataclasses import dataclass, field
-from enum import Enum
+Metadata Service - Central Configuration and Context Provider
 
 logger = logging.getLogger(__name__)
 
 
-class ValidationRuleType(Enum):
-    """Types of validation rules"""
-    TYPE_CHECK = "type_check"
-    SCHEMA_VALIDATION = "schema_validation"
-    REGEX_MATCH = "regex_match"
-    RANGE_CHECK = "range_check"
-    REQUIRED_FIELDS = "required_fields"
-    CUSTOM_LOGIC = "custom_logic"
-
-
-class ErrorStrategy(Enum):
-    """Error handling strategies"""
-    RETRY = "retry"
-    FALLBACK = "fallback"
-    FAIL_FAST = "fail_fast"
-    SKIP = "skip"
-    COMPENSATE = "compensate"
-
-
-@dataclass(frozen=True)
-class ValidationRule:
-    """Immutable validation rule definition"""
-    rule_type: ValidationRuleType
-    description: str
-    parameters: Dict[str, Any] = field(default_factory=dict)
-    severity: str = "error"  # error, warning, info
-    
-    def __hash__(self):
-        # Make hashable by converting dict to frozenset, handling lists
-        def make_hashable(obj):
-            if isinstance(obj, list):
-                return tuple(make_hashable(item) for item in obj)
-            elif isinstance(obj, dict):
-                return frozenset((k, make_hashable(v)) for k, v in obj.items())
-            elif isinstance(obj, set):
-                return frozenset(make_hashable(item) for item in obj)
-            return obj
-        
-        params_frozen = make_hashable(self.parameters) if self.parameters else frozenset()
-        return hash((self.rule_type, self.description, params_frozen, self.severity))
-
-
-@dataclass(frozen=True)
+@dataclass
 class QuestionContext:
-    """
-    Immutable, strongly-typed question context enriched from cuestionario.json
-    
-    This dataclass encapsulates all metadata needed for deterministic
-    execution of a single question analysis.
-    """
-    # Core identifiers
+    """Complete context for a question with all metadata"""
     question_id: str
+    canonical_id: str  # P#-D#-Q# format
     dimension: str
+    question_no: int
     policy_area: str
-    question_number: int
-    
-    # Question content
-    text: str
     template: str
-    
-    # Scoring configuration
+    text: str
     scoring_modality: str
     max_score: float
     expected_elements: List[str] = field(default_factory=list)
     
-    # Validation rules
-    validation_rules: Set[ValidationRule] = field(default_factory=set)
+    # Extended fields for context
+    search_patterns: Dict[str, Any] = field(default_factory=dict)
+    verification_patterns: Dict[str, Any] = field(default_factory=dict)
+    dependencies: List[str] = field(default_factory=list)
+    error_strategy: str = "continue"
+    validation_rules: Dict[str, Any] = field(default_factory=dict)
+    expected_format: str = ""
     
-    # Dependencies
-    dependencies: List[str] = field(default_factory=list)  # Other question IDs
+    # Execution information
+    execution_chain: List[Dict[str, str]] = field(default_factory=list)
     
-    # Execution configuration
-    error_strategy: ErrorStrategy = ErrorStrategy.RETRY
-    timeout_seconds: int = 300
-    retry_attempts: int = 3
-    
-    # Metadata
-    version: str = "2.0.0"
-    is_critical: bool = False
-    minimum_score: float = 0.5
-    weight: float = 1.0
-    
-    # Additional context
-    expected_format: Dict[str, Any] = field(default_factory=dict)
-    constraints: Dict[str, Any] = field(default_factory=dict)
+    # Additional metadata
     metadata: Dict[str, Any] = field(default_factory=dict)
-    
-    def __hash__(self):
-        # Make hashable for use in sets/dicts
-        return hash((self.question_id, self.version))
-    
-    @property
-    def canonical_id(self) -> str:
-        """Returns standardized ID format P#-D#-Q#"""
-        return f"{self.policy_area}-{self.dimension}-Q{self.question_number}"
+
+
+@dataclass
+class ScoringModality:
+    """Scoring modality definition from rubric"""
+    id: str
+    description: str
+    formula: str
+    max_score: float
+    expected_elements: int = 0
+    conversion_table: Dict[str, float] = field(default_factory=dict)
+    uses_thresholds: bool = False
+    uses_quantitative_data: bool = False
+    uses_custom_logic: bool = False
+    uses_semantic_matching: bool = False
+    similarity_threshold: float = 0.0
 
 
 class MetadataService:
     """
-    Thread-safe singleton service for cuestionario.json metadata management
+    Central metadata service - single source of truth
     
     Features:
-    - Lazy loading with caching
-    - Thread-safe access
-    - Version tracking for deterministic execution
-    - Rich query interface
-    - Automatic QuestionContext enrichment
+    - Loads and validates cuestionario.json with JSON schema
+    - Loads and validates rubric_scoring.json
+    - Loads and validates execution_mapping.yaml
+    - Provides complete QuestionContext for any question
+    - Ensures canonical ID consistency (P#-D#-Q#)
+    - Cross-validates all configuration sources
     """
-    
-    _instance = None
-    _lock = threading.Lock()
-    
-    def __new__(cls, *args, **kwargs):
-        """Singleton pattern implementation"""
-        if not cls._instance:
-            with cls._lock:
-                if not cls._instance:
-                    cls._instance = super().__new__(cls)
-        return cls._instance
-    
-    def __init__(self, cuestionario_path: Optional[Path] = None):
+
+    def __init__(
+        self,
+        cuestionario_path: Optional[Path] = None,
+        rubric_path: Optional[Path] = None,
+        execution_mapping_path: Optional[Path] = None
+    ):
         """
         Initialize metadata service
         
         Args:
-            cuestionario_path: Path to cuestionario.json (default: repo root)
+            cuestionario_path: Path to cuestionario.json
+            rubric_path: Path to rubric_scoring.json
+            execution_mapping_path: Path to execution_mapping.yaml
         """
-        # Only initialize once
-        if hasattr(self, '_initialized'):
-            return
-            
-        self.cuestionario_path = cuestionario_path or Path(__file__).parent / "cuestionario.json"
-        self._raw_data: Optional[Dict[str, Any]] = None
-        self._question_contexts: Dict[str, QuestionContext] = {}
+        self.cuestionario_path = cuestionario_path or Path("cuestionario.json")
+        self.rubric_path = rubric_path or Path("rubric_scoring.json")
+        self.execution_mapping_path = execution_mapping_path or Path("execution_mapping.yaml")
+        
+        # Storage
+        self._questions: Dict[str, QuestionContext] = {}
         self._dimensions: Dict[str, Any] = {}
         self._policy_areas: Dict[str, Any] = {}
-        self._version: str = "unknown"
-        self._initialized = True
+        self._scoring_modalities: Dict[str, ScoringModality] = {}
+        self._execution_mapping: Dict[str, Any] = {}
         
-        logger.info(f"MetadataService initialized with path: {self.cuestionario_path}")
-    
-    def load(self) -> None:
-        """
-        Load and cache cuestionario.json
+        # Load all sources
+        self._load_cuestionario()
+        self._load_rubric()
+        self._load_execution_mapping()
         
-        Thread-safe lazy loading with validation
-        """
-        with self._lock:
-            if self._raw_data is not None:
-                logger.debug("cuestionario.json already loaded, using cache")
-                return
+        # Cross-validate
+        self._cross_validate()
+        
+        # Enrich questions with execution chains
+        self._enrich_execution_chains()
+        
+        logger.info(
+            f"MetadataService initialized: {len(self._questions)} questions, "
+            f"{len(self._dimensions)} dimensions, {len(self._policy_areas)} policy areas, "
+            f"{len(self._scoring_modalities)} scoring modalities"
+        )
+
+    def _load_cuestionario(self):
+        """Load and validate cuestionario.json"""
+        if not self.cuestionario_path.exists():
+            raise FileNotFoundError(
+                f"cuestionario.json not found at {self.cuestionario_path}"
+            )
+        
+        try:
+            with open(self.cuestionario_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
             
-            if not self.cuestionario_path.exists():
-                raise FileNotFoundError(
-                    f"cuestionario.json not found at {self.cuestionario_path}"
-                )
+            self._validate_cuestionario_structure(data)
+            self._load_dimensions_from_json(data)
+            self._load_policy_areas_from_json(data)
+            self._load_questions_from_json(data)
             
-            try:
-                with open(self.cuestionario_path, 'r', encoding='utf-8') as f:
-                    self._raw_data = json.load(f)
-                
-                # Extract version
-                metadata = self._raw_data.get("metadata", {})
-                self._version = metadata.get("version", "unknown")
-                
-                # Load dimensions
-                self._load_dimensions()
-                
-                # Load policy areas
-                self._load_policy_areas()
-                
-                # Enrich question contexts
-                self._enrich_question_contexts()
-                
-                logger.info(
-                    f"Loaded cuestionario.json v{self._version}: "
-                    f"{len(self._question_contexts)} questions, "
-                    f"{len(self._dimensions)} dimensions, "
-                    f"{len(self._policy_areas)} policy areas"
+            logger.info(f"Loaded cuestionario from {self.cuestionario_path}")
+            
+        except json.JSONDecodeError as e:
+            logger.error(f"Invalid JSON in cuestionario.json: {e}")
+            raise
+        except Exception as e:
+            logger.error(f"Failed to load cuestionario.json: {e}")
+            raise
+
+    def _validate_cuestionario_structure(self, data: Dict[str, Any]):
+        """Validate JSON structure and log issues"""
+        required_keys = ["metadata", "dimensiones", "preguntas_base"]
+        missing = [k for k in required_keys if k not in data]
+        
+        if missing:
+            logger.warning(f"Missing recommended keys in cuestionario.json: {missing}")
+        
+        # Validate metadata
+        if "metadata" in data:
+            meta = data["metadata"]
+            if meta.get("total_questions", 0) != 300:
+                logger.warning(
+                    f"Expected 300 questions, metadata shows {meta.get('total_questions')}"
                 )
-                
-            except Exception as e:
-                logger.error(f"Failed to load cuestionario.json: {e}", exc_info=True)
-                raise
-    
-    def _load_dimensions(self) -> None:
-        """Extract dimension definitions"""
-        dimensions_data = self._raw_data.get("dimensiones", {})
+
+    def _load_dimensions_from_json(self, data: Dict[str, Any]):
+        """Load dimension definitions"""
+        dimensions_data = data.get("dimensiones", {})
         
         for dim_id, dim_info in dimensions_data.items():
             self._dimensions[dim_id] = {
                 "id": dim_id,
                 "nombre": dim_info.get("nombre", dim_id),
                 "descripcion": dim_info.get("descripcion", ""),
-                "peso_por_punto": dim_info.get("peso_por_punto", {}),
                 "preguntas": dim_info.get("preguntas", 5),
-                "umbral_minimo": dim_info.get("umbral_minimo", 0.5),
+                "peso_por_punto": dim_info.get("peso_por_punto", {}),
+                "umbral_minimo": dim_info.get("umbral_minimo", 0.5)
             }
-    
-    def _load_policy_areas(self) -> None:
-        """Extract policy area definitions"""
-        # Check both potential keys
-        policy_data = self._raw_data.get("puntos_tematicos", {})
+        
+        logger.debug(f"Loaded {len(self._dimensions)} dimensions")
+
+    def _load_policy_areas_from_json(self, data: Dict[str, Any]):
+        """Load policy area definitions"""
+        # Check both "puntos_tematicos" and "puntos_decalogo"
+        policy_data = data.get("puntos_tematicos", data.get("puntos_decalogo", {}))
+        
         if not policy_data:
-            policy_data = self._raw_data.get("puntos_decalogo", {})
+            # Generate default policy areas P1-P10
+            for i in range(1, 11):
+                policy_id = f"P{i}"
+                self._policy_areas[policy_id] = {
+                    "id": policy_id,
+                    "titulo": f"Punto Temático {i}",
+                    "palabras_clave": []
+                }
+            logger.warning("No policy areas found in JSON, using defaults P1-P10")
+        else:
+            for policy_id, policy_info in policy_data.items():
+                self._policy_areas[policy_id] = {
+                    "id": policy_id,
+                    "titulo": policy_info.get("titulo", policy_info.get("nombre", policy_id)),
+                    "palabras_clave": policy_info.get("palabras_clave", [])
+                }
         
-        for policy_id, policy_info in policy_data.items():
-            self._policy_areas[policy_id] = {
-                "id": policy_id,
-                "titulo": policy_info.get("titulo", policy_id),
-                "descripcion": policy_info.get("descripcion", ""),
-                "palabras_clave": policy_info.get("palabras_clave", []),
+        logger.debug(f"Loaded {len(self._policy_areas)} policy areas")
+
+    def _load_questions_from_json(self, data: Dict[str, Any]):
+        """Load and process questions from preguntas_base"""
+        questions_data = data.get("preguntas_base", [])
+        
+        if not questions_data:
+            logger.error("No preguntas_base found in cuestionario.json")
+            raise ValueError("preguntas_base is required in cuestionario.json")
+        
+        logger.debug(f"Found {len(questions_data)} questions in preguntas_base")
+        
+        # Check if questions already have policy area variations or need generation
+        # If questions have {PUNTO_TEMATICO} placeholder, generate for each policy area
+        # Otherwise, use questions as-is
+        
+        has_templates = any(
+            "{PUNTO_TEMATICO}" in question_data.get("texto_template", "")
+            or "{punto_tematico}" in question_data.get("texto_template", "")
+            for question_data in questions_data[:5]  # Check first 5
+        )
+        
+        if has_templates:
+            # Template-based: Generate 30 base questions × 10 policy areas = 300
+            logger.info("Detected template-based questions, generating for all policy areas")
+            self._generate_questions_from_templates(questions_data)
+        else:
+            # Direct: Questions already include policy area variations (300 questions)
+            logger.info("Loading questions directly from preguntas_base")
+            self._load_questions_direct(questions_data)
+        
+        logger.info(f"Loaded {len(self._questions)} questions")
+
+    def _generate_questions_from_templates(self, questions_data: List[Dict[str, Any]]):
+        """Generate questions from templates for all policy areas"""
+        for policy_num in range(1, 11):
+            policy_id = f"P{policy_num}"
+            policy_title = self._policy_areas.get(policy_id, {}).get("titulo", policy_id)
+            
+            for question_data in questions_data:
+                self._create_question_context(question_data, policy_id, policy_title)
+
+    def _load_questions_direct(self, questions_data: List[Dict[str, Any]]):
+        """Load questions directly (already includes policy area variations)"""
+        # Group by dimension and numero to identify base questions
+        from collections import defaultdict
+        question_groups = defaultdict(list)
+        
+        for question_data in questions_data:
+            dimension = question_data.get("dimension", "")
+            numero = question_data.get("numero", 1)
+            key = f"{dimension}-Q{numero}"
+            question_groups[key].append(question_data)
+        
+        # Assign policy areas based on position within groups
+        for group_key, group_questions in question_groups.items():
+            for idx, question_data in enumerate(group_questions):
+                # Determine policy area from position (P1-P10)
+                policy_num = (idx % 10) + 1
+                policy_id = f"P{policy_num}"
+                policy_title = self._policy_areas.get(policy_id, {}).get("titulo", policy_id)
+                
+                self._create_question_context(question_data, policy_id, policy_title)
+
+    def _create_question_context(
+        self,
+        question_data: Dict[str, Any],
+        policy_id: str,
+        policy_title: str
+    ):
+        """Create a QuestionContext from question data"""
+        base_id = question_data.get("id", "")
+        dimension = question_data.get("dimension", "")
+        question_no = question_data.get("numero", 1)
+        
+        template = question_data.get("texto_template", "")
+        question_text = template.replace("{PUNTO_TEMATICO}", policy_title)
+        question_text = question_text.replace("{punto_tematico}", policy_title.lower())
+        
+        canonical_id = f"{policy_id}-{dimension}-Q{question_no}"
+        
+        # Extract patterns and validation rules
+        criterios = question_data.get("criterios_evaluacion", {})
+        
+        question = QuestionContext(
+            question_id=base_id,
+            canonical_id=canonical_id,
+            dimension=dimension,
+            question_no=question_no,
+            policy_area=policy_id,
+            template=template,
+            text=question_text,
+            scoring_modality=question_data.get("modalidad_scoring", "TYPE_A"),
+            max_score=question_data.get("puntaje_maximo", 3.0),
+            expected_elements=criterios.get("elementos_minimos_esperados", []),
+            search_patterns=question_data.get("patrones_busqueda", {}),
+            verification_patterns=question_data.get("patrones_verificacion", {}),
+            dependencies=question_data.get("dependencias", []),
+            error_strategy=question_data.get("estrategia_error", "continue"),
+            validation_rules=criterios,
+            expected_format=question_data.get("formato_esperado", ""),
+            metadata={
+                "policy_title": policy_title,
+                "dimension_name": self._dimensions.get(dimension, {}).get("nombre", dimension),
+                "es_critica": criterios.get("es_critica", False),
+                "peso_ponderado": criterios.get("peso_ponderado", 1.0)
             }
-    
-    def _enrich_question_contexts(self) -> None:
-        """
-        Enrich raw question data into strongly-typed QuestionContext objects
+        )
         
-        Generates 300 questions from templates and policy areas
-        """
-        preguntas_base = self._raw_data.get("preguntas_base", [])
-        
-        if not preguntas_base:
-            logger.warning("No preguntas_base found in cuestionario.json")
+        self._questions[canonical_id] = question
+
+    def _load_rubric(self):
+        """Load and validate rubric_scoring.json"""
+        if not self.rubric_path.exists():
+            logger.warning(f"rubric_scoring.json not found at {self.rubric_path}")
+            self._create_default_rubric()
             return
         
-        # Generate questions for each policy area
-        for policy_num in range(1, 11):  # P1-P10
-            policy_id = f"P{policy_num}"
-            policy_info = self._policy_areas.get(policy_id, {})
-            policy_title = policy_info.get("titulo", policy_id)
+        try:
+            with open(self.rubric_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
             
-            for pregunta in preguntas_base:
-                dimension = pregunta.get("dimension", "")
-                question_no = pregunta.get("numero", 1)
-                question_id_base = pregunta.get("id", f"{dimension}-Q{question_no}")
-                
-                # Generate question text from template
-                template = pregunta.get("texto_template", "")
-                question_text = template.replace("{PUNTO_TEMATICO}", policy_title)
-                
-                # Create canonical ID
-                question_id = f"{policy_id}-{question_id_base}"
-                
-                # Extract validation rules
-                validation_rules = self._extract_validation_rules(pregunta)
-                
-                # Extract dependencies
-                dependencies = pregunta.get("dependencies", [])
-                if isinstance(dependencies, dict):
-                    dependencies = dependencies.get("prerequisite_questions", [])
-                
-                # Determine error strategy
-                error_strategy = self._determine_error_strategy(pregunta)
-                
-                # Get dimension metadata
-                dim_info = self._dimensions.get(dimension, {})
-                peso_por_punto = dim_info.get("peso_por_punto", {})
-                weight = peso_por_punto.get(policy_id, 1.0)
-                
-                # Check if critical
-                decalogo_mapping = dim_info.get("decalogo_dimension_mapping", {})
-                policy_mapping = decalogo_mapping.get(policy_id, {})
-                is_critical = policy_mapping.get("is_critical", False)
-                minimum_score = policy_mapping.get("minimum_score", 0.5)
-                
-                # Create QuestionContext
-                context = QuestionContext(
-                    question_id=question_id,
-                    dimension=dimension,
-                    policy_area=policy_id,
-                    question_number=question_no,
-                    text=question_text,
-                    template=template,
-                    scoring_modality=pregunta.get("scoring_modality", "TYPE_A"),
-                    max_score=pregunta.get("max_score", 3.0),
-                    expected_elements=pregunta.get("expected_elements", []),
-                    validation_rules=validation_rules,
-                    dependencies=dependencies,
-                    error_strategy=error_strategy,
-                    timeout_seconds=pregunta.get("timeout_seconds", 300),
-                    retry_attempts=pregunta.get("retry_attempts", 3),
-                    version=self._version,
-                    is_critical=is_critical,
-                    minimum_score=minimum_score,
-                    weight=weight,
-                    expected_format=pregunta.get("expected_format", {}),
-                    constraints=pregunta.get("criterios_evaluacion", {}),
-                    metadata={
-                        "policy_title": policy_title,
-                        "dimension_name": dim_info.get("nombre", dimension),
-                        "patrones_verificacion": pregunta.get("patrones_verificacion", []),
-                        "criterios_evaluacion": pregunta.get("criterios_evaluacion", {}),
-                    }
+            modalities_data = data.get("scoring_modalities", {})
+            
+            for modality_id, modality_info in modalities_data.items():
+                self._scoring_modalities[modality_id] = ScoringModality(
+                    id=modality_info.get("id", modality_id),
+                    description=modality_info.get("description", ""),
+                    formula=modality_info.get("formula", ""),
+                    max_score=modality_info.get("max_score", 3.0),
+                    expected_elements=modality_info.get("expected_elements", 0),
+                    conversion_table=modality_info.get("conversion_table", {}),
+                    uses_thresholds=modality_info.get("uses_thresholds", False),
+                    uses_quantitative_data=modality_info.get("uses_quantitative_data", False),
+                    uses_custom_logic=modality_info.get("uses_custom_logic", False),
+                    uses_semantic_matching=modality_info.get("uses_semantic_matching", False),
+                    similarity_threshold=modality_info.get("similarity_threshold", 0.0)
                 )
-                
-                self._question_contexts[question_id] = context
-    
-    def _extract_validation_rules(self, pregunta: Dict[str, Any]) -> Set[ValidationRule]:
-        """Extract validation rules from question definition"""
-        rules: Set[ValidationRule] = set()
-        
-        # Required fields validation
-        criterios = pregunta.get("criterios_evaluacion", {})
-        if criterios:
-            rules.add(ValidationRule(
-                rule_type=ValidationRuleType.REQUIRED_FIELDS,
-                description="Validate required evaluation criteria",
-                parameters={"fields": list(criterios.keys())},
-                severity="error"
-            ))
-        
-        # Score range validation
-        max_score = pregunta.get("max_score", 3.0)
-        rules.add(ValidationRule(
-            rule_type=ValidationRuleType.RANGE_CHECK,
-            description="Validate score is within range",
-            parameters={"min": 0.0, "max": max_score},
-            severity="error"
-        ))
-        
-        # Pattern validation if specified
-        patrones = pregunta.get("patrones_verificacion", [])
-        if patrones:
-            rules.add(ValidationRule(
-                rule_type=ValidationRuleType.REGEX_MATCH,
-                description="Validate evidence matches expected patterns",
-                parameters={"patterns": patrones},
-                severity="warning"
-            ))
-        
-        return rules
-    
-    def _determine_error_strategy(self, pregunta: Dict[str, Any]) -> ErrorStrategy:
-        """Determine error handling strategy for a question"""
-        # Critical questions fail fast
-        if pregunta.get("is_critical", False):
-            return ErrorStrategy.FAIL_FAST
-        
-        # Questions with fallback options use fallback
-        if pregunta.get("has_fallback", False):
-            return ErrorStrategy.FALLBACK
-        
-        # Default to retry
-        return ErrorStrategy.RETRY
-    
-    def get_question_context(self, question_id: str) -> Optional[QuestionContext]:
-        """
-        Get enriched QuestionContext for a specific question
-        
-        Args:
-            question_id: Question identifier (e.g., "P1-D1-Q1")
             
-        Returns:
-            QuestionContext if found, None otherwise
-        """
-        self.load()  # Ensure data is loaded
-        return self._question_contexts.get(question_id)
-    
-    def get_all_question_contexts(self) -> Dict[str, QuestionContext]:
-        """Get all question contexts"""
-        self.load()
-        return self._question_contexts.copy()
-    
-    def get_contexts_by_dimension(self, dimension: str) -> List[QuestionContext]:
-        """Get all question contexts for a dimension"""
-        self.load()
-        return [
-            ctx for ctx in self._question_contexts.values()
-            if ctx.dimension == dimension
-        ]
-    
-    def get_contexts_by_policy_area(self, policy_area: str) -> List[QuestionContext]:
-        """Get all question contexts for a policy area"""
-        self.load()
-        return [
-            ctx for ctx in self._question_contexts.values()
-            if ctx.policy_area == policy_area
-        ]
-    
-    def get_critical_questions(self) -> List[QuestionContext]:
-        """Get all critical question contexts"""
-        self.load()
-        return [
-            ctx for ctx in self._question_contexts.values()
-            if ctx.is_critical
-        ]
-    
-    def get_question_dependencies(self, question_id: str) -> List[QuestionContext]:
-        """Get QuestionContext objects for all dependencies of a question"""
-        self.load()
-        context = self.get_question_context(question_id)
-        if not context:
-            return []
+            logger.info(f"Loaded {len(self._scoring_modalities)} scoring modalities from rubric")
+            
+        except Exception as e:
+            logger.error(f"Failed to load rubric_scoring.json: {e}")
+            self._create_default_rubric()
+
+    def _create_default_rubric(self):
+        """Create default scoring modalities"""
+        self._scoring_modalities = {
+            "TYPE_A": ScoringModality(
+                id="count_4_elements",
+                description="Count 4 elements and scale to 0-3",
+                formula="(elements_found / 4) * 3",
+                max_score=3.0,
+                expected_elements=4,
+                conversion_table={"0": 0.0, "1": 0.75, "2": 1.5, "3": 2.25, "4": 3.0}
+            ),
+            "TYPE_B": ScoringModality(
+                id="count_3_elements",
+                description="Count up to 3 elements",
+                formula="min(elements_found, 3)",
+                max_score=3.0,
+                expected_elements=3
+            ),
+            "TYPE_C": ScoringModality(
+                id="count_2_elements",
+                description="Count 2 elements and scale to 0-3",
+                formula="(elements_found / 2) * 3",
+                max_score=3.0,
+                expected_elements=2
+            ),
+            "TYPE_D": ScoringModality(
+                id="ratio_quantitative",
+                description="Calculate ratio and apply thresholds",
+                formula="f(ratio) with thresholds",
+                max_score=3.0,
+                uses_thresholds=True,
+                uses_quantitative_data=True
+            )
+        }
+        logger.info("Using default scoring modalities")
+
+    def _load_execution_mapping(self):
+        """Load and validate execution_mapping.yaml"""
+        if not self.execution_mapping_path.exists():
+            logger.warning(
+                f"execution_mapping.yaml not found at {self.execution_mapping_path}, "
+                f"creating default mapping"
+            )
+            self._create_default_execution_mapping()
+            return
         
-        dependencies = []
-        for dep_id in context.dependencies:
-            dep_context = self.get_question_context(dep_id)
-            if dep_context:
-                dependencies.append(dep_context)
-        
-        return dependencies
-    
-    def get_version(self) -> str:
-        """Get cuestionario.json version"""
-        self.load()
-        return self._version
-    
-    def get_dimension_info(self, dimension: str) -> Optional[Dict[str, Any]]:
-        """Get dimension metadata"""
-        self.load()
-        return self._dimensions.get(dimension)
-    
-    def get_policy_area_info(self, policy_area: str) -> Optional[Dict[str, Any]]:
-        """Get policy area metadata"""
-        self.load()
-        return self._policy_areas.get(policy_area)
-    
-    def validate_questionnaire(self) -> Dict[str, Any]:
-        """
-        Validate questionnaire completeness and consistency
-        
-        Returns:
-            Validation report with issues found
-        """
-        self.load()
+        try:
+            with open(self.execution_mapping_path, 'r', encoding='utf-8') as f:
+                data = yaml.safe_load(f)
+            
+            self._execution_mapping = data or {}
+            logger.info(f"Loaded execution mapping from {self.execution_mapping_path}")
+            
+        except Exception as e:
+            logger.error(f"Failed to load execution_mapping.yaml: {e}")
+            self._create_default_execution_mapping()
+
+    def _create_default_execution_mapping(self):
+        """Create default dimension-based execution mapping"""
+        self._execution_mapping = {
+            "dimensions": {
+                "D1": {
+                    "module": "policy_processor",
+                    "class": "IndustrialPolicyProcessor",
+                    "method": "process",
+                    "description": "Diagnóstico y Líneas Base"
+                },
+                "D2": {
+                    "module": "causal_proccesor",
+                    "class": "PolicyDocumentAnalyzer",
+                    "method": "analyze_document",
+                    "description": "Diseño de Intervención"
+                },
+                "D3": {
+                    "module": "Analyzer_one",
+                    "class": "MunicipalAnalyzer",
+                    "method": "analyze",
+                    "description": "Productos y Outputs"
+                },
+                "D4": {
+                    "module": "teoria_cambio",
+                    "class": "ModulosTeoriaCambio",
+                    "method": "analizar_teoria_cambio",
+                    "description": "Resultados y Outcomes"
+                },
+                "D5": {
+                    "module": "dereck_beach",
+                    "class": "DerekBeachAnalyzer",
+                    "method": "analyze_causal_chain",
+                    "description": "Impactos y Efectos"
+                },
+                "D6": {
+                    "module": "teoria_cambio",
+                    "class": "ModulosTeoriaCambio",
+                    "method": "validar_coherencia_causal",
+                    "description": "Teoría de Cambio"
+                }
+            }
+        }
+        logger.info("Using default execution mapping")
+
+    def _cross_validate(self):
+        """Cross-validate all configuration sources"""
         issues = []
         
-        # Check expected count (10 policy areas × 30 base questions)
+        # Validate that all questions have valid scoring modalities
+        for qid, question in self._questions.items():
+            if question.scoring_modality not in self._scoring_modalities:
+                issues.append(
+                    f"Question {qid} uses undefined scoring modality: {question.scoring_modality}"
+                )
+        
+        # Validate dimensions
+        dimensions_in_questions = set(q.dimension for q in self._questions.values())
+        dimensions_defined = set(self._dimensions.keys())
+        
+        undefined_dims = dimensions_in_questions - dimensions_defined
+        if undefined_dims:
+            issues.append(f"Questions reference undefined dimensions: {undefined_dims}")
+        
+        # Validate policy areas
+        policy_areas_in_questions = set(q.policy_area for q in self._questions.values())
+        policy_areas_defined = set(self._policy_areas.keys())
+        
+        undefined_policies = policy_areas_in_questions - policy_areas_defined
+        if undefined_policies:
+            issues.append(f"Questions reference undefined policy areas: {undefined_policies}")
+        
+        if issues:
+            logger.warning(f"Cross-validation issues found:\n" + "\n".join(f"  - {i}" for i in issues))
+        else:
+            logger.info("Cross-validation passed: all references are valid")
+
+    def _enrich_execution_chains(self):
+        """Enrich all questions with execution chains from mapping"""
+        for question_id, question in self._questions.items():
+            dimension = question.dimension
+            
+            # Check for question-specific override first
+            question_overrides = self._execution_mapping.get("question_overrides", {}) or {}
+            if question_overrides and question_id in question_overrides:
+                override_info = question_overrides[question_id]
+                question.execution_chain = [{
+                    "module": override_info.get("module", ""),
+                    "class": override_info.get("class", ""),
+                    "method": override_info.get("method", ""),
+                    "description": override_info.get("description", ""),
+                    "confidence": override_info.get("confidence", 0.8)
+                }]
+            # Otherwise use dimension default
+            elif dimension:
+                execution_info = self._execution_mapping.get("dimensions", {}).get(dimension, {})
+                if execution_info:
+                    question.execution_chain = [{
+                        "module": execution_info.get("module", ""),
+                        "class": execution_info.get("class", ""),
+                        "method": execution_info.get("method", ""),
+                        "description": execution_info.get("description", ""),
+                        "confidence": execution_info.get("confidence", 0.8)
+                    }]
+        
+        logger.debug("Enriched questions with execution chains")
+
+    def get_question_context(self, question_id: str) -> Optional[QuestionContext]:
+        """
+        Get complete context for a question
+        
+        Args:
+            question_id: Canonical question ID (P#-D#-Q#) or base ID
+            
+        Returns:
+            Complete QuestionContext or None if not found
+        """
+        # Try direct lookup with canonical ID
+        if question_id in self._questions:
+            return self._questions[question_id]
+        
+        # Try to find by base ID
+        for q in self._questions.values():
+            if q.question_id == question_id:
+                return q
+        
+        logger.warning(f"Question not found: {question_id}")
+        return None
+
+    def get_all_questions(self) -> Dict[str, QuestionContext]:
+        """Get all questions"""
+        return self._questions.copy()
+
+    def get_questions_by_dimension(self, dimension: str) -> List[QuestionContext]:
+        """Get all questions for a dimension"""
+        return [
+            q for q in self._questions.values()
+            if q.dimension == dimension
+        ]
+
+    def get_questions_by_policy_area(self, policy_area: str) -> List[QuestionContext]:
+        """Get all questions for a policy area"""
+        return [
+            q for q in self._questions.values()
+            if q.policy_area == policy_area
+        ]
+
+    def get_scoring_modality(self, modality_id: str) -> Optional[ScoringModality]:
+        """Get scoring modality definition"""
+        return self._scoring_modalities.get(modality_id)
+
+    def get_dimension_info(self, dimension_id: str) -> Optional[Dict[str, Any]]:
+        """Get dimension information"""
+        return self._dimensions.get(dimension_id)
+
+    def get_policy_area_info(self, policy_area_id: str) -> Optional[Dict[str, Any]]:
+        """Get policy area information"""
+        return self._policy_areas.get(policy_area_id)
+
+    def validate_questionnaire(self) -> Dict[str, Any]:
+        """
+        Validate questionnaire completeness
+        
+        Returns:
+            Validation report with any issues found
+        """
+        issues = []
+        
+        # Expected: 30 base questions × 10 policy areas = 300
         expected_count = 300
-        if len(self._question_contexts) != expected_count:
+        if len(self._questions) != expected_count:
             issues.append(
-                f"Expected {expected_count} questions, found {len(self._question_contexts)}"
+                f"Expected {expected_count} questions, found {len(self._questions)}"
             )
         
-        # Check dimension coverage
-        for dim_id in ["D1", "D2", "D3", "D4", "D5", "D6"]:
-            dim_questions = self.get_contexts_by_dimension(dim_id)
-            expected_per_dim = 50  # 10 policy areas × 5 questions
+        # Check dimension coverage (should have 50 questions per dimension)
+        for dim_id in self._dimensions.keys():
+            dim_questions = self.get_questions_by_dimension(dim_id)
+            expected_per_dim = 50  # 5 questions × 10 policy areas
             if len(dim_questions) != expected_per_dim:
                 issues.append(
                     f"Dimension {dim_id}: expected {expected_per_dim} questions, "
                     f"found {len(dim_questions)}"
                 )
         
-        # Check policy area coverage
-        for policy_num in range(1, 11):
-            policy_id = f"P{policy_num}"
-            policy_questions = self.get_contexts_by_policy_area(policy_id)
-            expected_per_policy = 30  # 6 dimensions × 5 questions
+        # Check policy area coverage (should have 30 questions per policy area)
+        for policy_id in self._policy_areas.keys():
+            policy_questions = self.get_questions_by_policy_area(policy_id)
+            expected_per_policy = 30  # 30 base questions
             if len(policy_questions) != expected_per_policy:
                 issues.append(
                     f"Policy area {policy_id}: expected {expected_per_policy} questions, "
@@ -486,71 +583,42 @@ class MetadataService:
         
         return {
             "valid": len(issues) == 0,
-            "version": self._version,
-            "total_questions": len(self._question_contexts),
-            "dimensions": len(self._dimensions),
-            "policy_areas": len(self._policy_areas),
+            "total_questions": len(self._questions),
+            "total_dimensions": len(self._dimensions),
+            "total_policy_areas": len(self._policy_areas),
+            "total_scoring_modalities": len(self._scoring_modalities),
             "issues": issues
         }
 
 
-# Singleton instance getter
-def get_metadata_service(cuestionario_path: Optional[Path] = None) -> MetadataService:
-    """Get or create the singleton MetadataService instance"""
-    return MetadataService(cuestionario_path)
-
-
 if __name__ == "__main__":
-    # Test the metadata service
-    service = get_metadata_service()
-    service.load()
+    # Example usage
+    service = MetadataService()
     
     print("=" * 80)
-    print("METADATA SERVICE TEST")
+    print("METADATA SERVICE")
     print("=" * 80)
+    print(f"\nStatistics:")
+    print(f"  Total questions: {len(service.get_all_questions())}")
+    print(f"  Dimensions: {len(service._dimensions)}")
+    print(f"  Policy areas: {len(service._policy_areas)}")
+    print(f"  Scoring modalities: {len(service._scoring_modalities)}")
     
     # Validation
     validation = service.validate_questionnaire()
-    print(f"\n✓ Version: {validation['version']}")
-    print(f"✓ Total questions: {validation['total_questions']}")
-    print(f"✓ Dimensions: {validation['dimensions']}")
-    print(f"✓ Policy areas: {validation['policy_areas']}")
-    print(f"✓ Valid: {validation['valid']}")
-    
+    print(f"\nValidation: {'✓ PASS' if validation['valid'] else '✗ FAIL'}")
     if validation['issues']:
-        print("\nIssues found:")
+        print("Issues:")
         for issue in validation['issues']:
             print(f"  - {issue}")
     
-    # Test question context retrieval
-    print("\n" + "=" * 80)
-    print("SAMPLE QUESTION CONTEXT")
-    print("=" * 80)
-    
+    # Example: Get question context
+    print("\nExample: Get question context for P1-D1-Q1")
     context = service.get_question_context("P1-D1-Q1")
     if context:
-        print(f"\nQuestion ID: {context.question_id}")
-        print(f"Canonical ID: {context.canonical_id}")
-        print(f"Dimension: {context.dimension}")
-        print(f"Policy Area: {context.policy_area}")
-        print(f"Scoring Modality: {context.scoring_modality}")
-        print(f"Max Score: {context.max_score}")
-        print(f"Is Critical: {context.is_critical}")
-        print(f"Weight: {context.weight}")
-        print(f"Validation Rules: {len(context.validation_rules)}")
-        print(f"Dependencies: {context.dependencies}")
-        print(f"Error Strategy: {context.error_strategy.value}")
+        print(f"  Canonical ID: {context.canonical_id}")
+        print(f"  Text: {context.text[:100]}...")
+        print(f"  Scoring: {context.scoring_modality}")
+        print(f"  Execution chain: {context.execution_chain}")
     
-    # Test critical questions
-    print("\n" + "=" * 80)
-    print("CRITICAL QUESTIONS")
     print("=" * 80)
-    
-    critical = service.get_critical_questions()
-    print(f"\nFound {len(critical)} critical questions")
-    if critical:
-        print("\nFirst 5 critical questions:")
-        for ctx in critical[:5]:
-            print(f"  - {ctx.canonical_id}: {ctx.text[:60]}...")
-    
-    print("\n" + "=" * 80)

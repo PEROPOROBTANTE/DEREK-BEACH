@@ -1,13 +1,21 @@
 # coding=utf-8
 """
-Question Router - Routes Questions to Module Handlers
-======================================================
+Question Router - Routes Questions to Module Handlers [DEPRECATED]
+===================================================================
+
+⚠️  DEPRECATED: This module is deprecated in favor of MetadataService
+    
+    Use metadata_service.MetadataService instead, which provides:
+    - Unified configuration management
+    - Enhanced question context with execution chains
+    - Integrated routing from execution_mapping.yaml
+    - Better validation and traceability
 
 Loads responsibility_map.json, validates question IDs, routes questions to 
 mapped module:Class.method handlers, and raises exceptions for unmapped questions.
 
 Author: FARFAN 3.0 Team
-Version: 3.0.0
+Version: 3.0.0 (Deprecated)
 Python: 3.10+
 """
 
@@ -51,9 +59,18 @@ class QuestionRouter:
         """
         Initialize question router
         
+        ⚠️  DEPRECATED: Use metadata_service.MetadataService instead
+        
         Args:
             responsibility_map_path: Path to responsibility map (default: config/responsibility_map.json)
         """
+        import warnings
+        warnings.warn(
+            "QuestionRouter is deprecated. Use metadata_service.MetadataService instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+        
         self.responsibility_map_path = (
             responsibility_map_path or 
             Path(__file__).parent.parent / "config" / "responsibility_map.json"
@@ -61,6 +78,9 @@ class QuestionRouter:
         self.responsibility_map: Dict[str, Any] = {}
         self._load_responsibility_map()
         
+        logger.warning(
+            "QuestionRouter is DEPRECATED. Use MetadataService for routing."
+        )
         logger.info(
             f"QuestionRouter initialized with {len(self.responsibility_map)} mappings"
         )

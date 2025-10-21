@@ -29,7 +29,6 @@ from collections import defaultdict
 import statistics
 import re
 from datetime import datetime
-import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +60,7 @@ class MicroLevelAnswer:
     modules_executed: List[str]  # Adapter names that executed
     module_results: Dict[str, Any]  # Results from each adapter
     execution_time: float  # Total execution time in seconds
+    execution_chain: List[Dict[str, str]] = field(default_factory=list)  # Complete execution traceability
     
     # Additional metadata
     metadata: Dict[str, Any] = field(default_factory=dict)
@@ -233,6 +233,19 @@ class ReportAssembler:
         }
 
         execution_time = (datetime.now() - start_time).total_seconds()
+        
+        # Build execution chain for traceability
+        execution_chain = []
+        if hasattr(question_spec, 'execution_chain'):
+            execution_chain = question_spec.execution_chain
+        else:
+            # Fallback: build from modules_executed
+            for module in modules_executed:
+                execution_chain.append({
+                    "module": module,
+                    "status": module_results[module]["status"],
+                    "confidence": module_results[module]["confidence"]
+                })
 
         return MicroLevelAnswer(
             question_id=question_spec.canonical_id,
@@ -247,11 +260,12 @@ class ReportAssembler:
             modules_executed=modules_executed,
             module_results=module_results,
             execution_time=execution_time,
+            execution_chain=execution_chain,
             metadata={
                 "timestamp": datetime.now().isoformat(),
                 "policy_area": question_spec.policy_area,
                 "dimension": question_spec.dimension,
-                "question_number": question_spec.question_number
+                "question_number": getattr(question_spec, 'question_no', 0)
             }
         )
 
@@ -294,6 +308,18 @@ class ReportAssembler:
         elif modality == "TYPE_D":
             # Numerical threshold matching
             score, elements_found = self._score_type_d(
+                question_spec, execution_results, plan_text
+            )
+        
+        elif modality == "TYPE_E":
+            # Logical rule-based scoring
+            score, elements_found = self._score_type_e(
+                question_spec, execution_results, plan_text
+            )
+        
+        elif modality == "TYPE_F":
+            # Semantic analysis with similarity matching
+            score, elements_found = self._score_type_f(
                 question_spec, execution_results, plan_text
             )
         
@@ -471,6 +497,221 @@ class ReportAssembler:
         score = (met_count / total_thresholds) * 3.0
 
         return score, elements_found
+
+    def _score_type_e(
+            self,
+            question_spec,
+            execution_results: Dict[str, Any],
+            plan_text: str
+    ) -> Tuple[float, Dict[str, bool]]:
+        """
+        TYPE_E: Logical rule-based scoring (from rubric_scoring.json)
+        
+        Applies if-then-else logic based on custom rules
+        Uses custom logic defined per question
+        
+        PRECONDITIONS:
+        - question_spec must have validation_rules with logical conditions
+        - execution_results must be non-empty dict
+        """
+        assert execution_results, \
+            "execution_results cannot be empty for TYPE_E scoring"
+        
+        elements_found = {}
+        score = 0.0
+        
+        # Get validation rules (custom logic per question)
+        validation_rules = getattr(question_spec, 'validation_rules', {})
+        
+        # Check if conditional logic is defined
+        if "logical_conditions" in validation_rules:
+            conditions = validation_rules["logical_conditions"]
+            
+            # Evaluate each condition
+            for condition_name, condition_def in conditions.items():
+                if_clause = condition_def.get("if", {})
+                then_value = condition_def.get("then", 0.0)
+                else_value = condition_def.get("else", 0.0)
+                
+                # Evaluate if clause
+                condition_met = self._evaluate_condition(if_clause, execution_results, plan_text)
+                elements_found[condition_name] = condition_met
+                
+                # Apply then/else scoring
+                if condition_met:
+                    score += then_value
+                else:
+                    score += else_value
+        else:
+            # Fallback: use element presence with custom weights
+            custom_logic = validation_rules.get("custom_scoring", {})
+            total_weight = 0
+            weighted_score = 0
+            
+            for element, weight in custom_logic.items():
+                found = any(
+                    element.lower() in str(result.get("data", "")).lower()
+                    for result in execution_results.values()
+                )
+                if not found:
+                    found = element.lower() in plan_text.lower()
+                
+                elements_found[element] = found
+                total_weight += weight
+                if found:
+                    weighted_score += weight
+            
+            if total_weight > 0:
+                score = (weighted_score / total_weight) * 3.0
+        
+        # Ensure score is within bounds
+        score = max(0.0, min(3.0, score))
+        
+        return score, elements_found
+
+    def _score_type_f(
+            self,
+            question_spec,
+            execution_results: Dict[str, Any],
+            plan_text: str
+    ) -> Tuple[float, Dict[str, bool]]:
+        """
+        TYPE_F: Semantic analysis with similarity matching (from rubric_scoring.json)
+        
+        Uses semantic matching with cosine similarity
+        Applies thresholds based on coverage ratio
+        
+        FORMULA: f(coverage_ratio) with thresholds
+        - similarity_threshold: 0.6 (default from rubric)
+        
+        PRECONDITIONS:
+        - question_spec must have expected_elements or search_patterns
+        - execution_results must contain semantic analysis results
+        """
+        elements_found = {}
+        
+        # Get search patterns or expected elements for semantic matching
+        search_patterns = getattr(question_spec, 'search_patterns', {})
+        expected_elements = getattr(question_spec, 'expected_elements', [])
+        
+        if not search_patterns and not expected_elements:
+            # Fallback to TYPE_A if no semantic patterns defined
+            return self._score_type_a(question_spec, execution_results, plan_text)
+        
+        # Calculate semantic coverage
+        total_patterns = len(search_patterns) if search_patterns else len(expected_elements)
+        matched_patterns = 0
+        
+        # Check execution results for semantic matches
+        for module, result in execution_results.items():
+            similarity = result.get("semantic_similarity", 0.0)
+            coverage = result.get("coverage_ratio", 0.0)
+            
+            # Apply similarity threshold (0.6 from rubric)
+            if similarity >= 0.6 or coverage >= 0.6:
+                matched_patterns += 1
+                elements_found[module] = True
+            else:
+                elements_found[module] = False
+        
+        # If no semantic data in results, do keyword matching
+        if matched_patterns == 0:
+            patterns_to_check = list(search_patterns.values()) if search_patterns else expected_elements
+            
+            for pattern in patterns_to_check[:10]:  # Limit to avoid excessive processing
+                pattern_str = str(pattern).lower()
+                found = pattern_str in plan_text.lower()
+                elements_found[pattern_str[:50]] = found
+                if found:
+                    matched_patterns += 1
+            
+            total_patterns = len(patterns_to_check)
+        
+        # Calculate score based on coverage ratio
+        if total_patterns == 0:
+            coverage_ratio = 0.0
+        else:
+            coverage_ratio = matched_patterns / total_patterns
+        
+        # Apply thresholds from rubric (similar to TYPE_A but with semantic weighting)
+        if coverage_ratio >= 0.9:
+            score = 3.0
+        elif coverage_ratio >= 0.75:
+            score = 2.5
+        elif coverage_ratio >= 0.6:
+            score = 2.0
+        elif coverage_ratio >= 0.4:
+            score = 1.5
+        elif coverage_ratio >= 0.25:
+            score = 1.0
+        else:
+            score = coverage_ratio * 3.0
+        
+        return score, elements_found
+
+    def _evaluate_condition(
+            self,
+            condition: Dict[str, Any],
+            execution_results: Dict[str, Any],
+            plan_text: str
+    ) -> bool:
+        """
+        Evaluate a logical condition for TYPE_E scoring
+        
+        Supports:
+        - "contains": check if text contains pattern
+        - "threshold": check if value meets threshold
+        - "all_of": all subconditions must be true
+        - "any_of": at least one subcondition must be true
+        """
+        condition_type = condition.get("type", "contains")
+        
+        if condition_type == "contains":
+            pattern = condition.get("pattern", "")
+            # Check in execution results
+            for result in execution_results.values():
+                if pattern.lower() in str(result.get("data", "")).lower():
+                    return True
+            # Check in plan text
+            return pattern.lower() in plan_text.lower()
+        
+        elif condition_type == "threshold":
+            metric = condition.get("metric", "")
+            threshold = condition.get("value", 0)
+            operator = condition.get("operator", ">=")
+            
+            # Extract value from results
+            for result in execution_results.values():
+                data = result.get("data", {})
+                if isinstance(data, dict) and metric in data:
+                    value = data[metric]
+                    if operator == ">=":
+                        return value >= threshold
+                    elif operator == ">":
+                        return value > threshold
+                    elif operator == "<=":
+                        return value <= threshold
+                    elif operator == "<":
+                        return value < threshold
+                    elif operator == "==":
+                        return value == threshold
+            return False
+        
+        elif condition_type == "all_of":
+            subconditions = condition.get("conditions", [])
+            return all(
+                self._evaluate_condition(sub, execution_results, plan_text)
+                for sub in subconditions
+            )
+        
+        elif condition_type == "any_of":
+            subconditions = condition.get("conditions", [])
+            return any(
+                self._evaluate_condition(sub, execution_results, plan_text)
+                for sub in subconditions
+            )
+        
+        return False
 
     def _score_default(
             self,

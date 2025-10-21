@@ -1,24 +1,5 @@
 """
 Event Bus - Asynchronous Communication between Orchestrator and Choreographer
-=============================================================================
-
-Implements publish-subscribe pattern for event-driven communication across
-the Orchestrator-Choreographer boundary.
-
-Key Features:
-- Asynchronous event dispatching
-- Topic-based subscriptions
-- Event filtering and routing
-- Correlation tracking
-- Error handling with dead letter queue
-- Event persistence for audit trail
-
-This enables loose coupling between Orchestrator and Choreographer while
-maintaining strong contracts through event schemas.
-
-Author: FARFAN 3.0 - Orchestrator-Choreographer Partnership
-Version: 1.0.0
-Python: 3.10+
 """
 
 import logging

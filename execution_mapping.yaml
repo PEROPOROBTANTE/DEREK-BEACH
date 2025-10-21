@@ -1,0 +1,144 @@
+# Execution Mapping Configuration
+# Maps dimensions and questions to module handlers
+
+version: "1.0.0"
+description: "Execution mapping for FARFAN 3.0 - Routes questions to analysis modules"
+
+# Dimension-level mappings (default routing)
+dimensions:
+  D1:
+    module: "policy_processor"
+    class: "IndustrialPolicyProcessor"
+    method: "process"
+    description: "Diagnóstico y Líneas Base - Analiza datos cuantitativos, fuentes oficiales, brechas"
+    confidence: 0.8
+    
+  D2:
+    module: "causal_proccesor"
+    class: "PolicyDocumentAnalyzer"
+    method: "analyze_document"
+    description: "Diseño de Intervención - Analiza actividades, mecanismos causales, cronogramas"
+    confidence: 0.85
+    
+  D3:
+    module: "Analyzer_one"
+    class: "MunicipalAnalyzer"
+    method: "analyze"
+    description: "Productos y Outputs - Verifica entregables, indicadores, presupuestos"
+    confidence: 0.8
+    
+  D4:
+    module: "teoria_cambio"
+    class: "ModulosTeoriaCambio"
+    method: "analizar_teoria_cambio"
+    description: "Resultados y Outcomes - Evalúa indicadores de resultado, causalidad mediano plazo"
+    confidence: 0.85
+    
+  D5:
+    module: "dereck_beach"
+    class: "DerekBeachAnalyzer"
+    method: "analyze_causal_chain"
+    description: "Impactos y Efectos - Analiza transformación estructural, sostenibilidad, cadena causal"
+    confidence: 0.9
+    
+  D6:
+    module: "teoria_cambio"
+    class: "ModulosTeoriaCambio"
+    method: "validar_coherencia_causal"
+    description: "Teoría de Cambio - Valida coherencia causal global, integración dimensiones"
+    confidence: 0.85
+
+# Question-specific overrides (optional - overrides dimension default)
+question_overrides:
+  # Example: Specific questions that need different handling
+  # "P1-D2-Q7":
+  #   module: "specialized_processor"
+  #   class: "ActivityAnalyzer"
+  #   method: "analyze_activities"
+  #   description: "Specialized analysis for activity formalization"
+  #   confidence: 0.9
+
+# Cross-cutting modules (executed for multiple dimensions)
+cross_cutting_modules:
+  financial_viability:
+    module: "financiero_viabilidad_tablas"
+    class: "FinancialAnalyzer"
+    method: "analyze_financial_viability"
+    applicable_dimensions: ["D1", "D3", "D4"]
+    description: "Analiza viabilidad financiera transversal"
+    
+  contradiction_detection:
+    module: "contradiction_deteccion"
+    class: "ContradictionDetector"
+    method: "detect_contradictions"
+    applicable_dimensions: ["D2", "D4", "D5", "D6"]
+    description: "Detecta contradicciones en la lógica causal"
+
+# Execution chains (sequence of modules for complex analysis)
+execution_chains:
+  causal_validation:
+    description: "Validación completa de cadena causal"
+    steps:
+      - dimension: "D2"
+        module: "causal_proccesor"
+        class: "PolicyDocumentAnalyzer"
+        method: "analyze_document"
+      - dimension: "D5"
+        module: "dereck_beach"
+        class: "DerekBeachAnalyzer"
+        method: "analyze_causal_chain"
+      - dimension: "D6"
+        module: "teoria_cambio"
+        class: "ModulosTeoriaCambio"
+        method: "validar_coherencia_causal"
+        
+  comprehensive_analysis:
+    description: "Análisis integral de diagnóstico a impacto"
+    steps:
+      - dimension: "D1"
+      - dimension: "D2"
+      - dimension: "D3"
+      - dimension: "D4"
+      - dimension: "D5"
+      - dimension: "D6"
+
+# Error handling strategies
+error_strategies:
+  continue:
+    description: "Continue execution even if module fails"
+    fallback_score: 0.0
+    log_level: "warning"
+    
+  retry:
+    description: "Retry failed module execution"
+    max_retries: 3
+    retry_delay: 1.0
+    fallback_score: 0.0
+    log_level: "error"
+    
+  abort:
+    description: "Abort execution chain on failure"
+    log_level: "error"
+    raise_exception: true
+
+# Module capabilities and requirements
+module_capabilities:
+  policy_processor:
+    requires_data: ["plan_text", "structured_sections"]
+    produces: ["quantitative_indicators", "baseline_data", "sources"]
+    
+  causal_proccesor:
+    requires_data: ["plan_text", "activities_section"]
+    produces: ["causal_mechanisms", "activity_chains", "temporal_sequences"]
+    
+  Analyzer_one:
+    requires_data: ["plan_text", "products_section"]
+    produces: ["deliverables", "verification_indicators", "budget_items"]
+    
+  teoria_cambio:
+    requires_data: ["plan_text", "theory_of_change_section"]
+    produces: ["results_indicators", "causal_coherence", "impact_pathways"]
+    
+  dereck_beach:
+    requires_data: ["plan_text", "impact_section", "causal_chains"]
+    produces: ["causal_analysis", "evidence_strength", "mechanism_validation"]
