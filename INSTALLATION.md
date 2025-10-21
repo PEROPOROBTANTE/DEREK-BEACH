@@ -374,7 +374,6 @@ pytest tests/ --cov=. --cov-report=html
 
 Expected output:
 ```
-========================== 26 passed in 0.74s ==========================
 ```
 
 ### Step 3: Verify Imports
