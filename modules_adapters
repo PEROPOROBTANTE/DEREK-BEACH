@@ -21,8 +21,32 @@ This is the FINAL MERGED version combining:
 - All global definitions (Enums, DataClasses) from both sources
 
 Author: Integration Team
-Version: 3.0.0 - Complete Merged
+Version: 3.0.0 - Complete Merged (Simulations Removed)
 Python: 3.10+
+
+IMPORTANT CHANGES - NO SIMULATIONS/MOCKS:
+==========================================
+- The 'random' module has been REMOVED - no simulations allowed
+- All adapters require REAL implementations from external modules
+- Adapters correctly report as "NOT Available" when modules don't exist
+- No fake "available" status for mock implementations
+- Method implementations may contain legacy simulation code that won't execute
+  since adapters are unavailable until real modules are provided
+- This is production-ready code waiting for real module implementations
+
+REQUIRED EXTERNAL MODULES (currently NOT available):
+=====================================================
+1. policy_processor - Policy processing with Bayesian evidence
+2. policy_segmenter - Document segmentation system
+3. teoria_cambio - Theory of change validation
+4. analyzer_one - Policy analysis system
+5. derek_beach - Derek Beach methodology
+6. embedding_policy - Semantic embedding analysis
+7. semantic_chunking_policy - Semantic chunking
+8. contradiction_detection - Contradiction detection
+9. financiero_viabilidad_tablas - Financial viability analysis
+
+See MODULES_ADAPTERS_README.md for detailed documentation.
 """
 
 import logging
