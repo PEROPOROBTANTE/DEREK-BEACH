@@ -1873,18 +1873,28 @@ class AnalyzerOneAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo AnalyzerOne"""
         try:
-            # Import real Analyzer_one module
+            # Import real Analyzer_one module with actual available classes
             from Analyzer_one import (
                 MunicipalOntology,
                 SemanticAnalyzer,
-                QualityControlEngine,
-                PolicyAnalysisPipeline
+                PerformanceAnalyzer,
+                TextMiningEngine,
+                MunicipalAnalyzer,
+                DocumentProcessor,
+                ResultsExporter,
+                ConfigurationManager,
+                BatchProcessor
             )
             
             self.MunicipalOntology = MunicipalOntology
             self.SemanticAnalyzer = SemanticAnalyzer
-            self.QualityControlEngine = QualityControlEngine
-            self.PolicyAnalysisPipeline = PolicyAnalysisPipeline
+            self.PerformanceAnalyzer = PerformanceAnalyzer
+            self.TextMiningEngine = TextMiningEngine
+            self.MunicipalAnalyzer = MunicipalAnalyzer
+            self.DocumentProcessor = DocumentProcessor
+            self.ResultsExporter = ResultsExporter
+            self.ConfigurationManager = ConfigurationManager
+            self.BatchProcessor = BatchProcessor
             
             self.available = True
             self.logger.info(
