@@ -37,13 +37,50 @@ from dataclasses import dataclass, field
 from collections import defaultdict
 from enum import Enum, auto
 from datetime import datetime
-import numpy as np
+
+# Optional imports with fallbacks
+try:
+    import numpy as np
+    from numpy.typing import NDArray
+    NUMPY_AVAILABLE = True
+except ImportError:
+    # Provide minimal numpy stub for type hints
+    class NumpyStub:
+        """Stub for numpy when not available"""
+        ndarray = Any  # Type alias for type hints
+        float32 = float
+        float64 = float
+        
+        @staticmethod
+        def random(*args, **kwargs):
+            return None
+        
+        @staticmethod
+        def array(*args, **kwargs):
+            return []
+        
+        @staticmethod
+        def mean(*args, **kwargs):
+            return 0.0
+        
+        @staticmethod
+        def std(*args, **kwargs):
+            return 0.0
+    
+    np = NumpyStub()
+    NDArray = Any
+    NUMPY_AVAILABLE = False
+    # Note: logger not yet defined, will log warning later
 
 # Configuración de logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+# Log numpy availability
+if not NUMPY_AVAILABLE:
+    logger.warning("numpy not available - using fallback implementations")
 
 
 # ============================================================================
@@ -13035,6 +13072,449 @@ class DerekBeachAdapter(BaseAdapter):
         except ImportError as e:
             self.logger.warning(f"✗ {self.module_name} NOT available: {e}")
             self.available = False
+
+
+# ============================================================================
+# ADDITIONAL CLASSES AND ENUMS FOR EMBEDDING_POLICY MODULE
+# ============================================================================
+
+
+class CausalDimension(Enum):
+    """Dimensiones causales para análisis de políticas públicas"""
+    INSUMOS = "insumos"
+    ACTIVIDADES = "actividades"
+    PRODUCTOS = "productos"
+    RESULTADOS = "resultados"
+    IMPACTOS = "impactos"
+
+
+class PDMSection(Enum):
+    """Secciones del Plan de Desarrollo Municipal según DNP Colombia"""
+    DIAGNOSTICO = "diagnóstico"
+    VISION = "visión"
+    ESTRATEGICO = "estratégico"
+    PROGRAMATICO = "programático"
+    FINANCIERO = "financiero"
+    SEGUIMIENTO = "seguimiento"
+
+
+@dataclass
+class SemanticConfig:
+    """Configuración para procesamiento semántico de documentos de política"""
+    model_name: str = "hiiamsid/sentence_similarity_spanish_es"
+    chunk_size: int = 512
+    chunk_overlap: int = 50
+    batch_size: int = 32
+    device: str = "cpu"
+    cache_embeddings: bool = True
+
+
+class SemanticProcessor:
+    """Procesador semántico avanzado para documentos de política pública"""
+    
+    def __init__(self, config: SemanticConfig):
+        self.config = config
+        self.model = None
+        self.tokenizer = None
+        
+    def _lazy_load(self) -> None:
+        """Carga perezosa del modelo de embeddings"""
+        if self.model is None:
+            try:
+                from sentence_transformers import SentenceTransformer
+                self.model = SentenceTransformer(self.config.model_name, device=self.config.device)
+            except ImportError:
+                logger.warning("sentence-transformers not available, using stub")
+                
+    def chunk_text(self, text: str, preserve_structure: bool = True) -> list[dict[str, Any]]:
+        """Segmenta texto en chunks semánticamente coherentes"""
+        chunks = []
+        
+        if preserve_structure:
+            # Detectar estructura PDM
+            pdm_chunks = self._detect_pdm_structure(text)
+            if pdm_chunks:
+                return pdm_chunks
+        
+        # Chunking simple por tamaño
+        words = text.split()
+        for i in range(0, len(words), self.config.chunk_size):
+            chunk_text = " ".join(words[i:i + self.config.chunk_size])
+            chunks.append({
+                "text": chunk_text,
+                "start": i,
+                "end": min(i + self.config.chunk_size, len(words)),
+                "has_table": self._detect_table(chunk_text),
+                "has_numerical": self._detect_numerical_data(chunk_text)
+            })
+        
+        return chunks
+    
+    def _detect_pdm_structure(self, text: str) -> list[dict[str, Any]]:
+        """Detecta estructura de Plan de Desarrollo Municipal"""
+        chunks = []
+        current_section = None
+        
+        for section in PDMSection:
+            pattern = rf"\b{section.value}\b"
+            if re.search(pattern, text, re.IGNORECASE):
+                # Encontrar límites de la sección
+                match = re.search(pattern, text, re.IGNORECASE)
+                if match:
+                    chunks.append({
+                        "text": text[match.start():match.end() + 500],  # 500 chars aprox
+                        "section": section.value,
+                        "start": match.start(),
+                        "end": match.end() + 500
+                    })
+        
+        return chunks
+    
+    def _detect_table(self, text: str) -> bool:
+        """Detecta presencia de tablas en el texto"""
+        table_indicators = ["|", "─", "│", "┌", "└", "┐", "┘"]
+        return any(indicator in text for indicator in table_indicators)
+    
+    def _detect_numerical_data(self, text: str) -> bool:
+        """Detecta presencia de datos numéricos"""
+        numbers = re.findall(r'\d+[.,]?\d*', text)
+        return len(numbers) > 5  # Umbral de números para considerar chunk numérico
+    
+    def _embed_batch(self, texts: list[str]) -> list:
+        """Genera embeddings para un batch de textos"""
+        self._lazy_load()
+        
+        if not NUMPY_AVAILABLE:
+            # Stub: retornar embeddings simulados como listas
+            return [[random.random() for _ in range(384)] for _ in texts]
+        
+        if self.model is None:
+            # Stub: retornar embeddings aleatorios
+            return [np.random.rand(384).astype(np.float32) for _ in texts]
+        
+        embeddings = self.model.encode(
+            texts,
+            batch_size=self.config.batch_size,
+            show_progress_bar=False,
+            convert_to_numpy=True
+        )
+        return [emb.astype(np.float32) for emb in embeddings]
+    
+    def embed_single(self, text: str):
+        """Genera embedding para un texto individual"""
+        embeddings = self._embed_batch([text])
+        return embeddings[0]
+
+
+class BayesianEvidenceIntegrator:
+    """Integrador bayesiano de evidencia para análisis de políticas"""
+    
+    def __init__(self, prior_concentration: float = 0.5):
+        self.prior_concentration = prior_concentration
+        
+    def integrate_evidence(
+        self, 
+        similarities: Any,  # Can be np.ndarray or list
+        chunk_metadata: list[dict[str, Any]]
+    ) -> dict[str, float]:
+        """Integra evidencia de múltiples chunks usando inferencia bayesiana"""
+        
+        if len(similarities) == 0:
+            return self._null_evidence()
+        
+        # Convertir a lista si es necesario
+        if NUMPY_AVAILABLE and hasattr(similarities, 'tolist'):
+            sims_list = similarities.tolist() if hasattr(similarities, 'tolist') else list(similarities)
+        else:
+            sims_list = list(similarities)
+        
+        # Convertir similitudes a probabilidades
+        probs = self._similarity_to_probability(sims_list)
+        
+        # Calcular pesos de confiabilidad
+        weights = self._compute_reliability_weights(chunk_metadata)
+        
+        # Integración bayesiana ponderada
+        weighted_probs = [p * w for p, w in zip(probs, weights)]
+        
+        # Posterior bayesiano
+        posterior_mean = sum(weighted_probs) / len(weighted_probs) if weighted_probs else 0.0
+        
+        # Calcular desviación estándar
+        mean_val = posterior_mean
+        variance = sum((x - mean_val) ** 2 for x in weighted_probs) / len(weighted_probs) if weighted_probs else 0.0
+        posterior_std = variance ** 0.5
+        
+        # Credibilidad (intervalo de confianza)
+        credibility_lower = max(0.0, posterior_mean - 1.96 * posterior_std)
+        credibility_upper = min(1.0, posterior_mean + 1.96 * posterior_std)
+        
+        return {
+            "posterior_mean": float(posterior_mean),
+            "posterior_std": float(posterior_std),
+            "credibility_interval": [float(credibility_lower), float(credibility_upper)],
+            "evidence_strength": float(1.0 - posterior_std),
+            "n_observations": len(similarities)
+        }
+    
+    def _similarity_to_probability(self, sims: list) -> list:
+        """Convierte similitudes coseno a probabilidades"""
+        # Normalizar de [-1, 1] a [0, 1]
+        normalized = [(s + 1.0) / 2.0 for s in sims]
+        return normalized
+    
+    def _compute_reliability_weights(self, metadata: list[dict[str, Any]]) -> list:
+        """Calcula pesos de confiabilidad basados en metadatos"""
+        weights = []
+        
+        for meta in metadata:
+            weight = 1.0
+            
+            # Boost si tiene datos numéricos
+            if meta.get("has_numerical", False):
+                weight *= 1.2
+            
+            # Boost si tiene estructura de tabla
+            if meta.get("has_table", False):
+                weight *= 1.15
+            
+            # Penalizar chunks muy cortos o muy largos
+            text_len = len(meta.get("text", ""))
+            if text_len < 100 or text_len > 2000:
+                weight *= 0.8
+            
+            weights.append(weight)
+        
+        # Normalizar
+        total_weight = sum(weights)
+        if total_weight > 0:
+            weights = [w / total_weight for w in weights]
+        
+        return weights
+    
+    def _null_evidence(self) -> dict[str, float]:
+        """Retorna evidencia nula cuando no hay observaciones"""
+        return {
+            "posterior_mean": 0.0,
+            "posterior_std": 1.0,
+            "credibility_interval": [0.0, 0.0],
+            "evidence_strength": 0.0,
+            "n_observations": 0
+        }
+    
+    def causal_strength(
+        self,
+        cause_emb: Any,  # Can be np.ndarray or list
+        effect_emb: Any,
+        context_emb: Any
+    ) -> float:
+        """Calcula fuerza causal entre causa y efecto dado un contexto"""
+        
+        # Helper function for dot product and norm
+        def dot_product(a, b):
+            return sum(x * y for x, y in zip(a, b))
+        
+        def norm(a):
+            return sum(x * x for x in a) ** 0.5
+        
+        # Convert to lists if needed
+        cause = list(cause_emb) if not isinstance(cause_emb, list) else cause_emb
+        effect = list(effect_emb) if not isinstance(effect_emb, list) else effect_emb
+        context = list(context_emb) if not isinstance(context_emb, list) else context_emb
+        
+        # Similitud directa causa-efecto
+        direct_sim = dot_product(cause, effect) / (norm(cause) * norm(effect))
+        
+        # Similitud mediada por contexto
+        cause_context_sim = dot_product(cause, context) / (norm(cause) * norm(context))
+        effect_context_sim = dot_product(effect, context) / (norm(effect) * norm(context))
+        
+        # Fuerza causal = promedio ponderado
+        causal_strength = (
+            0.5 * direct_sim + 
+            0.25 * cause_context_sim + 
+            0.25 * effect_context_sim
+        )
+        
+        return float(causal_strength)
+
+
+class PolicyDocumentAnalyzer:
+    """Analizador completo de documentos de política pública"""
+    
+    def __init__(self, config: SemanticConfig | None = None):
+        if config is None:
+            config = SemanticConfig()
+        
+        self.config = config
+        self.processor = SemanticProcessor(config)
+        self.integrator = BayesianEvidenceIntegrator()
+        self.dimension_embeddings = self._init_dimension_embeddings()
+        
+    def _init_dimension_embeddings(self) -> dict:
+        """Inicializa embeddings para cada dimensión causal"""
+        dimension_texts = {
+            CausalDimension.INSUMOS: "recursos humanos financieros materiales disponibles presupuesto",
+            CausalDimension.ACTIVIDADES: "procesos acciones tareas implementación ejecución",
+            CausalDimension.PRODUCTOS: "entregables servicios bienes producidos generados",
+            CausalDimension.RESULTADOS: "cambios beneficios mejoras logros alcanzados",
+            CausalDimension.IMPACTOS: "efectos consecuencias transformación desarrollo sostenible"
+        }
+        
+        embeddings = {}
+        for dimension, text in dimension_texts.items():
+            embeddings[dimension] = self.processor.embed_single(text)
+        
+        return embeddings
+    
+    def analyze(self, text: str) -> dict[str, Any]:
+        """Analiza un documento de política completo"""
+        
+        # 1. Chunking del documento
+        chunks = self.processor.chunk_text(text, preserve_structure=True)
+        
+        if not chunks:
+            return {
+                "status": "empty",
+                "dimensions": {},
+                "key_excerpts": {},
+                "overall_coherence": 0.0
+            }
+        
+        # 2. Análisis por dimensión causal
+        dimension_results = {}
+        
+        for dimension, dim_emb in self.dimension_embeddings.items():
+            # Calcular similitudes
+            chunk_embeddings = self.processor._embed_batch([c["text"] for c in chunks])
+            
+            # Helper functions
+            def dot_product(a, b):
+                return sum(x * y for x, y in zip(a, b))
+            
+            def norm(a):
+                return sum(x * x for x in a) ** 0.5
+            
+            # Calcular similitudes manualmente
+            similarities = []
+            for chunk_emb in chunk_embeddings:
+                sim = dot_product(dim_emb, chunk_emb) / (norm(dim_emb) * norm(chunk_emb))
+                similarities.append(sim)
+            
+            # Integrar evidencia
+            evidence = self.integrator.integrate_evidence(similarities, chunks)
+            
+            # Obtener top chunks
+            indexed_sims = [(i, sim) for i, sim in enumerate(similarities)]
+            indexed_sims.sort(key=lambda x: x[1], reverse=True)
+            top_indices = [idx for idx, _ in indexed_sims[:3]]
+            
+            dimension_results[dimension.value] = {
+                "evidence": evidence,
+                "top_chunks": [
+                    {
+                        "text": chunks[i]["text"][:200] + "...",
+                        "similarity": float(similarities[i])
+                    }
+                    for i in top_indices
+                ]
+            }
+        
+        # 3. Extraer fragmentos clave
+        key_excerpts = self._extract_key_excerpts(chunks, dimension_results)
+        
+        # 4. Calcular coherencia global
+        coherence_scores = [
+            result["evidence"]["evidence_strength"]
+            for result in dimension_results.values()
+        ]
+        overall_coherence = sum(coherence_scores) / len(coherence_scores) if coherence_scores else 0.0
+        
+        return {
+            "status": "success",
+            "n_chunks": len(chunks),
+            "dimensions": dimension_results,
+            "key_excerpts": key_excerpts,
+            "overall_coherence": overall_coherence
+        }
+    
+    def _extract_key_excerpts(
+        self,
+        chunks: list[dict[str, Any]],
+        dimension_results: dict[str, dict[str, Any]]
+    ) -> dict[str, list[str]]:
+        """Extrae fragmentos clave para cada dimensión"""
+        excerpts = {}
+        
+        for dimension, result in dimension_results.items():
+            top_chunks = result.get("top_chunks", [])
+            excerpts[dimension] = [
+                chunk["text"] for chunk in top_chunks
+            ]
+        
+        return excerpts
+
+
+def main():
+    """Función main para demostración del módulo"""
+    print("=" * 80)
+    print("MODULES ADAPTERS - SEMANTIC ANALYSIS DEMO")
+    print("=" * 80)
+    
+    # Crear configuración
+    config = SemanticConfig(
+        model_name="hiiamsid/sentence_similarity_spanish_es",
+        chunk_size=512,
+        device="cpu"
+    )
+    
+    # Crear analizador
+    analyzer = PolicyDocumentAnalyzer(config)
+    
+    # Texto de ejemplo
+    sample_text = """
+    El Plan de Desarrollo Municipal contempla los siguientes recursos:
+    - Presupuesto: $5,000,000,000
+    - Personal: 150 funcionarios
+    - Infraestructura: 20 sedes municipales
+    
+    Las actividades principales incluyen:
+    1. Capacitación de personal en gestión pública
+    2. Implementación de sistemas de información
+    3. Fortalecimiento institucional
+    
+    Los productos esperados son:
+    - 500 funcionarios capacitados
+    - Sistema de información operativo
+    - Procesos optimizados
+    
+    Los resultados esperados incluyen:
+    - Mejora en la eficiencia administrativa
+    - Mayor satisfacción ciudadana
+    - Reducción de tiempos de atención
+    
+    El impacto esperado es:
+    - Transformación digital del municipio
+    - Desarrollo sostenible
+    - Mejora de la calidad de vida
+    """
+    
+    # Analizar
+    results = analyzer.analyze(sample_text)
+    
+    print(f"\nEstado: {results['status']}")
+    print(f"Chunks procesados: {results.get('n_chunks', 0)}")
+    print(f"Coherencia global: {results.get('overall_coherence', 0):.3f}")
+    
+    print("\nAnálisis por dimensiones:")
+    for dimension, data in results.get("dimensions", {}).items():
+        evidence = data.get("evidence", {})
+        print(f"\n{dimension.upper()}:")
+        print(f"  - Posterior mean: {evidence.get('posterior_mean', 0):.3f}")
+        print(f"  - Evidence strength: {evidence.get('evidence_strength', 0):.3f}")
+    
+    print("\n" + "=" * 80)
+    return results
 
 
 # ============================================================================
