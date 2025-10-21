@@ -1,6 +1,14 @@
 # coding=utf-8
 """
 Metadata Service - Central Configuration and Context Provider
+"""
+
+import logging
+from pathlib import Path
+from typing import Dict, List, Optional, Any
+from dataclasses import dataclass, field
+import json
+import yaml
 
 Loads and manages metadata from cuestionario.json, rubric_scoring.json,
 and execution_mapping.yaml. Provides complete question context enrichment.

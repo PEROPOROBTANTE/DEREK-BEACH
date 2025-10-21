@@ -44,28 +44,31 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Optional imports with fallback handling
+# Optional numpy import (used only for type hints and stub data)
 try:
     import numpy as np
-    NUMPY_AVAILABLE = True
+    HAS_NUMPY = True
 except ImportError:
-    NUMPY_AVAILABLE = False
-    # Create a dummy np module for type hints
-    class _NumpyDummy:
-        ndarray = Any
-    np = _NumpyDummy()
-    logger.warning("numpy not available - some functionality may be limited")
-
-try:
-    import networkx as nx
-    NETWORKX_AVAILABLE = True
-except ImportError:
-    NETWORKX_AVAILABLE = False
-    # Create a dummy nx module for type hints
-    class _NetworkXDummy:
-        DiGraph = Any
-    nx = _NetworkXDummy()
-    logger.warning("networkx not available - graph operations may be limited")
+    logger.warning("numpy not available - using fallback for type hints")
+    HAS_NUMPY = False
+    # Create a minimal numpy stub for type annotations
+    class np:
+        class ndarray:
+            pass
+        @staticmethod
+        def random():
+            class RandomStub:
+                @staticmethod
+                def rand(*args):
+                    import random as rand_module
+                    if not args:
+                        return rand_module.random()
+                    elif len(args) == 1:
+                        return [rand_module.random() for _ in range(args[0])]
+                    else:
+                        return [[rand_module.random() for _ in range(args[1])] 
+                                for _ in range(args[0])]
+            return RandomStub()
 
 
 # ============================================================================

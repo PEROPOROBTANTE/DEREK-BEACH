@@ -1,89 +1,50 @@
-# DEREK-BEACH: FARFAN 3.0 Policy Analysis System
-# Requirements file with Python version compatibility
-# Python Version Required: >=3.11,<3.13
+# DEREK-BEACH Requirements
+# Core dependencies for the FARFAN policy analysis system
 
-# ============================================================================
-# CORE DEPENDENCIES
-# ============================================================================
+# === CORE FRAMEWORK ===
+# DAG and graph operations (used by choreographer.py, teoria_cambio.py)
+networkx>=2.6.0
 
-# Configuration and Data Processing
-pyyaml>=6.0,<7.0
-numpy>=1.24.0,<2.0.0
-pandas>=2.0.0,<3.0.0
+# Numerical computing (used by modules_adapters.py, analyzer_one.py, embedding_policy.py)
+numpy>=1.21.0
 
-# ============================================================================
-# MACHINE LEARNING & NLP
-# ============================================================================
+# Machine learning (used by Analyzer_one.py)
+scikit-learn>=1.0.0
 
-# PyTorch (CPU version for compatibility, install GPU version separately if needed)
-# Updated to 2.6.0+ to address remote code execution vulnerability
-torch>=2.6.0,<3.0.0
-# Updated to 4.48.0+ to address deserialization vulnerabilities
-transformers>=4.48.0,<5.0.0
-sentence-transformers>=2.2.0,<3.0.0
+# YAML configuration (used by metadata_service.py, execution_mapping.yaml)
+PyYAML>=6.0
 
-# Scikit-learn
-scikit-learn>=1.3.0,<2.0.0
+# === PDF PROCESSING ===
+# PDF extraction (used by dereck_beach.py)
+PyMuPDF>=1.19.0  # Also known as 'fitz'
+PyPDF2>=2.0.0
 
-# Statistical Analysis
-scipy>=1.11.0,<2.0.0
+# === NLP AND EMBEDDINGS ===
+# Sentence transformers for embeddings (embedding_policy.py, semantic_chunking_policy.py)
+sentence-transformers>=2.2.0
 
-# Network Analysis
-networkx>=3.1,<4.0
+# SpaCy for NLP (dereck_beach.py, causal_proccesor.py)
+spacy>=3.4.0
 
-# NLP Processing
-spacy>=3.6.0,<4.0.0
+# === DATA VALIDATION ===
+# Pydantic for schema validation (dereck_beach.py)
+pydantic>=1.10.0
 
-# ============================================================================
-# BAYESIAN & STATISTICAL MODELING
-# ============================================================================
+# === DOCUMENT PROCESSING ===
+# DOCX support (core_orchestrator.py)
+python-docx>=0.8.11
 
-# PyMC and dependencies
-pymc>=5.10.0,<6.0.0
-pytensor>=2.18.0,<3.0.0
-arviz>=0.17.0,<1.0.0
+# === TESTING (optional) ===
+# Uncomment for testing
+# pytest>=7.0.0
+# pytest-cov>=3.0.0
 
-# ============================================================================
-# PDF PROCESSING
-# ============================================================================
-
-# PDF Extraction Libraries
-# PyMuPDF provides 'fitz' module
-PyMuPDF>=1.23.0,<2.0.0
-pdfplumber>=0.10.0,<1.0.0
-# camelot-py[cv] includes OpenCV for table extraction
-camelot-py[cv]>=0.11.0,<1.0.0
-tabula-py>=2.8.0,<3.0.0
-
-# ============================================================================
-# DEVELOPMENT & TESTING
-# ============================================================================
-
-# Testing Framework
-pytest>=7.4.0,<8.0.0
-pytest-cov>=4.1.0,<5.0.0
-pytest-asyncio>=0.21.0,<1.0.0
-
-# ============================================================================
-# OPTIONAL DEPENDENCIES
-# ============================================================================
-
-# For GPU-accelerated PyTorch (uncomment if GPU available):
-# torch>=2.0.0,<3.0.0 --index-url https://download.pytorch.org/whl/cu118
-
-# For additional spaCy language models, install separately:
-# python -m spacy download en_core_web_sm
-# python -m spacy download es_core_news_sm
-
-# ============================================================================
-# NOTES
-# ============================================================================
-# 
-# 1. This requirements file is compatible with Python 3.11 and 3.12
-# 2. For Python 3.10, some packages may need version adjustments
-# 3. camelot-py requires system dependencies (see INSTALLATION.md)
-# 4. PyTorch is installed with CPU support by default
-# 5. GPU support requires separate torch installation with CUDA
-# 6. Some PDF processing libraries need system-level dependencies
+# === NOTES ===
+# Some modules have fallback behavior when dependencies are missing:
+# - modules_adapters.py: Falls back to stub implementation when numpy is unavailable
+# - Most adapters: Log warnings but continue when optional dependencies are missing
 #
-# For detailed installation instructions, see INSTALLATION.md
+# Minimum required for basic operation:
+#   - networkx (choreographer)
+#   - PyYAML (configuration)
+#   - numpy (type hints and computations)
