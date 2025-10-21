@@ -1,0 +1,50 @@
+# DEREK-BEACH Requirements
+# Core dependencies for the FARFAN policy analysis system
+
+# === CORE FRAMEWORK ===
+# DAG and graph operations (used by choreographer.py, teoria_cambio.py)
+networkx>=2.6.0
+
+# Numerical computing (used by modules_adapters.py, analyzer_one.py, embedding_policy.py)
+numpy>=1.21.0
+
+# Machine learning (used by Analyzer_one.py)
+scikit-learn>=1.0.0
+
+# YAML configuration (used by metadata_service.py, execution_mapping.yaml)
+PyYAML>=6.0
+
+# === PDF PROCESSING ===
+# PDF extraction (used by dereck_beach.py)
+PyMuPDF>=1.19.0  # Also known as 'fitz'
+PyPDF2>=2.0.0
+
+# === NLP AND EMBEDDINGS ===
+# Sentence transformers for embeddings (embedding_policy.py, semantic_chunking_policy.py)
+sentence-transformers>=2.2.0
+
+# SpaCy for NLP (dereck_beach.py, causal_proccesor.py)
+spacy>=3.4.0
+
+# === DATA VALIDATION ===
+# Pydantic for schema validation (dereck_beach.py)
+pydantic>=1.10.0
+
+# === DOCUMENT PROCESSING ===
+# DOCX support (core_orchestrator.py)
+python-docx>=0.8.11
+
+# === TESTING (optional) ===
+# Uncomment for testing
+# pytest>=7.0.0
+# pytest-cov>=3.0.0
+
+# === NOTES ===
+# Some modules have fallback behavior when dependencies are missing:
+# - modules_adapters.py: Falls back to stub implementation when numpy is unavailable
+# - Most adapters: Log warnings but continue when optional dependencies are missing
+#
+# Minimum required for basic operation:
+#   - networkx (choreographer)
+#   - PyYAML (configuration)
+#   - numpy (type hints and computations)
