@@ -17,6 +17,8 @@ This repository implements an industrial-grade, event-driven choreography system
 
 ## Quick Start
 
+**🚀 New to DEREK-BEACH? Start here: [QUICKSTART.md](QUICKSTART.md)** - Get up and running in 5 minutes!
+
 ### Prerequisites
 
 - **Python**: 3.11 or 3.12 (recommended: 3.12.3)
