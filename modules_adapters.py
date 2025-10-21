@@ -2458,11 +2458,11 @@ class AnalyzerOneAdapter(BaseAdapter):
         )
 
     def _execute_reduce_dimensions(
-        self, embeddings: np.ndarray, n_components: int = 50, **kwargs
+        self, embeddings: Any, n_components: int = 50, **kwargs
     ) -> ModuleResult:
         """Ejecuta SemanticAnalyzer.reduce_dimensions()"""
         # Simulación de reducción de dimensionalidad
-        original_shape = embeddings.shape
+        original_shape = getattr(embeddings, 'shape', (len(embeddings), len(embeddings[0]) if embeddings else 0))
         reduced_embeddings = np.random.rand(original_shape[0], n_components)
 
         return ModuleResult(
@@ -13072,6 +13072,25 @@ class DerekBeachAdapter(BaseAdapter):
         except ImportError as e:
             self.logger.warning(f"✗ {self.module_name} NOT available: {e}")
             self.available = False
+
+
+# ============================================================================
+# ADDITIONAL CLASSES AND ENUMS FOR ANALYZER_ONE MODULE
+# ============================================================================
+
+
+@dataclass
+class ValueChainLink:
+    """Represents a link in the municipal development value chain."""
+    name: str
+    instruments: List[str] = field(default_factory=list)
+    mediators: List[str] = field(default_factory=list)
+    outputs: List[str] = field(default_factory=list)
+    outcomes: List[str] = field(default_factory=list)
+    bottlenecks: List[str] = field(default_factory=list)
+    lead_time_days: float = 0.0
+    conversion_rates: Dict[str, float] = field(default_factory=dict)
+    capacity_constraints: Dict[str, float] = field(default_factory=dict)
 
 
 # ============================================================================
