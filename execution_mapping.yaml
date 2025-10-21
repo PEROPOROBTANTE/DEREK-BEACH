@@ -1,316 +1,144 @@
+# Execution Mapping Configuration
+# Maps dimensions and questions to module handlers
+
 version: "1.0.0"
-metadata:
-  created_date: "2025-10-21"
-  description: "Execution mapping for FARFAN 3.0 policy analysis workflows"
-  author: "FARFAN Integration Team"
-  total_adapters: 9
-  execution_waves: 5
+description: "Execution mapping for FARFAN 3.0 - Routes questions to analysis modules"
 
-# Adapter registry - maps adapter names to their implementing classes
-adapter_registry:
-  policy_segmenter:
-    class: "PolicySegmenterAdapter"
-    module: "modules_adapters"
-    description: "Document segmentation and boundary detection"
-    
-  policy_processor:
-    class: "PolicyProcessorAdapter"
-    module: "modules_adapters"
-    description: "Text normalization and preprocessing"
-    
-  semantic_chunking_policy:
-    class: "SemanticChunkingPolicyAdapter"
-    module: "modules_adapters"
-    description: "Semantic chunking with structural awareness"
-    
-  embedding_policy:
-    class: "EmbeddingPolicyAdapter"
-    module: "modules_adapters"
-    description: "Embedding generation and comparison"
-    
-  analyzer_one:
-    class: "AnalyzerOneAdapter"
-    module: "modules_adapters"
-    description: "Municipal development analysis"
-    
-  teoria_cambio:
-    class: "ModulosAdapter"
-    module: "modules_adapters"
-    description: "Theory of change analysis with Bayesian networks"
-    
-  dereck_beach:
-    class: "DerekBeachAdapter"
-    module: "modules_adapters"
-    description: "CDAF causal analysis with Derek Beach methodology"
-    
-  contradiction_detection:
-    class: "ContradictionDetectionAdapter"
-    module: "modules_adapters"
-    description: "Contradiction detection using transformers"
-    
-  financial_viability:
-    class: "FinancialViabilityAdapter"
-    module: "modules_adapters"
-    description: "Financial analysis and viability assessment"
-
-# Execution waves - defines parallel execution groups based on dependencies
-execution_waves:
-  wave_1:
-    priority: 1
-    description: "Foundation - document segmentation and preprocessing"
-    adapters:
-      - policy_segmenter
-      - policy_processor
-    
-  wave_2:
-    priority: 2
-    description: "Semantic analysis - chunking and embeddings"
-    dependencies: [wave_1]
-    adapters:
-      - semantic_chunking_policy
-      - embedding_policy
-    
-  wave_3:
-    priority: 3
-    description: "Advanced analysis - municipal and theory of change"
-    dependencies: [wave_2]
-    adapters:
-      - analyzer_one
-      - teoria_cambio
-    
-  wave_4:
-    priority: 4
-    description: "Specialized analysis - causal and contradiction"
-    dependencies: [wave_3]
-    adapters:
-      - dereck_beach
-      - contradiction_detection
-    
-  wave_5:
-    priority: 5
-    description: "Final synthesis - financial viability"
-    dependencies: [wave_4]
-    adapters:
-      - financial_viability
-
-# Dependency graph - explicit adapter dependencies
-dependencies:
-  policy_segmenter:
-    produces: ["segments", "boundaries"]
-    consumed_by: ["semantic_chunking_policy", "embedding_policy"]
-    
-  policy_processor:
-    produces: ["normalized_text", "processed_document"]
-    consumed_by: ["semantic_chunking_policy", "embedding_policy"]
-    
-  semantic_chunking_policy:
-    requires: ["segments", "normalized_text"]
-    produces: ["semantic_chunks", "chunk_embeddings"]
-    consumed_by: ["analyzer_one", "teoria_cambio"]
-    
-  embedding_policy:
-    requires: ["normalized_text", "segments"]
-    produces: ["document_embeddings", "similarity_scores"]
-    consumed_by: ["analyzer_one", "teoria_cambio"]
-    
-  analyzer_one:
-    requires: ["semantic_chunks", "document_embeddings"]
-    produces: ["municipal_analysis", "quality_metrics"]
-    consumed_by: ["contradiction_detection", "financial_viability"]
-    
-  teoria_cambio:
-    requires: ["semantic_chunks", "document_embeddings"]
-    produces: ["causal_graph", "bayesian_confidence"]
-    consumed_by: ["dereck_beach", "contradiction_detection", "financial_viability"]
-    
-  dereck_beach:
-    requires: ["causal_graph"]
-    produces: ["causal_links", "cdaf_analysis"]
-    consumed_by: ["financial_viability"]
-    
-  contradiction_detection:
-    requires: ["municipal_analysis", "causal_graph"]
-    produces: ["contradictions", "alignment_score"]
-    consumed_by: ["financial_viability"]
-    
-  financial_viability:
-    requires: ["municipal_analysis", "causal_graph", "cdaf_analysis", "contradictions"]
-    produces: ["financial_report", "viability_score"]
-    consumed_by: []
-
-# Question-specific execution chains
-# Maps question patterns to their specific execution requirements
-execution_chains:
-  # Dimension 1 - Insumos (Diagnóstico)
+# Dimension-level mappings (default routing)
+dimensions:
   D1:
-    description: "Diagnostic and baseline evaluation"
-    default_chain:
-      - adapter: policy_processor
-        method: process_document
-        validation_rules:
-          - min_words: 100
-          - required_sections: ["diagnostico", "linea_base"]
-      - adapter: policy_segmenter
-        method: segment_by_structure
-      - adapter: semantic_chunking_policy
-        method: chunk_document
-      - adapter: analyzer_one
-        method: analyze_diagnostic_quality
-        scoring_modality: TYPE_A
-        expected_elements: 4
+    module: "policy_processor"
+    class: "IndustrialPolicyProcessor"
+    method: "process"
+    description: "Diagnóstico y Líneas Base - Analiza datos cuantitativos, fuentes oficiales, brechas"
+    confidence: 0.8
     
-  # Dimension 2 - Procesos
   D2:
-    description: "Process evaluation and causal chains"
-    default_chain:
-      - adapter: policy_processor
-        method: process_document
-      - adapter: semantic_chunking_policy
-        method: chunk_document
-      - adapter: embedding_policy
-        method: generate_embeddings
-      - adapter: teoria_cambio
-        method: analizar_teoria_cambio
-        validation_rules:
-          - min_causal_links: 5
-          - requires_complete_path: true
-      - adapter: dereck_beach
-        method: analyze_causal_chain
-        scoring_modality: TYPE_B
-        expected_elements: 3
+    module: "causal_proccesor"
+    class: "PolicyDocumentAnalyzer"
+    method: "analyze_document"
+    description: "Diseño de Intervención - Analiza actividades, mecanismos causales, cronogramas"
+    confidence: 0.85
     
-  # Dimension 3 - Productos
   D3:
-    description: "Output and deliverable evaluation"
-    default_chain:
-      - adapter: policy_segmenter
-        method: segment_by_structure
-      - adapter: semantic_chunking_policy
-        method: detect_structural_boundaries
-      - adapter: analyzer_one
-        method: extract_deliverables
-      - adapter: financial_viability
-        method: analyze_resource_allocation
-        scoring_modality: TYPE_C
-        expected_elements: 2
+    module: "Analyzer_one"
+    class: "MunicipalAnalyzer"
+    method: "analyze"
+    description: "Productos y Outputs - Verifica entregables, indicadores, presupuestos"
+    confidence: 0.8
     
-  # Dimension 4 - Resultados
   D4:
-    description: "Results and impact evaluation"
-    default_chain:
-      - adapter: semantic_chunking_policy
-        method: chunk_document
-      - adapter: embedding_policy
-        method: generate_embeddings
-      - adapter: teoria_cambio
-        method: validar_coherencia_causal
-      - adapter: contradiction_detection
-        method: detect_contradictions
-        validation_rules:
-          - max_contradictions: 5
-          - coherence_threshold: 0.7
-      - adapter: analyzer_one
-        method: evaluate_impact_metrics
-        scoring_modality: TYPE_A
-        expected_elements: 4
+    module: "teoria_cambio"
+    class: "ModulosTeoriaCambio"
+    method: "analizar_teoria_cambio"
+    description: "Resultados y Outcomes - Evalúa indicadores de resultado, causalidad mediano plazo"
+    confidence: 0.85
     
-  # Dimension 5 - Causalidad
   D5:
-    description: "Causal relationship validation"
-    default_chain:
-      - adapter: semantic_chunking_policy
-        method: chunk_document
-      - adapter: teoria_cambio
-        method: construir_grafo_causal
-      - adapter: dereck_beach
-        method: analyze_causal_mechanism
-        validation_rules:
-          - min_evidence_strength: 0.6
-          - requires_bayesian_support: true
-      - adapter: contradiction_detection
-        method: detect_causal_contradictions
-        scoring_modality: TYPE_D
-        expected_elements: 3
+    module: "dereck_beach"
+    class: "DerekBeachAnalyzer"
+    method: "analyze_causal_chain"
+    description: "Impactos y Efectos - Analiza transformación estructural, sostenibilidad, cadena causal"
+    confidence: 0.9
     
-  # Dimension 6 - Coherencia
   D6:
-    description: "Overall coherence and alignment"
-    default_chain:
-      - adapter: policy_processor
-        method: process_document
-      - adapter: embedding_policy
-        method: compare_embeddings
-      - adapter: teoria_cambio
-        method: evaluar_coherencia_global
-      - adapter: contradiction_detection
-        method: detect_all_contradictions
-      - adapter: financial_viability
-        method: assess_overall_viability
-        validation_rules:
-          - min_coherence_score: 0.75
-          - max_critical_contradictions: 3
-        scoring_modality: TYPE_E
-        expected_elements: 5
+    module: "teoria_cambio"
+    class: "ModulosTeoriaCambio"
+    method: "validar_coherencia_causal"
+    description: "Teoría de Cambio - Valida coherencia causal global, integración dimensiones"
+    confidence: 0.85
 
-# Validation rules templates
-validation_rule_templates:
-  min_words:
-    type: "numeric"
-    operator: ">="
-    error_message: "Document does not meet minimum word count requirement"
+# Question-specific overrides (optional - overrides dimension default)
+question_overrides:
+  # Example: Specific questions that need different handling
+  # "P1-D2-Q7":
+  #   module: "specialized_processor"
+  #   class: "ActivityAnalyzer"
+  #   method: "analyze_activities"
+  #   description: "Specialized analysis for activity formalization"
+  #   confidence: 0.9
+
+# Cross-cutting modules (executed for multiple dimensions)
+cross_cutting_modules:
+  financial_viability:
+    module: "financiero_viabilidad_tablas"
+    class: "FinancialAnalyzer"
+    method: "analyze_financial_viability"
+    applicable_dimensions: ["D1", "D3", "D4"]
+    description: "Analiza viabilidad financiera transversal"
     
-  required_sections:
-    type: "list"
-    operator: "contains_all"
-    error_message: "Document missing required sections"
-    
-  min_causal_links:
-    type: "numeric"
-    operator: ">="
-    error_message: "Insufficient causal links detected"
-    
-  requires_complete_path:
-    type: "boolean"
-    error_message: "Causal path is incomplete"
-    
-  max_contradictions:
-    type: "numeric"
-    operator: "<="
-    error_message: "Too many contradictions detected"
-    
-  coherence_threshold:
-    type: "numeric"
-    operator: ">="
-    error_message: "Coherence score below threshold"
-    
-  min_evidence_strength:
-    type: "numeric"
-    operator: ">="
-    error_message: "Evidence strength insufficient"
-    
-  requires_bayesian_support:
-    type: "boolean"
-    error_message: "Bayesian support required but not provided"
+  contradiction_detection:
+    module: "contradiction_deteccion"
+    class: "ContradictionDetector"
+    method: "detect_contradictions"
+    applicable_dimensions: ["D2", "D4", "D5", "D6"]
+    description: "Detecta contradicciones en la lógica causal"
+
+# Execution chains (sequence of modules for complex analysis)
+execution_chains:
+  causal_validation:
+    description: "Validación completa de cadena causal"
+    steps:
+      - dimension: "D2"
+        module: "causal_proccesor"
+        class: "PolicyDocumentAnalyzer"
+        method: "analyze_document"
+      - dimension: "D5"
+        module: "dereck_beach"
+        class: "DerekBeachAnalyzer"
+        method: "analyze_causal_chain"
+      - dimension: "D6"
+        module: "teoria_cambio"
+        class: "ModulosTeoriaCambio"
+        method: "validar_coherencia_causal"
+        
+  comprehensive_analysis:
+    description: "Análisis integral de diagnóstico a impacto"
+    steps:
+      - dimension: "D1"
+      - dimension: "D2"
+      - dimension: "D3"
+      - dimension: "D4"
+      - dimension: "D5"
+      - dimension: "D6"
 
 # Error handling strategies
 error_strategies:
-  validation_failure:
-    action: "emit_validation_failed_event"
-    include_context: true
-    dead_letter: false
+  continue:
+    description: "Continue execution even if module fails"
+    fallback_score: 0.0
+    log_level: "warning"
     
-  processing_failure:
-    action: "emit_processing_failed_event"
-    retry_count: 3
-    retry_delay: 5
-    dead_letter: true
+  retry:
+    description: "Retry failed module execution"
+    max_retries: 3
+    retry_delay: 1.0
+    fallback_score: 0.0
+    log_level: "error"
     
-  precondition_failure:
-    action: "emit_precondition_failed_event"
-    skip_downstream: true
-    dead_letter: false
+  abort:
+    description: "Abort execution chain on failure"
+    log_level: "error"
+    raise_exception: true
+
+# Module capabilities and requirements
+module_capabilities:
+  policy_processor:
+    requires_data: ["plan_text", "structured_sections"]
+    produces: ["quantitative_indicators", "baseline_data", "sources"]
     
-  circuit_open:
-    action: "degrade_gracefully"
-    fallback_mode: true
-    notify: true
+  causal_proccesor:
+    requires_data: ["plan_text", "activities_section"]
+    produces: ["causal_mechanisms", "activity_chains", "temporal_sequences"]
+    
+  Analyzer_one:
+    requires_data: ["plan_text", "products_section"]
+    produces: ["deliverables", "verification_indicators", "budget_items"]
+    
+  teoria_cambio:
+    requires_data: ["plan_text", "theory_of_change_section"]
+    produces: ["results_indicators", "causal_coherence", "impact_pathways"]
+    
+  dereck_beach:
+    requires_data: ["plan_text", "impact_section", "causal_chains"]
+    produces: ["causal_analysis", "evidence_strength", "mechanism_validation"]
