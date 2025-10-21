@@ -422,6 +422,171 @@ class ExecutionChoreographer:
 
         return args_spec
 
+    def _check_circuit_breaker(
+        self, adapter_name: str, method_name: str, circuit_breaker: Optional[Any], start_time: float
+    ) -> Optional[ExecutionResult]:
+        """
+        Check if circuit breaker allows execution
+        
+        Args:
+            adapter_name: Name of adapter
+            method_name: Name of method
+            circuit_breaker: Circuit breaker instance
+            start_time: Execution start time
+            
+        Returns:
+            ExecutionResult if circuit is open, None if execution should proceed
+        """
+        if circuit_breaker and not circuit_breaker.can_execute(adapter_name):
+            return ExecutionResult(
+                module_name=adapter_name,
+                adapter_class=self.adapter_registry.get(adapter_name, "Unknown"),
+                method_name=method_name,
+                status=ExecutionStatus.SKIPPED,
+                error="Circuit breaker open",
+                execution_time=time.time() - start_time,
+            )
+        return None
+
+    def _convert_new_module_result(
+        self, adapter_name: str, method_name: str, module_result: Any
+    ) -> ExecutionResult:
+        """
+        Convert new ModuleMethodResult to ExecutionResult
+        
+        Args:
+            adapter_name: Name of adapter
+            method_name: Name of method
+            module_result: ModuleMethodResult from registry
+            
+        Returns:
+            ExecutionResult
+        """
+        from .adapter_registry import ExecutionStatus as NewExecutionStatus
+
+        status_map = {
+            NewExecutionStatus.SUCCESS: ExecutionStatus.COMPLETED,
+            NewExecutionStatus.ERROR: ExecutionStatus.FAILED,
+            NewExecutionStatus.UNAVAILABLE: ExecutionStatus.SKIPPED,
+            NewExecutionStatus.MISSING_METHOD: ExecutionStatus.SKIPPED,
+            NewExecutionStatus.MISSING_ADAPTER: ExecutionStatus.SKIPPED,
+        }
+
+        return ExecutionResult(
+            module_name=adapter_name,
+            adapter_class=module_result.adapter_class,
+            method_name=method_name,
+            status=status_map.get(module_result.status, ExecutionStatus.FAILED),
+            output=(
+                {"evidence": module_result.evidence}
+                if module_result.evidence
+                else None
+            ),
+            error=module_result.error_message,
+            execution_time=module_result.execution_time,
+            evidence_extracted={"evidence": module_result.evidence},
+            confidence=module_result.confidence,
+            metadata={"trace_id": module_result.trace_id},
+        )
+
+    def _convert_legacy_module_result(
+        self, adapter_name: str, method_name: str, module_result: Any, start_time: float
+    ) -> ExecutionResult:
+        """
+        Convert legacy ModuleResult to ExecutionResult
+        
+        Args:
+            adapter_name: Name of adapter
+            method_name: Name of method
+            module_result: Legacy ModuleResult from registry
+            start_time: Execution start time
+            
+        Returns:
+            ExecutionResult
+        """
+        return ExecutionResult(
+            module_name=adapter_name,
+            adapter_class=getattr(module_result, "class_name", "Unknown"),
+            method_name=method_name,
+            status=self._map_status(getattr(module_result, "status", "failed")),
+            output=getattr(module_result, "data", None),
+            error=(
+                getattr(module_result, "errors", [None])[0]
+                if hasattr(module_result, "errors")
+                else None
+            ),
+            execution_time=getattr(
+                module_result, "execution_time", time.time() - start_time
+            ),
+            evidence_extracted={"evidence": getattr(module_result, "evidence", [])},
+            confidence=getattr(module_result, "confidence", 0.0),
+            metadata=getattr(module_result, "metadata", {}),
+        )
+
+    def _execute_via_new_registry(
+        self, adapter_name: str, method_name: str, args: List[Any], 
+        kwargs: Dict[str, Any], module_adapter_registry: Any, start_time: float
+    ) -> ExecutionResult:
+        """
+        Execute via new ModuleAdapterRegistry API
+        
+        Args:
+            adapter_name: Name of adapter
+            method_name: Name of method
+            args: Positional arguments
+            kwargs: Keyword arguments
+            module_adapter_registry: Registry instance
+            start_time: Execution start time
+            
+        Returns:
+            ExecutionResult
+        """
+        module_result = module_adapter_registry.execute_module_method(
+            module_name=adapter_name,
+            method_name=method_name,
+            args=args,
+            kwargs=kwargs,
+        )
+
+        if hasattr(module_result, "trace_id"):
+            return self._convert_new_module_result(adapter_name, method_name, module_result)
+        else:
+            return self._convert_legacy_module_result(adapter_name, method_name, module_result, start_time)
+
+    def _execute_via_legacy_registry(
+        self, adapter_name: str, method_name: str, args: List[Any],
+        kwargs: Dict[str, Any], module_adapter_registry: Any, start_time: float
+    ) -> ExecutionResult:
+        """
+        Execute via legacy direct adapter invocation
+        
+        Args:
+            adapter_name: Name of adapter
+            method_name: Name of method
+            args: Positional arguments
+            kwargs: Keyword arguments
+            module_adapter_registry: Registry instance
+            start_time: Execution start time
+            
+        Returns:
+            ExecutionResult
+        """
+        adapter_instance = module_adapter_registry.adapters.get(adapter_name)
+        if adapter_instance is None:
+            raise AttributeError(f"Adapter '{adapter_name}' not found")
+
+        method = getattr(adapter_instance, method_name)
+        raw_result = method(*args, **kwargs)
+
+        return ExecutionResult(
+            module_name=adapter_name,
+            adapter_class=self.adapter_registry.get(adapter_name, "Unknown"),
+            method_name=method_name,
+            status=ExecutionStatus.COMPLETED,
+            output=raw_result,
+            execution_time=time.time() - start_time,
+        )
+
     def _execute_single_step(
         self,
         adapter_name: str,
@@ -468,97 +633,23 @@ class ExecutionChoreographer:
         start_time = time.time()
 
         try:
-            if circuit_breaker and not circuit_breaker.can_execute(adapter_name):
-                return ExecutionResult(
-                    module_name=adapter_name,
-                    adapter_class=self.adapter_registry.get(adapter_name, "Unknown"),
-                    method_name=method_name,
-                    status=ExecutionStatus.SKIPPED,
-                    error="Circuit breaker open",
-                    execution_time=time.time() - start_time,
-                )
+            # Check circuit breaker
+            circuit_result = self._check_circuit_breaker(
+                adapter_name, method_name, circuit_breaker, start_time
+            )
+            if circuit_result:
+                return circuit_result
 
-            # Check if registry has execute_module_method (new API)
+            # Execute via appropriate registry API
             if hasattr(module_adapter_registry, "execute_module_method"):
-                module_result = module_adapter_registry.execute_module_method(
-                    module_name=adapter_name,
-                    method_name=method_name,
-                    args=args,
-                    kwargs=kwargs,
+                result = self._execute_via_new_registry(
+                    adapter_name, method_name, args, kwargs, 
+                    module_adapter_registry, start_time
                 )
-
-                # Check if result is new ModuleMethodResult
-                if hasattr(module_result, "trace_id"):
-                    # New ModuleMethodResult from ModuleAdapterRegistry
-                    from .adapter_registry import ExecutionStatus as NewExecutionStatus
-
-                    # Map new status to choreographer ExecutionStatus
-                    status_map = {
-                        NewExecutionStatus.SUCCESS: ExecutionStatus.COMPLETED,
-                        NewExecutionStatus.ERROR: ExecutionStatus.FAILED,
-                        NewExecutionStatus.UNAVAILABLE: ExecutionStatus.SKIPPED,
-                        NewExecutionStatus.MISSING_METHOD: ExecutionStatus.SKIPPED,
-                        NewExecutionStatus.MISSING_ADAPTER: ExecutionStatus.SKIPPED,
-                    }
-
-                    result = ExecutionResult(
-                        module_name=adapter_name,
-                        adapter_class=module_result.adapter_class,
-                        method_name=method_name,
-                        status=status_map.get(
-                            module_result.status, ExecutionStatus.FAILED
-                        ),
-                        output=(
-                            {"evidence": module_result.evidence}
-                            if module_result.evidence
-                            else None
-                        ),
-                        error=module_result.error_message,
-                        execution_time=module_result.execution_time,
-                        evidence_extracted={"evidence": module_result.evidence},
-                        confidence=module_result.confidence,
-                        metadata={"trace_id": module_result.trace_id},
-                    )
-                else:
-                    # Legacy ModuleResult structure
-                    result = ExecutionResult(
-                        module_name=adapter_name,
-                        adapter_class=getattr(module_result, "class_name", "Unknown"),
-                        method_name=method_name,
-                        status=self._map_status(
-                            getattr(module_result, "status", "failed")
-                        ),
-                        output=getattr(module_result, "data", None),
-                        error=(
-                            getattr(module_result, "errors", [None])[0]
-                            if hasattr(module_result, "errors")
-                            else None
-                        ),
-                        execution_time=getattr(
-                            module_result, "execution_time", time.time() - start_time
-                        ),
-                        evidence_extracted={
-                            "evidence": getattr(module_result, "evidence", [])
-                        },
-                        confidence=getattr(module_result, "confidence", 0.0),
-                        metadata=getattr(module_result, "metadata", {}),
-                    )
             else:
-                # Fallback to direct adapter invocation (very old legacy code path)
-                adapter_instance = module_adapter_registry.adapters.get(adapter_name)
-                if adapter_instance is None:
-                    raise AttributeError(f"Adapter '{adapter_name}' not found")
-
-                method = getattr(adapter_instance, method_name)
-                raw_result = method(*args, **kwargs)
-
-                result = ExecutionResult(
-                    module_name=adapter_name,
-                    adapter_class=self.adapter_registry.get(adapter_name, "Unknown"),
-                    method_name=method_name,
-                    status=ExecutionStatus.COMPLETED,
-                    output=raw_result,
-                    execution_time=time.time() - start_time,
+                result = self._execute_via_legacy_registry(
+                    adapter_name, method_name, args, kwargs,
+                    module_adapter_registry, start_time
                 )
 
             if circuit_breaker:
