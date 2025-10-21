@@ -4375,23 +4375,50 @@ class SemanticChunkingPolicyAdapter(BaseAdapter):
         )
 
     def _execute_chunk_document(self, document: str, **kwargs) -> ModuleResult:
-        """Ejecuta SemanticChunker.chunk_document()"""
-        # Simulación de chunking de documento
-        chunks = []
-        chunk_size = 512
-        overlap = 50
-
-        for i in range(0, len(document), chunk_size - overlap):
-            chunk_text = document[i : i + chunk_size]
-            chunks.append(
-                {
-                    "text": chunk_text,
-                    "start": i,
-                    "end": min(i + chunk_size, len(document)),
-                    "chunk_id": len(chunks),
-                    "size": len(chunk_text),
-                }
+        """Ejecuta SemanticChunker.chunk_document() - Using real SemanticProcessor"""
+        try:
+            # Use real SemanticProcessor with actual chunking algorithm
+            config = self.SemanticConfig()
+            processor = self.SemanticProcessor(config)
+            
+            # Use real semantic chunking with structure preservation
+            chunks = processor.chunk_text(document, preserve_structure=True)
+            
+            # Ensure chunks have required fields
+            for i, chunk in enumerate(chunks):
+                if 'chunk_id' not in chunk:
+                    chunk['chunk_id'] = i
+                if 'size' not in chunk:
+                    chunk['size'] = len(chunk.get('content', chunk.get('text', '')))
+            
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="SemanticProcessor",
+                method_name="chunk_document",
+                status="success",
+                data={"chunks": chunks, "chunk_count": len(chunks)},
+                evidence=[{"type": "real_semantic_chunking", "chunks": len(chunks)}],
+                confidence=0.95,
+                execution_time=0.0,
             )
+        except Exception as e:
+            # Fallback to simple chunking if real implementation fails
+            self.logger.warning(f"Real semantic chunking failed: {e}, using fallback")
+            chunks = []
+            chunk_size = 512
+            overlap = 50
+
+            for i in range(0, len(document), chunk_size - overlap):
+                chunk_text = document[i : i + chunk_size]
+                chunks.append(
+                    {
+                        "text": chunk_text,
+                        "start": i,
+                        "end": min(i + chunk_size, len(document)),
+                        "chunk_id": len(chunks),
+                        "size": len(chunk_text),
+                    }
+                )
 
         return ModuleResult(
             module_name=self.module_name,
@@ -4633,24 +4660,62 @@ class SemanticChunkingPolicyAdapter(BaseAdapter):
     def _execute_detect_structural_boundaries(
         self, text: str, **kwargs
     ) -> ModuleResult:
-        """Ejecuta BoundaryDetector.detect_structural_boundaries()"""
-        # Simulación de detección de límites estructurales
-        boundaries = []
+        """Ejecuta BoundaryDetector.detect_structural_boundaries() - Using real SemanticProcessor"""
+        try:
+            # Use real SemanticProcessor to detect PDM structure
+            config = self.SemanticConfig()
+            processor = self.SemanticProcessor(config)
+            
+            # Get real structural boundaries from PDM structure detection
+            structure = processor._detect_pdm_structure(text)
+            boundaries = []
+            
+            # Extract boundary positions from structure
+            for section in structure:
+                if 'start' in section:
+                    boundaries.append(section['start'])
+                if 'end' in section:
+                    boundaries.append(section['end'])
+            
+            # Ensure boundaries include start and end
+            boundaries = sorted(list(set(boundaries + [0, len(text)])))
+            
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="SemanticProcessor",
+                method_name="detect_structural_boundaries",
+                status="success",
+                data={
+                    "boundaries": boundaries,
+                    "boundary_count": len(boundaries),
+                    "text_length": len(text),
+                    "structure_sections": len(structure)
+                },
+                evidence=[
+                    {"type": "real_structural_boundaries", "boundaries": len(boundaries)}
+                ],
+                confidence=0.92,
+                execution_time=0.0,
+            )
+        except Exception as e:
+            # Fallback to pattern-based detection
+            self.logger.warning(f"Real structural boundary detection failed: {e}, using fallback")
+            boundaries = []
 
-        # Buscar límites basados en patrones estructurales
-        patterns = [r"\n\n", r"\.\s*\n", r"\d\.\d"]
-        for pattern in patterns:
-            matches = list(re.finditer(pattern, text))
-            for match in matches:
-                boundaries.append(match.start())
+            # Buscar límites basados en patrones estructurales
+            patterns = [r"\n\n", r"\.\s*\n", r"\d\.\d"]
+            for pattern in patterns:
+                matches = list(re.finditer(pattern, text))
+                for match in matches:
+                    boundaries.append(match.start())
 
-        boundaries = sorted(list(set(boundaries + [0, len(text)])))
+            boundaries = sorted(list(set(boundaries + [0, len(text)])))
 
-        return ModuleResult(
-            module_name=self.module_name,
-            class_name="BoundaryDetector",
-            method_name="detect_structural_boundaries",
-            status="success",
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="BoundaryDetector",
+                method_name="detect_structural_boundaries",
+                status="partial",
             data={
                 "boundaries": boundaries,
                 "boundary_count": len(boundaries),
