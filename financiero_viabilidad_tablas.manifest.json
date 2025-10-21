@@ -1,0 +1,829 @@
+{
+  "file": "financiero_viabilidad_tablas.py",
+  "version": "5.0",
+  "description": "PDET Municipal Development Plan Analyzer with Causal Inference",
+  "classes": {
+    "ColombianMunicipalContext": {
+      "line": 72,
+      "docstring": "Contexto específico del marco normativo colombiano para PDM",
+      "bases": [],
+      "methods": {}
+    },
+    "PDETMunicipalPlanAnalyzer": {
+      "line": 278,
+      "docstring": "Analizador de vanguardia para Planes de Desarrollo Municipal PDET",
+      "bases": [],
+      "methods": {
+        "__init__": {
+          "line": 281,
+          "signature": "def __init__(self, use_gpu: bool, language: str, confidence_threshold: float)",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test __init__ with valid inputs",
+            "Test __init__ with edge cases",
+            "Verify __init__ output format",
+            "Check __init__ error handling",
+            "Validate __init__ with real PDM data"
+          ]
+        },
+        "_get_spanish_stopwords": {
+          "line": 322,
+          "signature": "def _get_spanish_stopwords(self) -> List[str]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _get_spanish_stopwords with valid inputs",
+            "Test _get_spanish_stopwords with edge cases",
+            "Verify _get_spanish_stopwords output format",
+            "Check _get_spanish_stopwords error handling",
+            "Validate _get_spanish_stopwords with real PDM data"
+          ]
+        },
+        "_clean_dataframe": {
+          "line": 402,
+          "signature": "def _clean_dataframe(self, df: pd.DataFrame) -> pd.DataFrame",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _clean_dataframe with valid inputs",
+            "Test _clean_dataframe with edge cases",
+            "Verify _clean_dataframe output format",
+            "Check _clean_dataframe error handling",
+            "Validate _clean_dataframe with real PDM data"
+          ]
+        },
+        "_is_likely_header": {
+          "line": 420,
+          "signature": "def _is_likely_header(self, row: pd.Series) -> bool",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _is_likely_header with valid inputs",
+            "Test _is_likely_header with edge cases",
+            "Verify _is_likely_header output format",
+            "Check _is_likely_header error handling",
+            "Validate _is_likely_header with real PDM data"
+          ]
+        },
+        "_deduplicate_tables": {
+          "line": 428,
+          "signature": "def _deduplicate_tables(self, tables: List[ExtractedTable]) -> List[ExtractedTable]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _deduplicate_tables with valid inputs",
+            "Test _deduplicate_tables with edge cases",
+            "Verify _deduplicate_tables output format",
+            "Check _deduplicate_tables error handling",
+            "Validate _deduplicate_tables with real PDM data"
+          ]
+        },
+        "_classify_tables": {
+          "line": 495,
+          "signature": "def _classify_tables(self, tables: List[ExtractedTable]) -> List[ExtractedTable]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _classify_tables with valid inputs",
+            "Test _classify_tables with edge cases",
+            "Verify _classify_tables output format",
+            "Check _classify_tables error handling",
+            "Validate _classify_tables with real PDM data"
+          ]
+        },
+        "analyze_financial_feasibility": {
+          "line": 521,
+          "signature": "def analyze_financial_feasibility(self, tables: List[ExtractedTable], text: str) -> Dict[str, Any]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test analyze_financial_feasibility with valid inputs",
+            "Test analyze_financial_feasibility with edge cases",
+            "Verify analyze_financial_feasibility output format",
+            "Check analyze_financial_feasibility error handling",
+            "Validate analyze_financial_feasibility with real PDM data"
+          ]
+        },
+        "_extract_financial_amounts": {
+          "line": 538,
+          "signature": "def _extract_financial_amounts(self, text: str, tables: List[ExtractedTable]) -> List[FinancialIndicator]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _extract_financial_amounts with valid inputs",
+            "Test _extract_financial_amounts with edge cases",
+            "Verify _extract_financial_amounts output format",
+            "Check _extract_financial_amounts error handling",
+            "Validate _extract_financial_amounts with real PDM data"
+          ]
+        },
+        "_identify_funding_source": {
+          "line": 585,
+          "signature": "def _identify_funding_source(self, context: str) -> str",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _identify_funding_source with valid inputs",
+            "Test _identify_funding_source with edge cases",
+            "Verify _identify_funding_source output format",
+            "Check _identify_funding_source error handling",
+            "Validate _identify_funding_source with real PDM data"
+          ]
+        },
+        "_extract_from_budget_table": {
+          "line": 602,
+          "signature": "def _extract_from_budget_table(self, df: pd.DataFrame) -> List[FinancialIndicator]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _extract_from_budget_table with valid inputs",
+            "Test _extract_from_budget_table with edge cases",
+            "Verify _extract_from_budget_table output format",
+            "Check _extract_from_budget_table error handling",
+            "Validate _extract_from_budget_table with real PDM data"
+          ]
+        },
+        "_analyze_funding_sources": {
+          "line": 642,
+          "signature": "def _analyze_funding_sources(self, indicators: List[FinancialIndicator], tables: List[ExtractedTable]) -> Dict[str, Any]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _analyze_funding_sources with valid inputs",
+            "Test _analyze_funding_sources with edge cases",
+            "Verify _analyze_funding_sources output format",
+            "Check _analyze_funding_sources error handling",
+            "Validate _analyze_funding_sources with real PDM data"
+          ]
+        },
+        "_assess_financial_sustainability": {
+          "line": 663,
+          "signature": "def _assess_financial_sustainability(self, indicators: List[FinancialIndicator], funding_sources: Dict[str, Any]) -> float",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _assess_financial_sustainability with valid inputs",
+            "Test _assess_financial_sustainability with edge cases",
+            "Verify _assess_financial_sustainability output format",
+            "Check _assess_financial_sustainability error handling",
+            "Validate _assess_financial_sustainability with real PDM data"
+          ]
+        },
+        "_bayesian_risk_inference": {
+          "line": 679,
+          "signature": "def _bayesian_risk_inference(self, indicators: List[FinancialIndicator], funding_sources: Dict[str, Any], sustainability: float) -> Dict[str, Any]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _bayesian_risk_inference with valid inputs",
+            "Test _bayesian_risk_inference with edge cases",
+            "Verify _bayesian_risk_inference output format",
+            "Check _bayesian_risk_inference error handling",
+            "Validate _bayesian_risk_inference with real PDM data"
+          ]
+        },
+        "_interpret_risk": {
+          "line": 721,
+          "signature": "def _interpret_risk(self, risk: float) -> str",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _interpret_risk with valid inputs",
+            "Test _interpret_risk with edge cases",
+            "Verify _interpret_risk output format",
+            "Check _interpret_risk error handling",
+            "Validate _interpret_risk with real PDM data"
+          ]
+        },
+        "_indicator_to_dict": {
+          "line": 733,
+          "signature": "def _indicator_to_dict(self, ind: FinancialIndicator) -> Dict[str, Any]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _indicator_to_dict with valid inputs",
+            "Test _indicator_to_dict with edge cases",
+            "Verify _indicator_to_dict output format",
+            "Check _indicator_to_dict error handling",
+            "Validate _indicator_to_dict with real PDM data"
+          ]
+        },
+        "identify_responsible_entities": {
+          "line": 747,
+          "signature": "def identify_responsible_entities(self, text: str, tables: List[ExtractedTable]) -> List[ResponsibleEntity]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test identify_responsible_entities with valid inputs",
+            "Test identify_responsible_entities with edge cases",
+            "Verify identify_responsible_entities output format",
+            "Check identify_responsible_entities error handling",
+            "Validate identify_responsible_entities with real PDM data"
+          ]
+        },
+        "_extract_entities_ner": {
+          "line": 761,
+          "signature": "def _extract_entities_ner(self, text: str) -> List[ResponsibleEntity]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _extract_entities_ner with valid inputs",
+            "Test _extract_entities_ner with edge cases",
+            "Verify _extract_entities_ner output format",
+            "Check _extract_entities_ner error handling",
+            "Validate _extract_entities_ner with real PDM data"
+          ]
+        },
+        "_extract_entities_syntax": {
+          "line": 786,
+          "signature": "def _extract_entities_syntax(self, text: str) -> List[ResponsibleEntity]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _extract_entities_syntax with valid inputs",
+            "Test _extract_entities_syntax with edge cases",
+            "Verify _extract_entities_syntax output format",
+            "Check _extract_entities_syntax error handling",
+            "Validate _extract_entities_syntax with real PDM data"
+          ]
+        },
+        "_classify_entity_type": {
+          "line": 813,
+          "signature": "def _classify_entity_type(self, name: str) -> str",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _classify_entity_type with valid inputs",
+            "Test _classify_entity_type with edge cases",
+            "Verify _classify_entity_type output format",
+            "Check _classify_entity_type error handling",
+            "Validate _classify_entity_type with real PDM data"
+          ]
+        },
+        "_extract_from_responsibility_tables": {
+          "line": 826,
+          "signature": "def _extract_from_responsibility_tables(self, tables: List[ExtractedTable]) -> List[ResponsibleEntity]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _extract_from_responsibility_tables with valid inputs",
+            "Test _extract_from_responsibility_tables with edge cases",
+            "Verify _extract_from_responsibility_tables output format",
+            "Check _extract_from_responsibility_tables error handling",
+            "Validate _extract_from_responsibility_tables with real PDM data"
+          ]
+        },
+        "_consolidate_entities": {
+          "line": 857,
+          "signature": "def _consolidate_entities(self, entities: List[ResponsibleEntity]) -> List[ResponsibleEntity]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _consolidate_entities with valid inputs",
+            "Test _consolidate_entities with edge cases",
+            "Verify _consolidate_entities output format",
+            "Check _consolidate_entities error handling",
+            "Validate _consolidate_entities with real PDM data"
+          ]
+        },
+        "_score_entity_specificity": {
+          "line": 891,
+          "signature": "def _score_entity_specificity(self, entities: List[ResponsibleEntity], full_text: str) -> List[ResponsibleEntity]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _score_entity_specificity with valid inputs",
+            "Test _score_entity_specificity with edge cases",
+            "Verify _score_entity_specificity output format",
+            "Check _score_entity_specificity error handling",
+            "Validate _score_entity_specificity with real PDM data"
+          ]
+        },
+        "construct_causal_dag": {
+          "line": 916,
+          "signature": "def construct_causal_dag(self, text: str, tables: List[ExtractedTable], financial_analysis: Dict[str, Any]) -> CausalDAG",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test construct_causal_dag with valid inputs",
+            "Test construct_causal_dag with edge cases",
+            "Verify construct_causal_dag output format",
+            "Check construct_causal_dag error handling",
+            "Validate construct_causal_dag with real PDM data"
+          ]
+        },
+        "_identify_causal_nodes": {
+          "line": 958,
+          "signature": "def _identify_causal_nodes(self, text: str, tables: List[ExtractedTable], financial_analysis: Dict[str, Any]) -> Dict[str, CausalNode]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _identify_causal_nodes with valid inputs",
+            "Test _identify_causal_nodes with edge cases",
+            "Verify _identify_causal_nodes output format",
+            "Check _identify_causal_nodes error handling",
+            "Validate _identify_causal_nodes with real PDM data"
+          ]
+        },
+        "_find_semantic_mentions": {
+          "line": 1008,
+          "signature": "def _find_semantic_mentions(self, text: str, concept: str, concept_embedding: np.ndarray) -> List[str]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _find_semantic_mentions with valid inputs",
+            "Test _find_semantic_mentions with edge cases",
+            "Verify _find_semantic_mentions output format",
+            "Check _find_semantic_mentions error handling",
+            "Validate _find_semantic_mentions with real PDM data"
+          ]
+        },
+        "_find_outcome_mentions": {
+          "line": 1026,
+          "signature": "def _find_outcome_mentions(self, text: str, outcome: str) -> List[str]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _find_outcome_mentions with valid inputs",
+            "Test _find_outcome_mentions with edge cases",
+            "Verify _find_outcome_mentions output format",
+            "Check _find_outcome_mentions error handling",
+            "Validate _find_outcome_mentions with real PDM data"
+          ]
+        },
+        "_find_mediator_mentions": {
+          "line": 1058,
+          "signature": "def _find_mediator_mentions(self, text: str, mediator: str) -> List[str]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _find_mediator_mentions with valid inputs",
+            "Test _find_mediator_mentions with edge cases",
+            "Verify _find_mediator_mentions output format",
+            "Check _find_mediator_mentions error handling",
+            "Validate _find_mediator_mentions with real PDM data"
+          ]
+        },
+        "_extract_budget_for_pillar": {
+          "line": 1089,
+          "signature": "def _extract_budget_for_pillar(self, pillar: str, text: str, financial_analysis: Dict[str, Any]) -> Optional[Decimal]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _extract_budget_for_pillar with valid inputs",
+            "Test _extract_budget_for_pillar with edge cases",
+            "Verify _extract_budget_for_pillar output format",
+            "Check _extract_budget_for_pillar error handling",
+            "Validate _extract_budget_for_pillar with real PDM data"
+          ]
+        },
+        "_identify_causal_edges": {
+          "line": 1110,
+          "signature": "def _identify_causal_edges(self, text: str, nodes: Dict[str, CausalNode]) -> List[CausalEdge]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _identify_causal_edges with valid inputs",
+            "Test _identify_causal_edges with edge cases",
+            "Verify _identify_causal_edges output format",
+            "Check _identify_causal_edges error handling",
+            "Validate _identify_causal_edges with real PDM data"
+          ]
+        },
+        "_match_text_to_node": {
+          "line": 1173,
+          "signature": "def _match_text_to_node(self, text: str, nodes: Dict[str, CausalNode]) -> Optional[str]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _match_text_to_node with valid inputs",
+            "Test _match_text_to_node with edge cases",
+            "Verify _match_text_to_node output format",
+            "Check _match_text_to_node error handling",
+            "Validate _match_text_to_node with real PDM data"
+          ]
+        },
+        "_refine_edge_probabilities": {
+          "line": 1196,
+          "signature": "def _refine_edge_probabilities(self, edges: List[CausalEdge], text: str, nodes: Dict[str, CausalNode]) -> List[CausalEdge]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _refine_edge_probabilities with valid inputs",
+            "Test _refine_edge_probabilities with edge cases",
+            "Verify _refine_edge_probabilities output format",
+            "Check _refine_edge_probabilities error handling",
+            "Validate _refine_edge_probabilities with real PDM data"
+          ]
+        },
+        "_break_cycles": {
+          "line": 1219,
+          "signature": "def _break_cycles(self, G: nx.DiGraph) -> nx.DiGraph",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _break_cycles with valid inputs",
+            "Test _break_cycles with edge cases",
+            "Verify _break_cycles output format",
+            "Check _break_cycles error handling",
+            "Validate _break_cycles with real PDM data"
+          ]
+        },
+        "estimate_causal_effects": {
+          "line": 1234,
+          "signature": "def estimate_causal_effects(self, dag: CausalDAG, text: str, financial_analysis: Dict[str, Any]) -> List[CausalEffect]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test estimate_causal_effects with valid inputs",
+            "Test estimate_causal_effects with edge cases",
+            "Verify estimate_causal_effects output format",
+            "Check estimate_causal_effects error handling",
+            "Validate estimate_causal_effects with real PDM data"
+          ]
+        },
+        "_estimate_effect_bayesian": {
+          "line": 1259,
+          "signature": "def _estimate_effect_bayesian(self, treatment: str, outcome: str, dag: CausalDAG, financial_analysis: Dict[str, Any]) -> Optional[CausalEffect]",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Test _estimate_effect_bayesian with valid inputs",
+            "Test _estimate_effect_bayesian with edge cases",
+            "Verify _estimate_effect_bayesian output format",
+            "Check _estimate_effect_bayesian error handling",
+            "Validate _estimate_effect_bayesian with real PDM data"
+          ]
+        },
+        "_get_prior_effect": {
+          "line": 1329,
+          "signature": "def _get_prior_effect(self, treatment: str, outcome: str) -> Tuple[float, float]",
+          "docstring": "Priors informados basados en meta-análisis de programas PDET\nReferencia: Cinelli et al. (2022) - Sensitivity Analysis for Causal Inference",
+          "verification_steps": [
+            "Test _get_prior_effect with valid inputs",
+            "Test _get_prior_effect with edge cases",
+            "Verify _get_prior_effect output format",
+            "Check _get_prior_effect error handling",
+            "Validate _get_prior_effect with real PDM data"
+          ]
+        },
+        "_identify_confounders": {
+          "line": 1349,
+          "signature": "def _identify_confounders(self, treatment: str, outcome: str, dag: CausalDAG) -> List[str]",
+          "docstring": "Identifica confounders usando d-separation (Pearl, 2009)",
+          "verification_steps": [
+            "Test _identify_confounders with valid inputs",
+            "Test _identify_confounders with edge cases",
+            "Verify _identify_confounders output format",
+            "Check _identify_confounders error handling",
+            "Validate _identify_confounders with real PDM data"
+          ]
+        },
+        "generate_counterfactuals": {
+          "line": 1369,
+          "signature": "def generate_counterfactuals(self, dag: CausalDAG, causal_effects: List[CausalEffect], financial_analysis: Dict[str, Any]) -> List[CounterfactualScenario]",
+          "docstring": "Genera escenarios contrafactuales usando el framework de Pearl (2009)\nLevel 3 - Counterfactual: \"What if we had done X instead of Y?\"\n\nImplementación basada en:\n- Pearl & Mackenzie (2018) - The Book of Why\n- Sharma & Kiciman (2020) - DoWhy: An End-to-End Library for Causal Inference",
+          "verification_steps": [
+            "Test generate_counterfactuals with valid inputs",
+            "Test generate_counterfactuals with edge cases",
+            "Verify generate_counterfactuals output format",
+            "Check generate_counterfactuals error handling",
+            "Validate generate_counterfactuals with real PDM data"
+          ]
+        },
+        "_simulate_intervention": {
+          "line": 1433,
+          "signature": "def _simulate_intervention(self, intervention: Dict[str, float], dag: CausalDAG, causal_effects: List[CausalEffect], description: str) -> CounterfactualScenario",
+          "docstring": "Simula intervención usando do-calculus (Pearl, 2009)\nImplementa: P(Y | do(X=x)) mediante propagación por el DAG",
+          "verification_steps": [
+            "Test _simulate_intervention with valid inputs",
+            "Test _simulate_intervention with edge cases",
+            "Verify _simulate_intervention output format",
+            "Check _simulate_intervention error handling",
+            "Validate _simulate_intervention with real PDM data"
+          ]
+        },
+        "_generate_scenario_narrative": {
+          "line": 1499,
+          "signature": "def _generate_scenario_narrative(self, description: str, intervention: Dict[str, float], predicted_outcomes: Dict[str, Tuple[float, float, float]], probabilities: Dict[str, float]) -> str",
+          "docstring": "Genera narrativa interpretable del escenario contrafactual",
+          "verification_steps": [
+            "Test _generate_scenario_narrative with valid inputs",
+            "Test _generate_scenario_narrative with edge cases",
+            "Verify _generate_scenario_narrative output format",
+            "Check _generate_scenario_narrative error handling",
+            "Validate _generate_scenario_narrative with real PDM data"
+          ]
+        },
+        "sensitivity_analysis": {
+          "line": 1529,
+          "signature": "def sensitivity_analysis(self, causal_effects: List[CausalEffect], dag: CausalDAG) -> Dict[str, Any]",
+          "docstring": "Análisis de sensibilidad para supuestos de identificación causal\nBasado en: Cinelli, Forney & Pearl (2022) - \"A Crash Course in Good and Bad Controls\"",
+          "verification_steps": [
+            "Test sensitivity_analysis with valid inputs",
+            "Test sensitivity_analysis with edge cases",
+            "Verify sensitivity_analysis output format",
+            "Check sensitivity_analysis error handling",
+            "Validate sensitivity_analysis with real PDM data"
+          ]
+        },
+        "_compute_e_value": {
+          "line": 1552,
+          "signature": "def _compute_e_value(self, effect: CausalEffect) -> float",
+          "docstring": "E-value: mínima fuerza de confounding no observado para anular el efecto\nFórmula: E = effect_estimate + sqrt(effect_estimate * (effect_estimate - 1))\n\nReferencia: VanderWeele & Ding (2017) - Ann Intern Med",
+          "verification_steps": [
+            "Test _compute_e_value with valid inputs",
+            "Test _compute_e_value with edge cases",
+            "Verify _compute_e_value output format",
+            "Check _compute_e_value error handling",
+            "Validate _compute_e_value with real PDM data"
+          ]
+        },
+        "_compute_robustness_value": {
+          "line": 1569,
+          "signature": "def _compute_robustness_value(self, effect: CausalEffect, dag: CausalDAG) -> float",
+          "docstring": "Robustness Value: percentil de la distribución posterior que cruza cero\nValores altos (>0.95) indican alta robustez",
+          "verification_steps": [
+            "Test _compute_robustness_value with valid inputs",
+            "Test _compute_robustness_value with edge cases",
+            "Verify _compute_robustness_value output format",
+            "Check _compute_robustness_value error handling",
+            "Validate _compute_robustness_value with real PDM data"
+          ]
+        },
+        "_interpret_sensitivity": {
+          "line": 1588,
+          "signature": "def _interpret_sensitivity(self, e_value: float, robustness: float) -> str",
+          "docstring": "Interpretación de resultados de sensibilidad",
+          "verification_steps": [
+            "Test _interpret_sensitivity with valid inputs",
+            "Test _interpret_sensitivity with edge cases",
+            "Verify _interpret_sensitivity output format",
+            "Check _interpret_sensitivity error handling",
+            "Validate _interpret_sensitivity with real PDM data"
+          ]
+        },
+        "calculate_quality_score": {
+          "line": 1605,
+          "signature": "def calculate_quality_score(self, text: str, tables: List[ExtractedTable], financial_analysis: Dict[str, Any], responsible_entities: List[ResponsibleEntity], causal_dag: CausalDAG, causal_effects: List[CausalEffect]) -> QualityScore",
+          "docstring": "Puntaje bayesiano integral de calidad del PDM\nIntegra todas las dimensiones de análisis con pesos calibrados",
+          "verification_steps": [
+            "Test calculate_quality_score with valid inputs",
+            "Test calculate_quality_score with edge cases",
+            "Verify calculate_quality_score output format",
+            "Check calculate_quality_score error handling",
+            "Validate calculate_quality_score with real PDM data"
+          ]
+        },
+        "_score_financial_component": {
+          "line": 1656,
+          "signature": "def _score_financial_component(self, financial_analysis: Dict[str, Any]) -> float",
+          "docstring": "Score componente financiero (0-10)",
+          "verification_steps": [
+            "Test _score_financial_component with valid inputs",
+            "Test _score_financial_component with edge cases",
+            "Verify _score_financial_component output format",
+            "Check _score_financial_component error handling",
+            "Validate _score_financial_component with real PDM data"
+          ]
+        },
+        "_score_indicators": {
+          "line": 1677,
+          "signature": "def _score_indicators(self, tables: List[ExtractedTable], text: str) -> float",
+          "docstring": "Score calidad de indicadores (0-10)",
+          "verification_steps": [
+            "Test _score_indicators with valid inputs",
+            "Test _score_indicators with edge cases",
+            "Verify _score_indicators output format",
+            "Check _score_indicators error handling",
+            "Validate _score_indicators with real PDM data"
+          ]
+        },
+        "_score_responsibility_clarity": {
+          "line": 1715,
+          "signature": "def _score_responsibility_clarity(self, entities: List[ResponsibleEntity]) -> float",
+          "docstring": "Score claridad de responsables (0-10)",
+          "verification_steps": [
+            "Test _score_responsibility_clarity with valid inputs",
+            "Test _score_responsibility_clarity with edge cases",
+            "Verify _score_responsibility_clarity output format",
+            "Check _score_responsibility_clarity error handling",
+            "Validate _score_responsibility_clarity with real PDM data"
+          ]
+        },
+        "_score_temporal_consistency": {
+          "line": 1732,
+          "signature": "def _score_temporal_consistency(self, text: str, tables: List[ExtractedTable]) -> float",
+          "docstring": "Score consistencia temporal (0-10)",
+          "verification_steps": [
+            "Test _score_temporal_consistency with valid inputs",
+            "Test _score_temporal_consistency with edge cases",
+            "Verify _score_temporal_consistency output format",
+            "Check _score_temporal_consistency error handling",
+            "Validate _score_temporal_consistency with real PDM data"
+          ]
+        },
+        "_score_pdet_alignment": {
+          "line": 1753,
+          "signature": "def _score_pdet_alignment(self, text: str, tables: List[ExtractedTable], dag: CausalDAG) -> float",
+          "docstring": "Score alineación con pilares PDET (0-10)",
+          "verification_steps": [
+            "Test _score_pdet_alignment with valid inputs",
+            "Test _score_pdet_alignment with edge cases",
+            "Verify _score_pdet_alignment output format",
+            "Check _score_pdet_alignment error handling",
+            "Validate _score_pdet_alignment with real PDM data"
+          ]
+        },
+        "_score_causal_coherence": {
+          "line": 1778,
+          "signature": "def _score_causal_coherence(self, dag: CausalDAG, effects: List[CausalEffect]) -> float",
+          "docstring": "Score coherencia causal del plan (0-10)",
+          "verification_steps": [
+            "Test _score_causal_coherence with valid inputs",
+            "Test _score_causal_coherence with edge cases",
+            "Verify _score_causal_coherence output format",
+            "Check _score_causal_coherence error handling",
+            "Validate _score_causal_coherence with real PDM data"
+          ]
+        },
+        "_estimate_score_confidence": {
+          "line": 1802,
+          "signature": "def _estimate_score_confidence(self, scores: np.ndarray, weights: np.ndarray) -> Tuple[float, float]",
+          "docstring": "Estima intervalo de confianza para el score usando bootstrap",
+          "verification_steps": [
+            "Test _estimate_score_confidence with valid inputs",
+            "Test _estimate_score_confidence with edge cases",
+            "Verify _estimate_score_confidence output format",
+            "Check _estimate_score_confidence error handling",
+            "Validate _estimate_score_confidence with real PDM data"
+          ]
+        },
+        "export_causal_network": {
+          "line": 1824,
+          "signature": "def export_causal_network(self, dag: CausalDAG, output_path: str) -> None",
+          "docstring": "Exporta el DAG causal en formato GraphML para Gephi/Cytoscape",
+          "verification_steps": [
+            "Test export_causal_network with valid inputs",
+            "Test export_causal_network with edge cases",
+            "Verify export_causal_network output format",
+            "Check export_causal_network error handling",
+            "Validate export_causal_network with real PDM data"
+          ]
+        },
+        "generate_executive_report": {
+          "line": 1841,
+          "signature": "def generate_executive_report(self, analysis_results: Dict[str, Any]) -> str",
+          "docstring": "Genera reporte ejecutivo en Markdown",
+          "verification_steps": [
+            "Test generate_executive_report with valid inputs",
+            "Test generate_executive_report with edge cases",
+            "Verify generate_executive_report output format",
+            "Check generate_executive_report error handling",
+            "Validate generate_executive_report with real PDM data"
+          ]
+        },
+        "_interpret_overall_quality": {
+          "line": 1923,
+          "signature": "def _interpret_overall_quality(self, score: float) -> str",
+          "docstring": "Interpretación del score global",
+          "verification_steps": [
+            "Test _interpret_overall_quality with valid inputs",
+            "Test _interpret_overall_quality with edge cases",
+            "Verify _interpret_overall_quality output format",
+            "Check _interpret_overall_quality error handling",
+            "Validate _interpret_overall_quality with real PDM data"
+          ]
+        },
+        "_generate_recommendations": {
+          "line": 1944,
+          "signature": "def _generate_recommendations(self, analysis_results: Dict[str, Any]) -> str",
+          "docstring": "Genera recomendaciones específicas basadas en el análisis",
+          "verification_steps": [
+            "Test _generate_recommendations with valid inputs",
+            "Test _generate_recommendations with edge cases",
+            "Verify _generate_recommendations output format",
+            "Check _generate_recommendations error handling",
+            "Validate _generate_recommendations with real PDM data"
+          ]
+        },
+        "_extract_full_text": {
+          "line": 2128,
+          "signature": "def _extract_full_text(self, pdf_path: str) -> str",
+          "docstring": "Extrae texto completo del PDF usando múltiples métodos",
+          "verification_steps": [
+            "Test _extract_full_text with valid inputs",
+            "Test _extract_full_text with edge cases",
+            "Verify _extract_full_text output format",
+            "Check _extract_full_text error handling",
+            "Validate _extract_full_text with real PDM data"
+          ]
+        },
+        "_entity_to_dict": {
+          "line": 2159,
+          "signature": "def _entity_to_dict(self, entity: ResponsibleEntity) -> Dict[str, Any]",
+          "docstring": "Convierte ResponsibleEntity a diccionario",
+          "verification_steps": [
+            "Test _entity_to_dict with valid inputs",
+            "Test _entity_to_dict with edge cases",
+            "Verify _entity_to_dict output format",
+            "Check _entity_to_dict error handling",
+            "Validate _entity_to_dict with real PDM data"
+          ]
+        },
+        "_effect_to_dict": {
+          "line": 2170,
+          "signature": "def _effect_to_dict(self, effect: CausalEffect) -> Dict[str, Any]",
+          "docstring": "Convierte CausalEffect a diccionario",
+          "verification_steps": [
+            "Test _effect_to_dict with valid inputs",
+            "Test _effect_to_dict with edge cases",
+            "Verify _effect_to_dict output format",
+            "Check _effect_to_dict error handling",
+            "Validate _effect_to_dict with real PDM data"
+          ]
+        },
+        "_scenario_to_dict": {
+          "line": 2185,
+          "signature": "def _scenario_to_dict(self, scenario: CounterfactualScenario) -> Dict[str, Any]",
+          "docstring": "Convierte CounterfactualScenario a diccionario",
+          "verification_steps": [
+            "Test _scenario_to_dict with valid inputs",
+            "Test _scenario_to_dict with edge cases",
+            "Verify _scenario_to_dict output format",
+            "Check _scenario_to_dict error handling",
+            "Validate _scenario_to_dict with real PDM data"
+          ]
+        },
+        "_quality_to_dict": {
+          "line": 2194,
+          "signature": "def _quality_to_dict(self, quality: QualityScore) -> Dict[str, Any]",
+          "docstring": "Convierte QualityScore a diccionario",
+          "verification_steps": [
+            "Test _quality_to_dict with valid inputs",
+            "Test _quality_to_dict with edge cases",
+            "Verify _quality_to_dict output format",
+            "Check _quality_to_dict error handling",
+            "Validate _quality_to_dict with real PDM data"
+          ]
+        }
+      }
+    }
+  },
+  "enums": {},
+  "dataclasses": {
+    "CausalNode": {
+      "line": 171,
+      "docstring": "Nodo en el grafo causal",
+      "bases": [],
+      "methods": null
+    },
+    "CausalEdge": {
+      "line": 182,
+      "docstring": "Arista causal entre nodos",
+      "bases": [],
+      "methods": null
+    },
+    "CausalDAG": {
+      "line": 194,
+      "docstring": "Grafo Acíclico Dirigido completo",
+      "bases": [],
+      "methods": null
+    },
+    "CausalEffect": {
+      "line": 203,
+      "docstring": "Efecto causal estimado",
+      "bases": [],
+      "methods": null
+    },
+    "CounterfactualScenario": {
+      "line": 218,
+      "docstring": "Escenario contrafactual",
+      "bases": [],
+      "methods": null
+    },
+    "ExtractedTable": {
+      "line": 227,
+      "docstring": "(No docstring provided)",
+      "bases": [],
+      "methods": null
+    },
+    "FinancialIndicator": {
+      "line": 238,
+      "docstring": "(No docstring provided)",
+      "bases": [],
+      "methods": null
+    },
+    "ResponsibleEntity": {
+      "line": 251,
+      "docstring": "(No docstring provided)",
+      "bases": [],
+      "methods": null
+    },
+    "QualityScore": {
+      "line": 262,
+      "docstring": "(No docstring provided)",
+      "bases": [],
+      "methods": null
+    }
+  },
+  "exceptions": {
+    "PDETAnalysisException": {
+      "line": 2213,
+      "docstring": "Excepción personalizada para errores de análisis",
+      "bases": [
+        "Exception"
+      ],
+      "methods": {}
+    }
+  },
+  "functions": {
+    "validate_pdf_path": {
+      "line": 2218,
+      "signature": "def validate_pdf_path(pdf_path: str) -> Path",
+      "docstring": "Valida que el path del PDF exista y sea válido",
+      "verification_steps": [
+        "Test validate_pdf_path execution",
+        "Verify validate_pdf_path output",
+        "Check validate_pdf_path with edge cases"
+      ]
+    },
+    "setup_logging": {
+      "line": 2235,
+      "signature": "def setup_logging(log_level: str) -> None",
+      "docstring": "Configura logging para el análisis",
+      "verification_steps": [
+        "Test setup_logging execution",
+        "Verify setup_logging output",
+        "Check setup_logging with edge cases"
+      ]
+    }
+  }
+}
