@@ -17,22 +17,38 @@ This repository implements an industrial-grade, event-driven choreography system
 
 ## Quick Start
 
+**🚀 New to DEREK-BEACH? Start here: [QUICKSTART.md](QUICKSTART.md)** - Get up and running in 5 minutes!
+
 ### Prerequisites
 
-- Python 3.11+
-- PyYAML
-- pytest (for testing)
+- **Python**: 3.11 or 3.12 (recommended: 3.12.3)
+- **pip**: Python package installer
+- **Git**: Version control system
 
-### Installation
+For complete system requirements and installation instructions, see **[INSTALLATION.md](INSTALLATION.md)**.
+
+### Quick Start Installation
 
 ```bash
 # Clone the repository
 git clone https://github.com/PEROPOROBTANTE/DEREK-BEACH.git
 cd DEREK-BEACH
 
-# Install dependencies
-pip install pyyaml pytest pytest-cov
+# Check your environment
+python3 check_environment.py
+
+# Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install all dependencies
+pip install -r requirements.txt
+
+# For development, install additional tools
+pip install -r requirements-dev.txt
 ```
+
+**📖 For detailed installation instructions, troubleshooting, and deployment guides, see [INSTALLATION.md](INSTALLATION.md)**
 
 ### Validation
 

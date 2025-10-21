@@ -1,0 +1,256 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.2, pluggy-1.6.0 -- /usr/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/DEREK-BEACH/DEREK-BEACH
+collecting ... collected 46 items
+
+test_teoria_cambio_integration.py::TestCategoriaCausal::test_enum_values 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: CategoriaCausal.enum_values - Status: passed
+PASSED                                                                   [  2%]
+test_teoria_cambio_integration.py::TestCategoriaCausal::test_enum_ordering 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: CategoriaCausal.enum_ordering - Status: passed
+PASSED                                                                   [  4%]
+test_teoria_cambio_integration.py::TestGraphType::test_graph_types 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: GraphType.graph_types - Status: passed
+PASSED                                                                   [  6%]
+test_teoria_cambio_integration.py::TestValidacionResultado::test_initialization 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: ValidacionResultado.initialization - Status: passed
+PASSED                                                                   [  8%]
+test_teoria_cambio_integration.py::TestValidacionResultado::test_with_data 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: ValidacionResultado.with_data - Status: passed
+PASSED                                                                   [ 10%]
+test_teoria_cambio_integration.py::TestValidationMetric::test_metric_creation 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: ValidationMetric.metric_creation - Status: passed
+PASSED                                                                   [ 13%]
+test_teoria_cambio_integration.py::TestAdvancedGraphNode::test_node_creation 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedGraphNode.node_creation - Status: passed
+PASSED                                                                   [ 15%]
+test_teoria_cambio_integration.py::TestAdvancedGraphNode::test_post_init 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedGraphNode.post_init - Status: passed
+PASSED                                                                   [ 17%]
+test_teoria_cambio_integration.py::TestMonteCarloAdvancedResult::test_result_creation 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: MonteCarloAdvancedResult.result_creation - Status: passed
+PASSED                                                                   [ 19%]
+test_teoria_cambio_integration.py::TestTeoriaCambio::test_initialization 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: TeoriaCambio.__init__ - Status: passed
+PASSED                                                                   [ 21%]
+test_teoria_cambio_integration.py::TestTeoriaCambio::test_es_conexion_valida 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: TeoriaCambio._es_conexion_valida - Status: passed
+PASSED                                                                   [ 23%]
+test_teoria_cambio_integration.py::TestTeoriaCambio::test_construir_grafo_causal 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:228 Grafo causal canónico construido: 5 nodos, 4 aristas.
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: TeoriaCambio.construir_grafo_causal - Status: passed
+PASSED                                                                   [ 26%]
+test_teoria_cambio_integration.py::TestTeoriaCambio::test_validacion_completa 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:228 Grafo causal canónico construido: 5 nodos, 4 aristas.
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: TeoriaCambio.validacion_completa - Status: passed
+PASSED                                                                   [ 28%]
+test_teoria_cambio_integration.py::TestTeoriaCambio::test_extraer_categorias 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:228 Grafo causal canónico construido: 5 nodos, 4 aristas.
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: TeoriaCambio._extraer_categorias - Status: passed
+PASSED                                                                   [ 30%]
+test_teoria_cambio_integration.py::TestTeoriaCambio::test_validar_orden_causal 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:228 Grafo causal canónico construido: 5 nodos, 4 aristas.
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: TeoriaCambio._validar_orden_causal - Status: passed
+PASSED                                                                   [ 32%]
+test_teoria_cambio_integration.py::TestTeoriaCambio::test_encontrar_caminos_completos 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:228 Grafo causal canónico construido: 5 nodos, 4 aristas.
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: TeoriaCambio._encontrar_caminos_completos - Status: passed
+PASSED                                                                   [ 34%]
+test_teoria_cambio_integration.py::TestTeoriaCambio::test_generar_sugerencias_internas 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: TeoriaCambio._generar_sugerencias_internas - Status: passed
+PASSED                                                                   [ 36%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_initialization 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator.__init__ - Status: passed
+PASSED                                                                   [ 39%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_add_node 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator.add_node - Status: passed
+PASSED                                                                   [ 41%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_add_edge 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator.add_edge - Status: passed
+PASSED                                                                   [ 43%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_initialize_rng 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:347 [Audit 1.1] Deterministic seed: 2593946828772254395 (plan=TestPlan, salt=salt1, date=20251021)
+INFO     teoria_cambio:teoria_cambio.py:413 [Audit 1.1] RNG initialized with seed=2593946828772254395 for plan=TestPlan
+INFO     teoria_cambio:teoria_cambio.py:347 [Audit 1.1] Deterministic seed: 2593946828772254395 (plan=TestPlan, salt=salt1, date=20251021)
+INFO     teoria_cambio:teoria_cambio.py:413 [Audit 1.1] RNG initialized with seed=2593946828772254395 for plan=TestPlan
+INFO     teoria_cambio:teoria_cambio.py:347 [Audit 1.1] Deterministic seed: 7878569193446002064 (plan=TestPlan, salt=salt2, date=20251021)
+INFO     teoria_cambio:teoria_cambio.py:413 [Audit 1.1] RNG initialized with seed=7878569193446002064 for plan=TestPlan
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator._initialize_rng - Status: passed
+PASSED                                                                   [ 45%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_is_acyclic 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator._is_acyclic - Status: passed
+PASSED                                                                   [ 47%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_generate_subgraph 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:347 [Audit 1.1] Deterministic seed: 7815004427755086419 (plan=TestPlan, salt=, date=20251021)
+INFO     teoria_cambio:teoria_cambio.py:413 [Audit 1.1] RNG initialized with seed=7815004427755086419 for plan=TestPlan
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator._generate_subgraph - Status: passed
+PASSED                                                                   [ 50%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_calculate_acyclicity_pvalue 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:838 Grafo de demostración para la política 'P1' construido.
+INFO     teoria_cambio:teoria_cambio.py:347 [Audit 1.1] Deterministic seed: 15783375097216787343 (plan=TestPolicy, salt=, date=20251021)
+INFO     teoria_cambio:teoria_cambio.py:413 [Audit 1.1] RNG initialized with seed=15783375097216787343 for plan=TestPolicy
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator.calculate_acyclicity_pvalue - Status: passed
+PASSED                                                                   [ 52%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_perform_sensitivity_analysis_internal 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:347 [Audit 1.1] Deterministic seed: 7815004427755086419 (plan=TestPlan, salt=, date=20251021)
+INFO     teoria_cambio:teoria_cambio.py:413 [Audit 1.1] RNG initialized with seed=7815004427755086419 for plan=TestPlan
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator._perform_sensitivity_analysis_internal - Status: passed
+PASSED                                                                   [ 54%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_calculate_confidence_interval 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator._calculate_confidence_interval - Status: passed
+PASSED                                                                   [ 56%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_calculate_statistical_power 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator._calculate_statistical_power - Status: passed
+PASSED                                                                   [ 58%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_calculate_bayesian_posterior 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator._calculate_bayesian_posterior - Status: passed
+PASSED                                                                   [ 60%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_calculate_node_importance 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator._calculate_node_importance - Status: passed
+PASSED                                                                   [ 63%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_get_graph_stats 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator.get_graph_stats - Status: passed
+PASSED                                                                   [ 65%]
+test_teoria_cambio_integration.py::TestAdvancedDAGValidator::test_create_empty_result 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: AdvancedDAGValidator._create_empty_result - Status: passed
+PASSED                                                                   [ 67%]
+test_teoria_cambio_integration.py::TestIndustrialGradeValidator::test_initialization 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: IndustrialGradeValidator.__init__ - Status: passed
+PASSED                                                                   [ 69%]
+test_teoria_cambio_integration.py::TestIndustrialGradeValidator::test_execute_suite 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:665 ================================================================================
+INFO     teoria_cambio:teoria_cambio.py:666 INICIO DE SUITE DE CERTIFICACIÓN INDUSTRIAL
+INFO     teoria_cambio:teoria_cambio.py:667 ================================================================================
+INFO     teoria_cambio:teoria_cambio.py:697   [Capa 1] Validando disponibilidad de motores...
+INFO     teoria_cambio:teoria_cambio.py:796     🟢 Disponibilidad del Motor: 0.0000 s (Límite: 0.0500 s) - ✅ PASÓ
+INFO     teoria_cambio:teoria_cambio.py:716   [Capa 2] Validando axiomas de categorías causales...
+INFO     teoria_cambio:teoria_cambio.py:728     ✅ Axiomas de categorías validados.
+INFO     teoria_cambio:teoria_cambio.py:733   [Capa 3] Validando matriz de transiciones causales...
+INFO     teoria_cambio:teoria_cambio.py:748     ✅ Matriz de transiciones validada.
+INFO     teoria_cambio:teoria_cambio.py:753   [Capa 4] Ejecutando benchmarks de rendimiento...
+INFO     teoria_cambio:teoria_cambio.py:228 Grafo causal canónico construido: 5 nodos, 4 aristas.
+INFO     teoria_cambio:teoria_cambio.py:796     🟢 Construcción de Grafo: 0.0001 s (Límite: 0.1000 s) - ✅ PASÓ
+INFO     teoria_cambio:teoria_cambio.py:796     🟢 Detección de Caminos: 0.0001 s (Límite: 0.2000 s) - ✅ PASÓ
+INFO     teoria_cambio:teoria_cambio.py:796     🟢 Validación Completa: 0.0001 s (Límite: 0.3000 s) - ✅ PASÓ
+INFO     teoria_cambio:teoria_cambio.py:681 
+================================================================================
+INFO     teoria_cambio:teoria_cambio.py:682 📊 INFORME DE CERTIFICACIÓN INDUSTRIAL
+INFO     teoria_cambio:teoria_cambio.py:683 ================================================================================
+INFO     teoria_cambio:teoria_cambio.py:684   - Tiempo Total de la Suite: 0.001 segundos
+INFO     teoria_cambio:teoria_cambio.py:685   - Tasa de Éxito de Métricas: 100.0%% (4/4)
+INFO     teoria_cambio:teoria_cambio.py:690   🏆 VEREDICTO: CERTIFICACIÓN OTORGADA
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: IndustrialGradeValidator.execute_suite - Status: passed
+PASSED                                                                   [ 71%]
+test_teoria_cambio_integration.py::TestIndustrialGradeValidator::test_validate_engine_readiness 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:697   [Capa 1] Validando disponibilidad de motores...
+INFO     teoria_cambio:teoria_cambio.py:796     🟢 Disponibilidad del Motor: 0.0000 s (Límite: 0.0500 s) - ✅ PASÓ
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: IndustrialGradeValidator.validate_engine_readiness - Status: passed
+PASSED                                                                   [ 73%]
+test_teoria_cambio_integration.py::TestIndustrialGradeValidator::test_validate_causal_categories 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:716   [Capa 2] Validando axiomas de categorías causales...
+INFO     teoria_cambio:teoria_cambio.py:728     ✅ Axiomas de categorías validados.
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: IndustrialGradeValidator.validate_causal_categories - Status: passed
+PASSED                                                                   [ 76%]
+test_teoria_cambio_integration.py::TestIndustrialGradeValidator::test_validate_connection_matrix 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:733   [Capa 3] Validando matriz de transiciones causales...
+INFO     teoria_cambio:teoria_cambio.py:748     ✅ Matriz de transiciones validada.
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: IndustrialGradeValidator.validate_connection_matrix - Status: passed
+PASSED                                                                   [ 78%]
+test_teoria_cambio_integration.py::TestIndustrialGradeValidator::test_run_performance_benchmarks 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:753   [Capa 4] Ejecutando benchmarks de rendimiento...
+INFO     teoria_cambio:teoria_cambio.py:228 Grafo causal canónico construido: 5 nodos, 4 aristas.
+INFO     teoria_cambio:teoria_cambio.py:796     🟢 Construcción de Grafo: 0.0001 s (Límite: 0.1000 s) - ✅ PASÓ
+INFO     teoria_cambio:teoria_cambio.py:796     🟢 Detección de Caminos: 0.0000 s (Límite: 0.2000 s) - ✅ PASÓ
+INFO     teoria_cambio:teoria_cambio.py:796     🟢 Validación Completa: 0.0001 s (Límite: 0.3000 s) - ✅ PASÓ
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: IndustrialGradeValidator.run_performance_benchmarks - Status: passed
+PASSED                                                                   [ 80%]
+test_teoria_cambio_integration.py::TestIndustrialGradeValidator::test_benchmark_operation 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:796     🟢 Test Operation: 0.0101 s (Límite: 0.1000 s) - ✅ PASÓ
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: IndustrialGradeValidator._benchmark_operation - Status: passed
+PASSED                                                                   [ 82%]
+test_teoria_cambio_integration.py::TestIndustrialGradeValidator::test_log_metric 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:796     🟢 Test Metric: 0.0500 s (Límite: 0.1000 s) - ✅ PASÓ
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: IndustrialGradeValidator._log_metric - Status: passed
+PASSED                                                                   [ 84%]
+test_teoria_cambio_integration.py::TestGlobalFunctions::test_configure_logging 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: configure_logging - Status: passed
+PASSED                                                                   [ 86%]
+test_teoria_cambio_integration.py::TestGlobalFunctions::test_create_advanced_seed 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:347 [Audit 1.1] Deterministic seed: 2593946828772254395 (plan=TestPlan, salt=salt1, date=20251021)
+INFO     teoria_cambio:teoria_cambio.py:347 [Audit 1.1] Deterministic seed: 2593946828772254395 (plan=TestPlan, salt=salt1, date=20251021)
+INFO     teoria_cambio:teoria_cambio.py:347 [Audit 1.1] Deterministic seed: 7878569193446002064 (plan=TestPlan, salt=salt2, date=20251021)
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: _create_advanced_seed - Status: passed
+PASSED                                                                   [ 89%]
+test_teoria_cambio_integration.py::TestGlobalFunctions::test_create_policy_theory_of_change_graph 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:838 Grafo de demostración para la política 'P1' construido.
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: create_policy_theory_of_change_graph - Status: passed
+PASSED                                                                   [ 91%]
+test_teoria_cambio_integration.py::TestEdgeCases::test_empty_graph_validation 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: edge_case.empty_graph - Status: passed
+PASSED                                                                   [ 93%]
+test_teoria_cambio_integration.py::TestEdgeCases::test_zero_iterations_monte_carlo 
+-------------------------------- live log call ---------------------------------
+INFO     teoria_cambio:teoria_cambio.py:347 [Audit 1.1] Deterministic seed: 8850706432036667723 (plan=Test, salt=, date=20251021)
+INFO     teoria_cambio:teoria_cambio.py:413 [Audit 1.1] RNG initialized with seed=8850706432036667723 for plan=Test
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: edge_case.zero_iterations - Status: passed
+PASSED                                                                   [ 95%]
+test_teoria_cambio_integration.py::TestEdgeCases::test_single_node_graph 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: edge_case.single_node - Status: passed
+PASSED                                                                   [ 97%]
+test_teoria_cambio_integration.py::TestEdgeCases::test_large_graph_performance 
+-------------------------------- live log call ---------------------------------
+INFO     test_teoria_cambio_integration:test_teoria_cambio_integration.py:78 Test: edge_case.large_graph - Status: passed
+PASSED                                                                   [100%]
+
+=============================== warnings summary ===============================
+test_teoria_cambio_integration.py:64
+  /home/runner/work/DEREK-BEACH/DEREK-BEACH/test_teoria_cambio_integration.py:64: PytestCollectionWarning: cannot collect test class 'TestExecutionLog' because it has a __init__ constructor (from: test_teoria_cambio_integration.py)
+    class TestExecutionLog:
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 46 passed, 1 warning in 0.68s =========================
