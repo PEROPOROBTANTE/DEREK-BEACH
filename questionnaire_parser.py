@@ -94,8 +94,13 @@ class QuestionnaireParser:
 
     def _validate_structure(self, data: Dict[str, Any]):
         """Validate JSON structure"""
-        required_keys = ["metadata", "dimensiones", "puntos_tematicos"]
+        required_keys = ["metadata", "dimensiones"]
+        # Check for policy areas key (either name is acceptable)
+        has_policy_areas = "puntos_tematicos" in data or "puntos_decalogo" in data
+        
         missing = [k for k in required_keys if k not in data]
+        if not has_policy_areas:
+            missing.append("puntos_tematicos or puntos_decalogo")
         
         if missing:
             logger.warning(f"Missing keys in cuestionario.json: {missing}")
@@ -114,22 +119,80 @@ class QuestionnaireParser:
 
     def _load_policy_areas(self, data: Dict[str, Any]):
         """Load policy area definitions"""
+        # Support both key names for backward compatibility
         policy_data = data.get("puntos_tematicos", {})
+        if not policy_data:
+            policy_data = data.get("puntos_decalogo", {})
         
         for policy_id, policy_info in policy_data.items():
             self._policy_areas[policy_id] = {
                 "id": policy_id,
-                "titulo": policy_info.get("titulo", policy_id),
+                "titulo": policy_info.get("nombre", policy_info.get("titulo", policy_id)),
                 "palabras_clave": policy_info.get("palabras_clave", [])
             }
 
     def _load_questions(self, data: Dict[str, Any]):
-        """Load and generate 300 questions"""
+        """Load 300 questions from cuestionario.json"""
         questions_data = data.get("preguntas", [])
         
         if not questions_data:
+            # Fallback to old structure if preguntas is not found
             questions_data = self._extract_questions_from_dimensions(data)
+            logger.warning(
+                "Using fallback question generation - 'preguntas' key not found"
+            )
         
+        # Check if questions are already expanded (have P# prefix in ID)
+        if questions_data and 'P' in questions_data[0].get('id', ''):
+            # Questions are pre-expanded with P#-D#-Q# notation
+            logger.info("Loading pre-expanded questions with P#-D#-Q# notation")
+            
+            for question_data in questions_data:
+                question_id = question_data.get("id", "")
+                dimension = question_data.get("dimension", "")
+                question_no = question_data.get("numero", 0)  # cuestionario.json uses 'numero'
+                
+                # Extract policy area from ID (e.g., P1-D1-Q1 -> P1)
+                policy_area = question_id.split('-')[0] if '-' in question_id else "P1"
+                
+                # Get policy area title
+                policy_title = self._policy_areas.get(
+                    policy_area, {}
+                ).get("titulo", policy_area)
+                
+                # Get text template or direct text
+                template = question_data.get("texto_template", "")
+                question_text = template  # Already customized per policy area
+                
+                question = QuestionSpec(
+                    question_id=question_id,
+                    dimension=dimension,
+                    question_no=question_no,
+                    policy_area=policy_area,
+                    template=template,
+                    text=question_text,
+                    scoring_modality=question_data.get("scoring_modality", "TYPE_A"),
+                    max_score=question_data.get("max_score", 3.0),
+                    expected_elements=question_data.get("expected_elements", []),
+                    metadata={
+                        "policy_title": policy_title,
+                        "dimension_name": self._dimensions.get(dimension, {}).get(
+                            "nombre", dimension
+                        ),
+                        **question_data.get("metadata", {})
+                    }
+                )
+                
+                self._questions[question_id] = question
+        else:
+            # Old approach: generate from templates (for backward compatibility)
+            logger.info("Generating questions from templates")
+            self._generate_questions_from_templates(questions_data)
+        
+        logger.info(f"Loaded {len(self._questions)} questions")
+    
+    def _generate_questions_from_templates(self, questions_data: List[Dict]):
+        """Generate 300 questions from 30 templates (backward compatibility)"""
         for policy_num in range(1, 11):
             policy_id = f"P{policy_num}"
             policy_title = self._policy_areas.get(
@@ -147,7 +210,7 @@ class QuestionnaireParser:
                 question_id = f"{policy_id}-{base_id}"
                 
                 question = QuestionSpec(
-                    question_id=base_id,
+                    question_id=question_id,
                     dimension=dimension,
                     question_no=question_no,
                     policy_area=policy_id,
@@ -165,8 +228,6 @@ class QuestionnaireParser:
                 )
                 
                 self._questions[question_id] = question
-        
-        logger.info(f"Generated {len(self._questions)} questions")
 
     def _extract_questions_from_dimensions(self, data: Dict[str, Any]) -> List[Dict]:
         """Extract question templates from dimension definitions"""
