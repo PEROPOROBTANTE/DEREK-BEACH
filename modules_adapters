@@ -21,38 +21,15 @@ This is the FINAL MERGED version combining:
 - All global definitions (Enums, DataClasses) from both sources
 
 Author: Integration Team
-Version: 3.0.0 - Complete Merged (Simulations Removed)
+Version: 3.0.0 - Complete Merged
 Python: 3.10+
-
-IMPORTANT CHANGES - NO SIMULATIONS/MOCKS:
-==========================================
-- The 'random' module has been REMOVED - no simulations allowed
-- All adapters require REAL implementations from external modules
-- Adapters correctly report as "NOT Available" when modules don't exist
-- No fake "available" status for mock implementations
-- Method implementations may contain legacy simulation code that won't execute
-  since adapters are unavailable until real modules are provided
-- This is production-ready code waiting for real module implementations
-
-REQUIRED EXTERNAL MODULES (currently NOT available):
-=====================================================
-1. policy_processor - Policy processing with Bayesian evidence
-2. policy_segmenter - Document segmentation system
-3. teoria_cambio - Theory of change validation
-4. analyzer_one - Policy analysis system
-5. derek_beach - Derek Beach methodology
-6. embedding_policy - Semantic embedding analysis
-7. semantic_chunking_policy - Semantic chunking
-8. contradiction_detection - Contradiction detection
-9. financiero_viabilidad_tablas - Financial viability analysis
-
-See MODULES_ADAPTERS_README.md for detailed documentation.
 """
 
 import logging
 import time
 import sys
 import hashlib
+import random
 import re
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Tuple, Union, Set
@@ -61,9 +38,6 @@ from collections import defaultdict
 from enum import Enum, auto
 from datetime import datetime
 import numpy as np
-
-# Note: random module removed - no simulations/mocks allowed
-# All adapters must use real implementations from external modules
 
 # Configuración de logging
 logging.basicConfig(
@@ -1899,18 +1873,18 @@ class AnalyzerOneAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo AnalyzerOne"""
         try:
-            # Real implementation required - no mock/simulation allowed
-            # Import actual AnalyzerOne module when available
-            from analyzer_one import (
-                TextProcessor,
-                EntityExtractor,
+            # Import real Analyzer_one module
+            from Analyzer_one import (
+                MunicipalOntology,
                 SemanticAnalyzer,
-                ReportGenerator,
+                QualityControlEngine,
+                PolicyAnalysisPipeline
             )
-            self.TextProcessor = TextProcessor
-            self.EntityExtractor = EntityExtractor
+            
+            self.MunicipalOntology = MunicipalOntology
             self.SemanticAnalyzer = SemanticAnalyzer
-            self.ReportGenerator = ReportGenerator
+            self.QualityControlEngine = QualityControlEngine
+            self.PolicyAnalysisPipeline = PolicyAnalysisPipeline
             
             self.available = True
             self.logger.info(
@@ -3017,18 +2991,24 @@ class EmbeddingPolicyAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo EmbeddingPolicy"""
         try:
-            # Real implementation required - no mock/simulation allowed
-            # Import actual EmbeddingPolicy module when available
+            # Import real embedding_policy module
             from embedding_policy import (
-                EmbeddingGenerator,
-                PolicyComparer,
-                ClusterAnalyzer,
-                SemanticSearcher,
+                PolicyDomain,
+                AnalyticalDimension,
+                AdvancedSemanticChunker,
+                BayesianNumericalAnalyzer,
+                PolicyCrossEncoderReranker,
+                PolicyEmbeddingConfig,
+                PolicyAnalysisEmbedder
             )
-            self.EmbeddingGenerator = EmbeddingGenerator
-            self.PolicyComparer = PolicyComparer
-            self.ClusterAnalyzer = ClusterAnalyzer
-            self.SemanticSearcher = SemanticSearcher
+            
+            self.PolicyDomain = PolicyDomain
+            self.AnalyticalDimension = AnalyticalDimension
+            self.AdvancedSemanticChunker = AdvancedSemanticChunker
+            self.BayesianNumericalAnalyzer = BayesianNumericalAnalyzer
+            self.PolicyCrossEncoderReranker = PolicyCrossEncoderReranker
+            self.PolicyEmbeddingConfig = PolicyEmbeddingConfig
+            self.PolicyAnalysisEmbedder = PolicyAnalysisEmbedder
             
             self.available = True
             self.logger.info(
@@ -4201,16 +4181,22 @@ class SemanticChunkingPolicyAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo SemanticChunkingPolicy"""
         try:
-            # Real implementation required - no mock/simulation allowed
-            # Import actual SemanticChunkingPolicy module when available
+            # Import real semantic_chunking_policy module
             from semantic_chunking_policy import (
-                SemanticChunker,
-                ChunkMerger,
-                BoundaryDetector,
+                CausalDimension,
+                PDMSection,
+                SemanticConfig,
+                SemanticProcessor,
+                BayesianEvidenceIntegrator,
+                PolicyDocumentAnalyzer
             )
-            self.SemanticChunker = SemanticChunker
-            self.ChunkMerger = ChunkMerger
-            self.BoundaryDetector = BoundaryDetector
+            
+            self.CausalDimension = CausalDimension
+            self.PDMSection = PDMSection
+            self.SemanticConfig = SemanticConfig
+            self.SemanticProcessor = SemanticProcessor
+            self.BayesianEvidenceIntegrator = BayesianEvidenceIntegrator
+            self.PolicyDocumentAnalyzer = PolicyDocumentAnalyzer
             
             self.available = True
             self.logger.info(
@@ -5544,20 +5530,22 @@ class DerekBeachAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo DerekBeach"""
         try:
-            # Real implementation required - no mock/simulation allowed
-            # Import actual DerekBeach module when available
-            from derek_beach import (
-                ProblemAnalysis,
-                PolicyFormulation,
-                ImplementationPlanning,
-                EvaluationFramework,
-                ProcessTracingAnalyzer,
+            # Import real dereck_beach module
+            from dereck_beach import (
+                BeachEvidentialTest,
+                CDAFConfigSchema,
+                CausalExtractor,
+                MechanismPartExtractor,
+                PDFProcessor,
+                ConfigLoader
             )
-            self.ProblemAnalysis = ProblemAnalysis
-            self.PolicyFormulation = PolicyFormulation
-            self.ImplementationPlanning = ImplementationPlanning
-            self.EvaluationFramework = EvaluationFramework
-            self.ProcessTracingAnalyzer = ProcessTracingAnalyzer
+            
+            self.BeachEvidentialTest = BeachEvidentialTest
+            self.CDAFConfigSchema = CDAFConfigSchema
+            self.CausalExtractor = CausalExtractor
+            self.MechanismPartExtractor = MechanismPartExtractor
+            self.PDFProcessor = PDFProcessor
+            self.ConfigLoader = ConfigLoader
             
             self.available = True
             self.logger.info(
@@ -10066,17 +10054,17 @@ class ContradictionDetectionAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo ContradictionDetection"""
         try:
-            # Real implementation required - no mock/simulation allowed
-            # Import actual ContradictionDetection module when available
-            from contradiction_detection import (
+            # Import real contradiction_deteccion module
+            from contradiction_deteccion import (
                 ContradictionType,
                 PolicyDimension,
                 PolicyStatement,
                 ContradictionEvidence,
                 PolicyContradictionDetector,
                 BayesianConfidenceCalculator,
-                TemporalLogicVerifier,
+                TemporalLogicVerifier
             )
+            
             self.ContradictionType = ContradictionType
             self.PolicyDimension = PolicyDimension
             self.PolicyStatement = PolicyStatement
@@ -11274,19 +11262,7 @@ class ModulosAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo teoria_cambio"""
         try:
-            # Real implementation required - no mock/simulation allowed
-            # Import actual teoria_cambio module when available
-            from teoria_cambio import (
-                TeoriaCambio,
-                AdvancedDAGValidator,
-                IndustrialGradeValidator,
-                CategoriaCausal,
-                GraphType,
-                ValidacionResultado,
-                ValidationMetric,
-                AdvancedGraphNode,
-                MonteCarloAdvancedResult,
-            )
+            # Importamos las clases del módulo teoria_cambio
             self.TeoriaCambio = TeoriaCambio
             self.AdvancedDAGValidator = AdvancedDAGValidator
             self.IndustrialGradeValidator = IndustrialGradeValidator
