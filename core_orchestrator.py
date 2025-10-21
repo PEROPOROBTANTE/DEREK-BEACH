@@ -1,3 +1,4 @@
+# coding=utf-8
 """
 Core Orchestrator - FARFAN 3.0 Main Coordination Engine
 ========================================================
