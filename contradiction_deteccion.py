@@ -1423,6 +1423,51 @@ class PolicyContradictionDetector:
 
         return False
 
+    def _determine_relation_type(
+            self,
+            stmt_a: PolicyStatement,
+            stmt_b: PolicyStatement
+    ) -> str:
+        """Determina el tipo de relación entre dos declaraciones"""
+        # Analizar roles semánticos
+        if stmt_a.semantic_role and stmt_b.semantic_role:
+            if stmt_a.semantic_role == stmt_b.semantic_role:
+                return "parallel"
+            elif stmt_a.semantic_role in ["strategy", "objective"] and stmt_b.semantic_role == "action":
+                return "enables"
+            elif stmt_a.semantic_role == "action" and stmt_b.semantic_role in ["indicator", "resource"]:
+                return "requires"
+        
+        # Analizar dependencias
+        if stmt_a.dependencies & {stmt_b.text[:50]}:
+            return "depends_on"
+        
+        # Por defecto, relación de similaridad
+        return "related"
+
+    def _calculate_severity(
+            self,
+            stmt_a: PolicyStatement,
+            stmt_b: PolicyStatement
+    ) -> float:
+        """Calcula la severidad de una contradicción entre declaraciones"""
+        severity = 0.5  # Base severity
+        
+        # Incrementar si las declaraciones están en la misma dimensión
+        if stmt_a.dimension == stmt_b.dimension:
+            severity += 0.2
+        
+        # Incrementar si tienen muchas entidades en común
+        common_entities = set(stmt_a.entities) & set(stmt_b.entities)
+        if len(common_entities) > 0:
+            severity += min(0.2, len(common_entities) * 0.05)
+        
+        # Incrementar si tienen marcadores temporales en conflicto
+        if stmt_a.temporal_markers and stmt_b.temporal_markers:
+            severity += 0.1
+        
+        return min(1.0, severity)
+
 
 # Punto de entrada para uso directo
 if __name__ == "__main__":
