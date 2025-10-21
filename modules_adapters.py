@@ -54,7 +54,6 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ModuleResult:
     """Formato de salida estandarizado para todos los módulos"""
-
     module_name: str
     class_name: str
     method_name: str
@@ -189,11 +188,11 @@ class PolicyStatement:
 @dataclass
 class ContradictionEvidence:
     """Evidence of policy contradiction"""
-
     contradiction_type: str
     statements: List[PolicyStatement]
     confidence: float
     evidence: List[Dict[str, Any]] = field(default_factory=list)
+
 
 
 class EmbeddingGenerator:

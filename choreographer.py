@@ -898,13 +898,13 @@ class ExecutionChoreographer:
                 steps_successful=successful_steps,
                 steps_failed=failed_steps
             )
-        
+
         # Create and emit event
         metadata = create_event_metadata(
             EventType.SUB_PROCESS_FAILED,
             "choreographer"
         )
-        
+
         event = SubProcessFailedEvent(
             metadata=metadata,
             context=context,
@@ -918,13 +918,13 @@ class ExecutionChoreographer:
             },
             partial_result=partial_result
         )
-        
+
         # Publish to event bus
         success = self.event_bus.publish(
             EventType.SUB_PROCESS_FAILED,
             event.to_dict()
         )
-        
+
         if success:
             logger.info(
                 f"Emitted SubProcessFailedEvent: "
@@ -954,3 +954,4 @@ if __name__ == "__main__":
         if deps:
             print(f"    Depends on: {', '.join(deps)}")
     print("=" * 80)
+
