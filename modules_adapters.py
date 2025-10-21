@@ -5689,26 +5689,73 @@ class DerekBeachAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo DerekBeach"""
         try:
-            # Import real dereck_beach module
+            # Import ALL classes from dereck_beach module according to CDAF framework
             from dereck_beach import (
-                BeachEvidentialTest,
+                # Core Framework Classes
+                CDAFFramework,
+                CDAFException,
+                CDAFValidationError,
+                CDAFProcessingError,
+                CDAFBayesianError,
+                CDAFConfigError,
+                # Configuration Classes
+                ConfigLoader,
                 CDAFConfigSchema,
+                BayesianThresholdsConfig,
+                MechanismTypeConfig,
+                PerformanceConfig,
+                SelfReflectionConfig,
+                # Data Classes and TypedDicts
+                MetaNode,
+                CausalLink,
+                AuditResult,
+                GoalClassification,
+                EntityActivity,
+                # Core Analysis Classes
+                BeachEvidentialTest,
                 CausalExtractor,
+                CausalInferenceSetup,
+                BayesianMechanismInference,
                 MechanismPartExtractor,
+                # Auditing Classes
+                OperationalizationAuditor,
+                FinancialAuditor,
+                # Processing Classes
                 PDFProcessor,
-                ConfigLoader
+                ReportingEngine,
             )
             
-            self.BeachEvidentialTest = BeachEvidentialTest
-            self.CDAFConfigSchema = CDAFConfigSchema
-            self.CausalExtractor = CausalExtractor
-            self.MechanismPartExtractor = MechanismPartExtractor
-            self.PDFProcessor = PDFProcessor
+            # Store all classes as attributes
+            self.CDAFFramework = CDAFFramework
+            self.CDAFException = CDAFException
+            self.CDAFValidationError = CDAFValidationError
+            self.CDAFProcessingError = CDAFProcessingError
+            self.CDAFBayesianError = CDAFBayesianError
+            self.CDAFConfigError = CDAFConfigError
             self.ConfigLoader = ConfigLoader
+            self.CDAFConfigSchema = CDAFConfigSchema
+            self.BayesianThresholdsConfig = BayesianThresholdsConfig
+            self.MechanismTypeConfig = MechanismTypeConfig
+            self.PerformanceConfig = PerformanceConfig
+            self.SelfReflectionConfig = SelfReflectionConfig
+            self.MetaNode = MetaNode
+            self.CausalLink = CausalLink
+            self.AuditResult = AuditResult
+            self.GoalClassification = GoalClassification
+            self.EntityActivity = EntityActivity
+            self.BeachEvidentialTest = BeachEvidentialTest
+            self.CausalExtractor = CausalExtractor
+            self.CausalInferenceSetup = CausalInferenceSetup
+            self.BayesianMechanismInference = BayesianMechanismInference
+            self.MechanismPartExtractor = MechanismPartExtractor
+            self.OperationalizationAuditor = OperationalizationAuditor
+            self.FinancialAuditor = FinancialAuditor
+            self.PDFProcessor = PDFProcessor
+            self.ReportingEngine = ReportingEngine
             
             self.available = True
             self.logger.info(
-                f"✓ {self.module_name} cargado con TODOS los componentes de análisis Derek Beach"
+                f"✓ {self.module_name} cargado con TODOS los componentes de análisis Derek Beach (26 clases CDAF)"
             )
 
         except ImportError as e:
