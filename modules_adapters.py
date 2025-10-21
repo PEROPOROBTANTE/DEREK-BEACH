@@ -37,13 +37,38 @@ from dataclasses import dataclass, field
 from collections import defaultdict
 from enum import Enum, auto
 from datetime import datetime
-import numpy as np
 
 # Configuración de logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+# Optional numpy import (used only for type hints and stub data)
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    logger.warning("numpy not available - using fallback for type hints")
+    HAS_NUMPY = False
+    # Create a minimal numpy stub for type annotations
+    class np:
+        class ndarray:
+            pass
+        @staticmethod
+        def random():
+            class RandomStub:
+                @staticmethod
+                def rand(*args):
+                    import random as rand_module
+                    if not args:
+                        return rand_module.random()
+                    elif len(args) == 1:
+                        return [rand_module.random() for _ in range(args[0])]
+                    else:
+                        return [[rand_module.random() for _ in range(args[1])] 
+                                for _ in range(args[0])]
+            return RandomStub()
 
 
 # ============================================================================
