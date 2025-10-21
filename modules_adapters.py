@@ -13041,6 +13041,582 @@ class DerekBeachAdapter(BaseAdapter):
 # ============================================================================
 
 # ============================================================================
+# ADAPTADOR 12: CausalProcessorAdapter - causal_proccesor.py
+# ============================================================================
+
+
+class CausalProcessorAdapter(BaseAdapter):
+    """
+    Complete adapter for causal_proccesor.py - Causal Policy Analysis Framework.
+    
+    This adapter provides access to ALL classes and methods from the causal
+    processor module including semantic processing, Bayesian evidence integration,
+    and policy document analysis.
+    
+    COMPLETE CLASS AND METHOD INVENTORY:
+    
+    === Enums (2) ===
+    1. CausalDimension - Marco Lógico standard (DNP Colombia)
+       Values: INSUMOS, ACTIVIDADES, PRODUCTOS, RESULTADOS, IMPACTOS, SUPUESTOS
+    
+    2. PDMSection - Estructura típica PDM colombiano (Ley 152/1994)
+       Values: DIAGNOSTICO, VISION_ESTRATEGICA, PLAN_PLURIANUAL, PLAN_INVERSIONES, 
+               MARCO_FISCAL, SEGUIMIENTO
+    
+    === DataClasses (1) ===
+    3. SemanticConfig - Configuración calibrada para análisis de políticas públicas
+    
+    === Classes with Methods ===
+    4. SemanticProcessor (8 methods)
+       - __init__(config: SemanticConfig)
+       - _lazy_load() -> None
+       - chunk_text(text: str, preserve_structure: bool = True) -> list[dict[str, Any]]
+       - _detect_pdm_structure(text: str) -> list[dict[str, Any]]
+       - _detect_table(text: str) -> bool
+       - _detect_numerical_data(text: str) -> bool
+       - _embed_batch(texts: list[str]) -> list[NDArray[np.float32]]
+       - embed_single(text: str) -> NDArray[np.float32]
+    
+    5. BayesianEvidenceIntegrator (6 methods)
+       - __init__(prior_concentration: float = 0.5)
+       - integrate_evidence(similarities: NDArray[np.float64], chunk_metadata: list[dict[str, Any]]) -> dict[str, float]
+       - _similarity_to_probability(sims: NDArray[np.float64]) -> NDArray[np.float64]
+       - _compute_reliability_weights(metadata: list[dict[str, Any]]) -> NDArray[np.float64]
+       - _null_evidence() -> dict[str, float]
+       - causal_strength(cause_emb: NDArray[np.float32], effect_emb: NDArray[np.float32], context_emb: NDArray[np.float32]) -> float
+    
+    6. PolicyDocumentAnalyzer (4 methods)
+       - __init__(config: SemanticConfig | None = None)
+       - _init_dimension_embeddings() -> dict[CausalDimension, NDArray[np.float32]]
+       - analyze(text: str) -> dict[str, Any]
+       - _extract_key_excerpts(chunks: list[dict[str, Any]], dimension_results: dict[str, dict[str, Any]]) -> dict[str, list[str]]
+    
+    === Top-Level Functions (1) ===
+    - main()
+    """
+    
+    def __init__(self):
+        super().__init__("causal_proccesor")
+        self._load_module()
+    
+    def _load_module(self):
+        """Load all components from causal_proccesor module"""
+        try:
+            from causal_proccesor import (
+                CausalDimension,
+                PDMSection,
+                SemanticConfig,
+                SemanticProcessor,
+                BayesianEvidenceIntegrator,
+                PolicyDocumentAnalyzer,
+                main,
+            )
+            
+            self.CausalDimension = CausalDimension
+            self.PDMSection = PDMSection
+            self.SemanticConfig = SemanticConfig
+            self.SemanticProcessor = SemanticProcessor
+            self.BayesianEvidenceIntegrator = BayesianEvidenceIntegrator
+            self.PolicyDocumentAnalyzer = PolicyDocumentAnalyzer
+            self.main = main
+            
+            self.available = True
+            self.logger.info(
+                f"✓ {self.module_name} loaded with ALL causal analysis components"
+            )
+        
+        except ImportError as e:
+            self.logger.warning(f"✗ {self.module_name} NOT available: {e}")
+            self.available = False
+    
+    def execute(
+        self, method_name: str, args: List[Any], kwargs: Dict[str, Any]
+    ) -> ModuleResult:
+        """
+        Execute a method from causal_proccesor module.
+        
+        COMPLETE METHOD LIST (18 methods + 1 function):
+        
+        === SemanticProcessor Methods (8) ===
+        - semantic_processor_init(config: SemanticConfig) -> SemanticProcessor
+        - lazy_load() -> None
+        - chunk_text(text: str, preserve_structure: bool = True) -> list[dict[str, Any]]
+        - detect_pdm_structure(text: str) -> list[dict[str, Any]]
+        - detect_table(text: str) -> bool
+        - detect_numerical_data(text: str) -> bool
+        - embed_batch(texts: list[str]) -> list[NDArray[np.float32]]
+        - embed_single(text: str) -> NDArray[np.float32]
+        
+        === BayesianEvidenceIntegrator Methods (6) ===
+        - bayesian_integrator_init(prior_concentration: float = 0.5) -> BayesianEvidenceIntegrator
+        - integrate_evidence(similarities, chunk_metadata) -> dict[str, float]
+        - similarity_to_probability(sims) -> NDArray[np.float64]
+        - compute_reliability_weights(metadata) -> NDArray[np.float64]
+        - null_evidence() -> dict[str, float]
+        - causal_strength(cause_emb, effect_emb, context_emb) -> float
+        
+        === PolicyDocumentAnalyzer Methods (4) ===
+        - policy_analyzer_init(config: SemanticConfig | None = None) -> PolicyDocumentAnalyzer
+        - init_dimension_embeddings() -> dict
+        - analyze(text: str) -> dict[str, Any]
+        - extract_key_excerpts(chunks, dimension_results) -> dict[str, list[str]]
+        
+        === Top-Level Functions (1) ===
+        - main() -> dict[str, Any]
+        """
+        start_time = time.time()
+        
+        if not self.available:
+            return self._create_unavailable_result(method_name, start_time)
+        
+        try:
+            # SemanticProcessor methods
+            if method_name == "semantic_processor_init":
+                result = self._execute_semantic_processor_init(*args, **kwargs)
+            elif method_name == "lazy_load":
+                result = self._execute_lazy_load(*args, **kwargs)
+            elif method_name == "chunk_text":
+                result = self._execute_chunk_text(*args, **kwargs)
+            elif method_name == "detect_pdm_structure":
+                result = self._execute_detect_pdm_structure(*args, **kwargs)
+            elif method_name == "detect_table":
+                result = self._execute_detect_table(*args, **kwargs)
+            elif method_name == "detect_numerical_data":
+                result = self._execute_detect_numerical_data(*args, **kwargs)
+            elif method_name == "embed_batch":
+                result = self._execute_embed_batch(*args, **kwargs)
+            elif method_name == "embed_single":
+                result = self._execute_embed_single(*args, **kwargs)
+            
+            # BayesianEvidenceIntegrator methods
+            elif method_name == "bayesian_integrator_init":
+                result = self._execute_bayesian_integrator_init(*args, **kwargs)
+            elif method_name == "integrate_evidence":
+                result = self._execute_integrate_evidence(*args, **kwargs)
+            elif method_name == "similarity_to_probability":
+                result = self._execute_similarity_to_probability(*args, **kwargs)
+            elif method_name == "compute_reliability_weights":
+                result = self._execute_compute_reliability_weights(*args, **kwargs)
+            elif method_name == "null_evidence":
+                result = self._execute_null_evidence(*args, **kwargs)
+            elif method_name == "causal_strength":
+                result = self._execute_causal_strength(*args, **kwargs)
+            
+            # PolicyDocumentAnalyzer methods
+            elif method_name == "policy_analyzer_init":
+                result = self._execute_policy_analyzer_init(*args, **kwargs)
+            elif method_name == "init_dimension_embeddings":
+                result = self._execute_init_dimension_embeddings(*args, **kwargs)
+            elif method_name == "analyze":
+                result = self._execute_analyze(*args, **kwargs)
+            elif method_name == "extract_key_excerpts":
+                result = self._execute_extract_key_excerpts(*args, **kwargs)
+            
+            # Top-level function
+            elif method_name == "main":
+                result = self._execute_main(*args, **kwargs)
+            
+            else:
+                raise ValueError(f"Unknown method: {method_name}")
+            
+            result.execution_time = time.time() - start_time
+            return result
+        
+        except Exception as e:
+            self.logger.error(
+                f"{self.module_name}.{method_name} failed: {e}", exc_info=True
+            )
+            return self._create_error_result(method_name, start_time, e)
+    
+    # ========================================================================
+    # SemanticProcessor Method Implementations
+    # ========================================================================
+    
+    def _execute_semantic_processor_init(self, config=None, **kwargs) -> ModuleResult:
+        """Execute SemanticProcessor.__init__()"""
+        if config is None:
+            config = self.SemanticConfig()
+        processor = self.SemanticProcessor(config)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="SemanticProcessor",
+            method_name="__init__",
+            status="success",
+            data={"processor_created": True},
+            evidence=[{"type": "processor_initialization"}],
+            confidence=1.0,
+            execution_time=0.0,
+        )
+    
+    def _execute_lazy_load(self, processor=None, **kwargs) -> ModuleResult:
+        """Execute SemanticProcessor._lazy_load()"""
+        if processor is None:
+            processor = self.SemanticProcessor(self.SemanticConfig())
+        processor._lazy_load()
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="SemanticProcessor",
+            method_name="_lazy_load",
+            status="success",
+            data={"loaded": True},
+            evidence=[{"type": "lazy_loading"}],
+            confidence=1.0,
+            execution_time=0.0,
+        )
+    
+    def _execute_chunk_text(
+        self, processor=None, text: str = "", preserve_structure: bool = True, **kwargs
+    ) -> ModuleResult:
+        """Execute SemanticProcessor.chunk_text()"""
+        if processor is None:
+            processor = self.SemanticProcessor(self.SemanticConfig())
+        chunks = processor.chunk_text(text, preserve_structure)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="SemanticProcessor",
+            method_name="chunk_text",
+            status="success",
+            data={"chunks": chunks, "chunk_count": len(chunks)},
+            evidence=[{"type": "text_chunking", "chunks": len(chunks)}],
+            confidence=0.9,
+            execution_time=0.0,
+        )
+    
+    def _execute_detect_pdm_structure(
+        self, processor=None, text: str = "", **kwargs
+    ) -> ModuleResult:
+        """Execute SemanticProcessor._detect_pdm_structure()"""
+        if processor is None:
+            processor = self.SemanticProcessor(self.SemanticConfig())
+        structure = processor._detect_pdm_structure(text)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="SemanticProcessor",
+            method_name="_detect_pdm_structure",
+            status="success",
+            data={"structure": structure},
+            evidence=[{"type": "pdm_structure_detection"}],
+            confidence=0.85,
+            execution_time=0.0,
+        )
+    
+    def _execute_detect_table(
+        self, processor=None, text: str = "", **kwargs
+    ) -> ModuleResult:
+        """Execute SemanticProcessor._detect_table()"""
+        if processor is None:
+            processor = self.SemanticProcessor(self.SemanticConfig())
+        has_table = processor._detect_table(text)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="SemanticProcessor",
+            method_name="_detect_table",
+            status="success",
+            data={"has_table": has_table},
+            evidence=[{"type": "table_detection", "found": has_table}],
+            confidence=0.9,
+            execution_time=0.0,
+        )
+    
+    def _execute_detect_numerical_data(
+        self, processor=None, text: str = "", **kwargs
+    ) -> ModuleResult:
+        """Execute SemanticProcessor._detect_numerical_data()"""
+        if processor is None:
+            processor = self.SemanticProcessor(self.SemanticConfig())
+        has_numerical = processor._detect_numerical_data(text)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="SemanticProcessor",
+            method_name="_detect_numerical_data",
+            status="success",
+            data={"has_numerical_data": has_numerical},
+            evidence=[{"type": "numerical_detection", "found": has_numerical}],
+            confidence=0.9,
+            execution_time=0.0,
+        )
+    
+    def _execute_embed_batch(
+        self, processor=None, texts: List[str] = None, **kwargs
+    ) -> ModuleResult:
+        """Execute SemanticProcessor._embed_batch()"""
+        if processor is None:
+            processor = self.SemanticProcessor(self.SemanticConfig())
+        if texts is None:
+            texts = []
+        embeddings = processor._embed_batch(texts)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="SemanticProcessor",
+            method_name="_embed_batch",
+            status="success",
+            data={"embedding_count": len(embeddings)},
+            evidence=[{"type": "batch_embedding", "count": len(embeddings)}],
+            confidence=0.85,
+            execution_time=0.0,
+        )
+    
+    def _execute_embed_single(
+        self, processor=None, text: str = "", **kwargs
+    ) -> ModuleResult:
+        """Execute SemanticProcessor.embed_single()"""
+        if processor is None:
+            processor = self.SemanticProcessor(self.SemanticConfig())
+        embedding = processor.embed_single(text)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="SemanticProcessor",
+            method_name="embed_single",
+            status="success",
+            data={"embedding_generated": True},
+            evidence=[{"type": "single_embedding"}],
+            confidence=0.85,
+            execution_time=0.0,
+        )
+    
+    # ========================================================================
+    # BayesianEvidenceIntegrator Method Implementations
+    # ========================================================================
+    
+    def _execute_bayesian_integrator_init(
+        self, prior_concentration: float = 0.5, **kwargs
+    ) -> ModuleResult:
+        """Execute BayesianEvidenceIntegrator.__init__()"""
+        integrator = self.BayesianEvidenceIntegrator(prior_concentration)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="BayesianEvidenceIntegrator",
+            method_name="__init__",
+            status="success",
+            data={"integrator_created": True, "prior_concentration": prior_concentration},
+            evidence=[{"type": "integrator_initialization"}],
+            confidence=1.0,
+            execution_time=0.0,
+        )
+    
+    def _execute_integrate_evidence(
+        self, integrator=None, similarities=None, chunk_metadata=None, **kwargs
+    ) -> ModuleResult:
+        """Execute BayesianEvidenceIntegrator.integrate_evidence()"""
+        if integrator is None:
+            integrator = self.BayesianEvidenceIntegrator()
+        if similarities is None:
+            similarities = []
+        if chunk_metadata is None:
+            chunk_metadata = []
+        
+        evidence = integrator.integrate_evidence(similarities, chunk_metadata)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="BayesianEvidenceIntegrator",
+            method_name="integrate_evidence",
+            status="success",
+            data=evidence,
+            evidence=[{"type": "evidence_integration"}],
+            confidence=evidence.get("evidence_strength", 0.7),
+            execution_time=0.0,
+        )
+    
+    def _execute_similarity_to_probability(
+        self, integrator=None, sims=None, **kwargs
+    ) -> ModuleResult:
+        """Execute BayesianEvidenceIntegrator._similarity_to_probability()"""
+        if integrator is None:
+            integrator = self.BayesianEvidenceIntegrator()
+        if sims is None:
+            import numpy as np
+            sims = np.array([])
+        
+        probs = integrator._similarity_to_probability(sims)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="BayesianEvidenceIntegrator",
+            method_name="_similarity_to_probability",
+            status="success",
+            data={"probability_count": len(probs)},
+            evidence=[{"type": "probability_conversion"}],
+            confidence=0.9,
+            execution_time=0.0,
+        )
+    
+    def _execute_compute_reliability_weights(
+        self, integrator=None, metadata=None, **kwargs
+    ) -> ModuleResult:
+        """Execute BayesianEvidenceIntegrator._compute_reliability_weights()"""
+        if integrator is None:
+            integrator = self.BayesianEvidenceIntegrator()
+        if metadata is None:
+            metadata = []
+        
+        weights = integrator._compute_reliability_weights(metadata)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="BayesianEvidenceIntegrator",
+            method_name="_compute_reliability_weights",
+            status="success",
+            data={"weight_count": len(weights)},
+            evidence=[{"type": "weight_computation"}],
+            confidence=0.9,
+            execution_time=0.0,
+        )
+    
+    def _execute_null_evidence(self, integrator=None, **kwargs) -> ModuleResult:
+        """Execute BayesianEvidenceIntegrator._null_evidence()"""
+        if integrator is None:
+            integrator = self.BayesianEvidenceIntegrator()
+        
+        null_ev = integrator._null_evidence()
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="BayesianEvidenceIntegrator",
+            method_name="_null_evidence",
+            status="success",
+            data=null_ev,
+            evidence=[{"type": "null_evidence"}],
+            confidence=1.0,
+            execution_time=0.0,
+        )
+    
+    def _execute_causal_strength(
+        self, integrator=None, cause_emb=None, effect_emb=None, context_emb=None, **kwargs
+    ) -> ModuleResult:
+        """Execute BayesianEvidenceIntegrator.causal_strength()"""
+        if integrator is None:
+            integrator = self.BayesianEvidenceIntegrator()
+        if cause_emb is None or effect_emb is None or context_emb is None:
+            import numpy as np
+            cause_emb = np.random.rand(384).astype(np.float32)
+            effect_emb = np.random.rand(384).astype(np.float32)
+            context_emb = np.random.rand(384).astype(np.float32)
+        
+        strength = integrator.causal_strength(cause_emb, effect_emb, context_emb)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="BayesianEvidenceIntegrator",
+            method_name="causal_strength",
+            status="success",
+            data={"causal_strength": float(strength)},
+            evidence=[{"type": "causal_strength_calculation"}],
+            confidence=0.85,
+            execution_time=0.0,
+        )
+    
+    # ========================================================================
+    # PolicyDocumentAnalyzer Method Implementations
+    # ========================================================================
+    
+    def _execute_policy_analyzer_init(self, config=None, **kwargs) -> ModuleResult:
+        """Execute PolicyDocumentAnalyzer.__init__()"""
+        analyzer = self.PolicyDocumentAnalyzer(config)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="PolicyDocumentAnalyzer",
+            method_name="__init__",
+            status="success",
+            data={"analyzer_created": True},
+            evidence=[{"type": "analyzer_initialization"}],
+            confidence=1.0,
+            execution_time=0.0,
+        )
+    
+    def _execute_init_dimension_embeddings(
+        self, analyzer=None, **kwargs
+    ) -> ModuleResult:
+        """Execute PolicyDocumentAnalyzer._init_dimension_embeddings()"""
+        if analyzer is None:
+            analyzer = self.PolicyDocumentAnalyzer()
+        
+        embeddings = analyzer._init_dimension_embeddings()
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="PolicyDocumentAnalyzer",
+            method_name="_init_dimension_embeddings",
+            status="success",
+            data={"dimension_count": len(embeddings)},
+            evidence=[{"type": "dimension_embedding_init"}],
+            confidence=0.9,
+            execution_time=0.0,
+        )
+    
+    def _execute_analyze(self, analyzer=None, text: str = "", **kwargs) -> ModuleResult:
+        """Execute PolicyDocumentAnalyzer.analyze()"""
+        if analyzer is None:
+            analyzer = self.PolicyDocumentAnalyzer()
+        
+        results = analyzer.analyze(text)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="PolicyDocumentAnalyzer",
+            method_name="analyze",
+            status="success",
+            data=results,
+            evidence=[{"type": "policy_analysis"}],
+            confidence=results.get("overall_coherence", 0.7),
+            execution_time=0.0,
+        )
+    
+    def _execute_extract_key_excerpts(
+        self, analyzer=None, chunks=None, dimension_results=None, **kwargs
+    ) -> ModuleResult:
+        """Execute PolicyDocumentAnalyzer._extract_key_excerpts()"""
+        if analyzer is None:
+            analyzer = self.PolicyDocumentAnalyzer()
+        if chunks is None:
+            chunks = []
+        if dimension_results is None:
+            dimension_results = {}
+        
+        excerpts = analyzer._extract_key_excerpts(chunks, dimension_results)
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="PolicyDocumentAnalyzer",
+            method_name="_extract_key_excerpts",
+            status="success",
+            data={"excerpts": excerpts},
+            evidence=[{"type": "excerpt_extraction"}],
+            confidence=0.85,
+            execution_time=0.0,
+        )
+    
+    # ========================================================================
+    # Top-Level Function Implementations
+    # ========================================================================
+    
+    def _execute_main(self, **kwargs) -> ModuleResult:
+        """Execute main()"""
+        result = self.main()
+        
+        return ModuleResult(
+            module_name=self.module_name,
+            class_name="Global",
+            method_name="main",
+            status="success",
+            data=result if isinstance(result, dict) else {"result": str(result)},
+            evidence=[{"type": "main_execution"}],
+            confidence=0.9,
+            execution_time=0.0,
+        )
+
+
+# ============================================================================
 # MODULE ADAPTER REGISTRY
 # ============================================================================
 
@@ -13055,7 +13631,7 @@ class ModuleAdapterRegistry:
         self._register_all_adapters()
 
     def _register_all_adapters(self):
-        """Register all 11 available adapters (including new embedding_policy and dereck_beach)"""
+        """Register all 12 available adapters (including new causal_proccesor)"""
         try:
             self.adapters["teoria_cambio"] = ModulosAdapter()
             logger.info("✓ Registered ModulosAdapter")
@@ -13067,6 +13643,13 @@ class ModuleAdapterRegistry:
             logger.info("✓ Registered AnalyzerOneAdapter")
         except Exception as e:
             logger.warning(f"✗ Failed to register AnalyzerOneAdapter: {e}")
+        
+        # NEW: Register CausalProcessorAdapter
+        try:
+            self.adapters["causal_proccesor"] = CausalProcessorAdapter()
+            logger.info("✓ Registered CausalProcessorAdapter (NEW)")
+        except Exception as e:
+            logger.warning(f"✗ Failed to register CausalProcessorAdapter: {e}")
         
         # NEW: Register EmbeddingPolicyAdapter
         try:
@@ -13112,7 +13695,7 @@ class ModuleAdapterRegistry:
         except Exception as e:
             logger.warning(f"✗ Failed to register PolicySegmenterAdapter: {e}")
 
-        logger.info(f"Successfully registered {len(self.adapters)}/11 module adapters")
+        logger.info(f"Successfully registered {len(self.adapters)}/12 module adapters")
 
     def execute_module_method(
         self,
