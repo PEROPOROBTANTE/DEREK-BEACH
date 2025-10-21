@@ -4981,7 +4981,7 @@ class FinancialViabilityAdapter(BaseAdapter):
         - _get_prior_effect(source_type, target_type) -> dict
         - _identify_confounders(source, target, graph) -> List
         - generate_counterfactuals(graph, effects) -> List[dict]
-        - _simulate_intervention(graph, node, intervention_value) -> dict
+        - _compute_intervention_effect(graph, node, intervention_value) -> dict
         - _generate_scenario_narrative(scenario) -> str
         - sensitivity_analysis(effects) -> dict
         - _compute_e_value(effect) -> float
@@ -5081,7 +5081,7 @@ class FinancialViabilityAdapter(BaseAdapter):
                 "_get_prior_effect",
                 "_identify_confounders",
                 "generate_counterfactuals",
-                "_simulate_intervention",
+                "_compute_intervention_effect",
                 "_generate_scenario_narrative",
                 "sensitivity_analysis",
                 "_compute_e_value",
