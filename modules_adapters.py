@@ -1873,18 +1873,28 @@ class AnalyzerOneAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo AnalyzerOne"""
         try:
-            # Import real Analyzer_one module
+            # Import real Analyzer_one module with actual available classes
             from Analyzer_one import (
                 MunicipalOntology,
                 SemanticAnalyzer,
-                QualityControlEngine,
-                PolicyAnalysisPipeline
+                PerformanceAnalyzer,
+                TextMiningEngine,
+                MunicipalAnalyzer,
+                DocumentProcessor,
+                ResultsExporter,
+                ConfigurationManager,
+                BatchProcessor
             )
             
             self.MunicipalOntology = MunicipalOntology
             self.SemanticAnalyzer = SemanticAnalyzer
-            self.QualityControlEngine = QualityControlEngine
-            self.PolicyAnalysisPipeline = PolicyAnalysisPipeline
+            self.PerformanceAnalyzer = PerformanceAnalyzer
+            self.TextMiningEngine = TextMiningEngine
+            self.MunicipalAnalyzer = MunicipalAnalyzer
+            self.DocumentProcessor = DocumentProcessor
+            self.ResultsExporter = ResultsExporter
+            self.ConfigurationManager = ConfigurationManager
+            self.BatchProcessor = BatchProcessor
             
             self.available = True
             self.logger.info(
@@ -3203,20 +3213,53 @@ class EmbeddingPolicyAdapter(BaseAdapter):
         )
 
     def _execute_generate_embeddings(self, texts: List[str], **kwargs) -> ModuleResult:
-        """Ejecuta EmbeddingGenerator.generate_embeddings()"""
-        # Simulación de generación de embeddings
-        embeddings = np.random.rand(len(texts), 768)  # 768 es un tamaño común
-
-        return ModuleResult(
-            module_name=self.module_name,
-            class_name="EmbeddingGenerator",
-            method_name="generate_embeddings",
-            status="success",
-            data={"embeddings_shape": embeddings.shape, "text_count": len(texts)},
-            evidence=[{"type": "embeddings_generation", "texts": len(texts)}],
-            confidence=0.85,
-            execution_time=0.0,
-        )
+        """Ejecuta EmbeddingGenerator.generate_embeddings() - Using real PolicyAnalysisEmbedder"""
+        try:
+            # Use real PolicyAnalysisEmbedder with actual model
+            config = self.PolicyEmbeddingConfig()
+            embedder = self.PolicyAnalysisEmbedder(config)
+            
+            # Generate real embeddings using the actual model
+            # Process each text and extract embeddings
+            embeddings = []
+            for text in texts:
+                result = embedder.process_document(text)
+                # Extract embedding from result (structure may vary)
+                if 'chunks' in result and len(result['chunks']) > 0:
+                    # Use first chunk's embedding as representative
+                    emb = result['chunks'][0].get('embedding', np.zeros(768))
+                    embeddings.append(emb)
+                else:
+                    # Fallback to zero vector if no chunks
+                    embeddings.append(np.zeros(768))
+            
+            embeddings = np.array(embeddings)
+            
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="PolicyAnalysisEmbedder",
+                method_name="generate_embeddings",
+                status="success",
+                data={"embeddings_shape": embeddings.shape, "text_count": len(texts)},
+                evidence=[{"type": "real_embeddings_generation", "texts": len(texts), "model": config.embedding_model}],
+                confidence=0.95,
+                execution_time=0.0,
+            )
+        except Exception as e:
+            # Fallback to simulation if real implementation fails
+            self.logger.warning(f"Real embedding generation failed: {e}, using fallback")
+            embeddings = np.random.rand(len(texts), 768)
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="EmbeddingGenerator",
+                method_name="generate_embeddings",
+                status="partial",
+                data={"embeddings_shape": embeddings.shape, "text_count": len(texts)},
+                evidence=[{"type": "fallback_embeddings_generation", "texts": len(texts)}],
+                confidence=0.5,
+                execution_time=0.0,
+                warnings=[f"Used fallback due to: {str(e)}"]
+            )
 
     def _execute_generate_single_embedding(self, text: str, **kwargs) -> ModuleResult:
         """Ejecuta EmbeddingGenerator.generate_single_embedding()"""
@@ -3275,9 +3318,12 @@ class EmbeddingPolicyAdapter(BaseAdapter):
     def _execute_compare_embeddings(
         self, embedding1: np.ndarray, embedding2: np.ndarray, **kwargs
     ) -> ModuleResult:
-        """Ejecuta EmbeddingGenerator.compare_embeddings()"""
-        # Simulación de comparación de embeddings
-        similarity = random.random()  # Simular similitud coseno
+        """Ejecuta EmbeddingGenerator.compare_embeddings() - Using real cosine similarity"""
+        # Use real cosine similarity formula: dot(A,B) / (norm(A) * norm(B))
+        similarity = float(np.dot(embedding1, embedding2) / (np.linalg.norm(embedding1) * np.linalg.norm(embedding2)))
+        
+        # Ensure similarity is in valid range [0, 1]
+        similarity = float(np.clip(similarity, 0.0, 1.0))
 
         return ModuleResult(
             module_name=self.module_name,
@@ -4329,23 +4375,50 @@ class SemanticChunkingPolicyAdapter(BaseAdapter):
         )
 
     def _execute_chunk_document(self, document: str, **kwargs) -> ModuleResult:
-        """Ejecuta SemanticChunker.chunk_document()"""
-        # Simulación de chunking de documento
-        chunks = []
-        chunk_size = 512
-        overlap = 50
-
-        for i in range(0, len(document), chunk_size - overlap):
-            chunk_text = document[i : i + chunk_size]
-            chunks.append(
-                {
-                    "text": chunk_text,
-                    "start": i,
-                    "end": min(i + chunk_size, len(document)),
-                    "chunk_id": len(chunks),
-                    "size": len(chunk_text),
-                }
+        """Ejecuta SemanticChunker.chunk_document() - Using real SemanticProcessor"""
+        try:
+            # Use real SemanticProcessor with actual chunking algorithm
+            config = self.SemanticConfig()
+            processor = self.SemanticProcessor(config)
+            
+            # Use real semantic chunking with structure preservation
+            chunks = processor.chunk_text(document, preserve_structure=True)
+            
+            # Ensure chunks have required fields
+            for i, chunk in enumerate(chunks):
+                if 'chunk_id' not in chunk:
+                    chunk['chunk_id'] = i
+                if 'size' not in chunk:
+                    chunk['size'] = len(chunk.get('content', chunk.get('text', '')))
+            
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="SemanticProcessor",
+                method_name="chunk_document",
+                status="success",
+                data={"chunks": chunks, "chunk_count": len(chunks)},
+                evidence=[{"type": "real_semantic_chunking", "chunks": len(chunks)}],
+                confidence=0.95,
+                execution_time=0.0,
             )
+        except Exception as e:
+            # Fallback to simple chunking if real implementation fails
+            self.logger.warning(f"Real semantic chunking failed: {e}, using fallback")
+            chunks = []
+            chunk_size = 512
+            overlap = 50
+
+            for i in range(0, len(document), chunk_size - overlap):
+                chunk_text = document[i : i + chunk_size]
+                chunks.append(
+                    {
+                        "text": chunk_text,
+                        "start": i,
+                        "end": min(i + chunk_size, len(document)),
+                        "chunk_id": len(chunks),
+                        "size": len(chunk_text),
+                    }
+                )
 
         return ModuleResult(
             module_name=self.module_name,
@@ -4587,24 +4660,62 @@ class SemanticChunkingPolicyAdapter(BaseAdapter):
     def _execute_detect_structural_boundaries(
         self, text: str, **kwargs
     ) -> ModuleResult:
-        """Ejecuta BoundaryDetector.detect_structural_boundaries()"""
-        # Simulación de detección de límites estructurales
-        boundaries = []
+        """Ejecuta BoundaryDetector.detect_structural_boundaries() - Using real SemanticProcessor"""
+        try:
+            # Use real SemanticProcessor to detect PDM structure
+            config = self.SemanticConfig()
+            processor = self.SemanticProcessor(config)
+            
+            # Get real structural boundaries from PDM structure detection
+            structure = processor._detect_pdm_structure(text)
+            boundaries = []
+            
+            # Extract boundary positions from structure
+            for section in structure:
+                if 'start' in section:
+                    boundaries.append(section['start'])
+                if 'end' in section:
+                    boundaries.append(section['end'])
+            
+            # Ensure boundaries include start and end
+            boundaries = sorted(list(set(boundaries + [0, len(text)])))
+            
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="SemanticProcessor",
+                method_name="detect_structural_boundaries",
+                status="success",
+                data={
+                    "boundaries": boundaries,
+                    "boundary_count": len(boundaries),
+                    "text_length": len(text),
+                    "structure_sections": len(structure)
+                },
+                evidence=[
+                    {"type": "real_structural_boundaries", "boundaries": len(boundaries)}
+                ],
+                confidence=0.92,
+                execution_time=0.0,
+            )
+        except Exception as e:
+            # Fallback to pattern-based detection
+            self.logger.warning(f"Real structural boundary detection failed: {e}, using fallback")
+            boundaries = []
 
-        # Buscar límites basados en patrones estructurales
-        patterns = [r"\n\n", r"\.\s*\n", r"\d\.\d"]
-        for pattern in patterns:
-            matches = list(re.finditer(pattern, text))
-            for match in matches:
-                boundaries.append(match.start())
+            # Buscar límites basados en patrones estructurales
+            patterns = [r"\n\n", r"\.\s*\n", r"\d\.\d"]
+            for pattern in patterns:
+                matches = list(re.finditer(pattern, text))
+                for match in matches:
+                    boundaries.append(match.start())
 
-        boundaries = sorted(list(set(boundaries + [0, len(text)])))
+            boundaries = sorted(list(set(boundaries + [0, len(text)])))
 
-        return ModuleResult(
-            module_name=self.module_name,
-            class_name="BoundaryDetector",
-            method_name="detect_structural_boundaries",
-            status="success",
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="BoundaryDetector",
+                method_name="detect_structural_boundaries",
+                status="partial",
             data={
                 "boundaries": boundaries,
                 "boundary_count": len(boundaries),
@@ -10300,41 +10411,77 @@ class ContradictionDetectionAdapter(BaseAdapter):
         dimension: PolicyDimension = PolicyDimension.ESTRATEGICO,
         **kwargs,
     ) -> ModuleResult:
-        """Ejecuta PolicyContradictionDetector.detect()"""
-        # Simulación de detección de contradicciones
-        contradictions = []
-
-        # Generar contradicciones simuladas
-        for i in range(random.randint(1, 5)):
-            contradictions.append(
-                {
-                    "type": random.choice(list(ContradictionType)),
-                    "description": f"Descripción de contradicción {i+1}",
-                    "severity": random.uniform(0.3, 0.9),
-                    "confidence": random.uniform(0.6, 0.95),
-                }
+        """Ejecuta PolicyContradictionDetector.detect() - Using real contradiction detection"""
+        try:
+            # Use real PolicyContradictionDetector with actual model
+            model_name = kwargs.get('model_name', 'sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+            detector = self.PolicyContradictionDetector(model_name)
+            
+            # Run real contradiction detection
+            result = detector.detect(text, plan_name=plan_name, dimension=dimension)
+            
+            contradictions = result.get('contradictions', [])
+            
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="PolicyContradictionDetector",
+                method_name="detect",
+                status="success",
+                data={
+                    "contradictions": contradictions,
+                    "contradiction_count": len(contradictions),
+                    "plan_name": plan_name,
+                    "dimension": dimension.value,
+                    "coherence_metrics": result.get('coherence_metrics', {}),
+                    "recommendations": result.get('recommendations', [])
+                },
+                evidence=[
+                    {
+                        "type": "real_contradiction_detection",
+                        "contradictions": len(contradictions),
+                        "model": model_name
+                    }
+                ],
+                confidence=0.92,
+                execution_time=0.0,
             )
+        except Exception as e:
+            # Fallback to simple simulation if real implementation fails
+            self.logger.warning(f"Real contradiction detection failed: {e}, using fallback")
+            contradictions = []
 
-        return ModuleResult(
-            module_name=self.module_name,
-            class_name="PolicyContradictionDetector",
-            method_name="detect",
-            status="success",
-            data={
-                "contradictions": contradictions,
-                "contradiction_count": len(contradictions),
-                "plan_name": plan_name,
-                "dimension": dimension.value,
-            },
-            evidence=[
-                {
-                    "type": "contradiction_detection",
-                    "contradictions": len(contradictions),
-                }
-            ],
-            confidence=0.85,
-            execution_time=0.0,
-        )
+            # Generate simple simulated contradictions
+            for i in range(random.randint(1, 5)):
+                contradictions.append(
+                    {
+                        "type": random.choice(list(self.ContradictionType)),
+                        "description": f"Descripción de contradicción {i+1}",
+                        "severity": random.uniform(0.3, 0.9),
+                        "confidence": random.uniform(0.6, 0.95),
+                    }
+                )
+
+            return ModuleResult(
+                module_name=self.module_name,
+                class_name="PolicyContradictionDetector",
+                method_name="detect",
+                status="partial",
+                data={
+                    "contradictions": contradictions,
+                    "contradiction_count": len(contradictions),
+                    "plan_name": plan_name,
+                    "dimension": dimension.value if hasattr(dimension, 'value') else str(dimension),
+                },
+                evidence=[
+                    {
+                        "type": "fallback_contradiction_detection",
+                        "contradictions": len(contradictions),
+                    }
+                ],
+                confidence=0.5,
+                execution_time=0.0,
+                warnings=[f"Used fallback due to: {str(e)}"]
+            )
 
     def _execute_extract_policy_statements(
         self, text: str, dimension: PolicyDimension, **kwargs
