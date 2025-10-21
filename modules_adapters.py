@@ -208,24 +208,48 @@ class SemanticChunker:
     pass
 
 
-class TeoriaCambio:
-    """Stub class for TeoriaCambio - Theory of Change validation"""
+# Import actual implementations from teoria_cambio module
+try:
+    from teoria_cambio import (
+        TeoriaCambio as TeoriaCambioImpl,
+        AdvancedDAGValidator as AdvancedDAGValidatorImpl,
+        IndustrialGradeValidator as IndustrialGradeValidatorImpl,
+        configure_logging,
+        _create_advanced_seed,
+        create_policy_theory_of_change_graph,
+    )
+    TEORIA_CAMBIO_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f"teoria_cambio module not available: {e}")
+    TEORIA_CAMBIO_AVAILABLE = False
+    # Fallback stubs
+    class TeoriaCambioImpl:
+        """Fallback stub for TeoriaCambio"""
+        @staticmethod
+        def _es_conexion_valida(origen, destino):
+            return True
+    
+    class AdvancedDAGValidatorImpl:
+        """Fallback stub for AdvancedDAGValidator"""
+        pass
+    
+    class IndustrialGradeValidatorImpl:
+        """Fallback stub for IndustrialGradeValidator"""
+        pass
+    
+    def configure_logging():
+        pass
+    
+    def _create_advanced_seed(plan_name: str, salt: str = "") -> int:
+        return hash(plan_name + salt) % (2**31)
+    
+    def create_policy_theory_of_change_graph():
+        return AdvancedDAGValidatorImpl()
 
-    @staticmethod
-    def _es_conexion_valida(origen, destino):
-        return True
-
-
-class AdvancedDAGValidator:
-    """Stub class for Advanced DAG Validator"""
-
-    pass
-
-
-class IndustrialGradeValidator:
-    """Stub class for Industrial Grade Validator"""
-
-    pass
+# Make them available with original names for backward compatibility
+TeoriaCambio = TeoriaCambioImpl
+AdvancedDAGValidator = AdvancedDAGValidatorImpl
+IndustrialGradeValidator = IndustrialGradeValidatorImpl
 
 
 class PolicyContradictionDetector:
@@ -11409,16 +11433,39 @@ class ModulosAdapter(BaseAdapter):
     def _load_module(self):
         """Cargar todos los componentes del módulo teoria_cambio"""
         try:
-            # Importamos las clases del módulo teoria_cambio
-            self.TeoriaCambio = TeoriaCambio
-            self.AdvancedDAGValidator = AdvancedDAGValidator
-            self.IndustrialGradeValidator = IndustrialGradeValidator
-            self.CategoriaCausal = CategoriaCausal
-            self.GraphType = GraphType
-            self.ValidacionResultado = ValidacionResultado
-            self.ValidationMetric = ValidationMetric
-            self.AdvancedGraphNode = AdvancedGraphNode
-            self.MonteCarloAdvancedResult = MonteCarloAdvancedResult
+            # Import from actual teoria_cambio module if available
+            if TEORIA_CAMBIO_AVAILABLE:
+                from teoria_cambio import (
+                    TeoriaCambio as TC,
+                    AdvancedDAGValidator as ADAGV,
+                    IndustrialGradeValidator as IGV,
+                    CategoriaCausal as CC,
+                    GraphType as GT,
+                    ValidacionResultado as VR,
+                    ValidationMetric as VM,
+                    AdvancedGraphNode as AGN,
+                    MonteCarloAdvancedResult as MCAR,
+                )
+                self.TeoriaCambio = TC
+                self.AdvancedDAGValidator = ADAGV
+                self.IndustrialGradeValidator = IGV
+                self.CategoriaCausal = CC
+                self.GraphType = GT
+                self.ValidacionResultado = VR
+                self.ValidationMetric = VM
+                self.AdvancedGraphNode = AGN
+                self.MonteCarloAdvancedResult = MCAR
+            else:
+                # Use the fallback stubs defined above
+                self.TeoriaCambio = TeoriaCambio
+                self.AdvancedDAGValidator = AdvancedDAGValidator
+                self.IndustrialGradeValidator = IndustrialGradeValidator
+                self.CategoriaCausal = CategoriaCausal
+                self.GraphType = GraphType
+                self.ValidacionResultado = ValidacionResultado
+                self.ValidationMetric = ValidationMetric
+                self.AdvancedGraphNode = AdvancedGraphNode
+                self.MonteCarloAdvancedResult = MonteCarloAdvancedResult
 
             self.available = True
             self.logger.info(

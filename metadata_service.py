@@ -1,31 +1,5 @@
 """
 Metadata Service for Policy Analysis
-=====================================
-
-Loads, validates, and provides access to:
-- cuestionario.json: 300 questions with validation rules
-- execution_mapping.yaml: Execution chains and dependencies
-- rubric_scoring.json: Scoring modalities and conversion tables
-
-Creates enriched QuestionContext objects for components to use.
-
-Author: FARFAN Integration Team
-Version: 1.0.0
-Python: 3.11+
-"""
-
-import json
-import yaml
-import logging
-from pathlib import Path
-from typing import Dict, List, Any, Optional
-from dataclasses import dataclass
-
-from events.question_context import (
-    QuestionContext,
-    ValidationRule,
-    ScoringModality,
-)
 
 logger = logging.getLogger(__name__)
 
