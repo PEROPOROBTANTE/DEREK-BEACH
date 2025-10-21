@@ -11,7 +11,7 @@ Python: 3.11+
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Dict, Any, Optional
 from dataclasses import dataclass, field, asdict
@@ -87,7 +87,7 @@ class BaseEvent:
     schema_version: str = "1.0.0"
     correlation_id: str = field(default_factory=lambda: str(uuid.uuid4()))
     question_id: Optional[str] = None
-    timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     status: EventStatus = EventStatus.CREATED
     metadata: Dict[str, Any] = field(default_factory=dict)
     
