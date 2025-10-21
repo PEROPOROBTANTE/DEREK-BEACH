@@ -1,25 +1,6 @@
 # coding=utf-8
 """
 Metadata Service - Central Configuration and Context Provider
-=============================================================
-
-Single source of truth for validated configuration/context derived from:
-- cuestionario.json (questions and dimensions)
-- rubric_scoring.json (scoring modalities and thresholds)
-- execution_mapping.yaml (module routing and execution chains)
-
-Author: FARFAN 3.0 Team
-Version: 3.0.0
-Python: 3.10+
-"""
-
-import json
-import logging
-import yaml
-from pathlib import Path
-from typing import Dict, List, Optional, Any, Set
-from dataclasses import dataclass, field
-from collections import defaultdict
 
 logger = logging.getLogger(__name__)
 
