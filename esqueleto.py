@@ -315,9 +315,9 @@ class PolicyProcessorAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # BayesianEvidenceScorer Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # BayesianEvidenceScorer Method Implementations
+        # ========================================================================
 
     def _execute_compute_evidence_score(self, matches: List, context: str, **kwargs) -> ModuleResult:
         """Execute BayesianEvidenceScorer.compute_evidence_score()"""
@@ -351,9 +351,9 @@ class PolicyProcessorAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # PolicyTextProcessor Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # PolicyTextProcessor Method Implementations
+        # ========================================================================
 
     def _execute_normalize_unicode(self, text: str, **kwargs) -> ModuleResult:
         """Execute PolicyTextProcessor.normalize_unicode()"""
@@ -419,9 +419,9 @@ class PolicyProcessorAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # EvidenceBundle Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # EvidenceBundle Method Implementations
+        # ========================================================================
 
     def _execute_to_dict(self, evidence_bundle=None, **kwargs) -> ModuleResult:
         """Execute EvidenceBundle.to_dict()"""
@@ -441,9 +441,9 @@ class PolicyProcessorAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # IndustrialPolicyProcessor Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # IndustrialPolicyProcessor Method Implementations
+        # ========================================================================
 
     def _execute_process(self, text: str, **kwargs) -> ModuleResult:
         """Execute IndustrialPolicyProcessor.process()"""
@@ -654,9 +654,9 @@ class PolicyProcessorAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # AdvancedTextSanitizer Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # AdvancedTextSanitizer Method Implementations
+        # ========================================================================
 
     def _execute_sanitize(self, text: str, **kwargs) -> ModuleResult:
         """Execute AdvancedTextSanitizer.sanitize()"""
@@ -706,9 +706,9 @@ class PolicyProcessorAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # ResilientFileHandler Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # ResilientFileHandler Method Implementations
+        # ========================================================================
 
     def _execute_read_text(self, path: str, encoding: str = "utf-8", **kwargs) -> ModuleResult:
         """Execute ResilientFileHandler.read_text()"""
@@ -742,9 +742,9 @@ class PolicyProcessorAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # PolicyAnalysisPipeline Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # PolicyAnalysisPipeline Method Implementations
+        # ========================================================================
 
     def _execute_analyze_file(self, file_path: str, **kwargs) -> ModuleResult:
         """Execute PolicyAnalysisPipeline.analyze_file()"""
@@ -1034,9 +1034,9 @@ class PolicySegmenterAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # BayesianBoundaryScorer Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # BayesianBoundaryScorer Method Implementations
+        # ========================================================================
 
     def _execute_score_boundaries(self, sentences: List[str], embeddings, **kwargs) -> ModuleResult:
         """Execute BayesianBoundaryScorer.score_boundaries()"""
@@ -1102,9 +1102,9 @@ class PolicySegmenterAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # StructureDetector Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # StructureDetector Method Implementations
+        # ========================================================================
 
     def _execute_detect_structures(self, text: str, **kwargs) -> ModuleResult:
         """Execute StructureDetector.detect_structures()"""
@@ -1154,9 +1154,9 @@ class PolicySegmenterAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # DPSegmentOptimizer Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # DPSegmentOptimizer Method Implementations
+        # ========================================================================
 
     def _execute_optimize_cuts(self, scores: List[float], target_size: int, tolerance: float = 0.2, **kwargs) -> ModuleResult:
         """Execute DPSegmentOptimizer.optimize_cuts()"""
@@ -1206,9 +1206,9 @@ class PolicySegmenterAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # DocumentSegmenter Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # DocumentSegmenter Method Implementations
+        # ========================================================================
 
     def _execute_segment_document(self, text: str, **kwargs) -> ModuleResult:
         """Execute DocumentSegmenter.segment()"""
@@ -1781,9 +1781,9 @@ class AnalyzerOneAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # SemanticAnalyzer Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # SemanticAnalyzer Method Implementations
+        # ========================================================================
 
     def _execute_extract_semantic_cube(self, document_segments: List[str], **kwargs) -> ModuleResult:
         """Execute SemanticAnalyzer.extract_semantic_cube()"""
@@ -1927,9 +1927,9 @@ class AnalyzerOneAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # PerformanceAnalyzer Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # PerformanceAnalyzer Method Implementations
+        # ========================================================================
 
     def _execute_analyze_performance(self, value_chain_data: Dict, **kwargs) -> ModuleResult:
         """Execute PerformanceAnalyzer.analyze_performance()"""
@@ -2039,9 +2039,9 @@ class AnalyzerOneAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # TextMiningEngine Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # TextMiningEngine Method Implementations
+        # ========================================================================
 
     def _execute_diagnose_critical_links_textmining(self, value_chain: Dict, **kwargs) -> ModuleResult:
         """Execute TextMiningEngine.diagnose_critical_links()"""
@@ -2128,9 +2128,9 @@ class AnalyzerOneAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # DocumentProcessor Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # DocumentProcessor Method Implementations
+        # ========================================================================
 
     def _execute_load_pdf(self, file_path: str, **kwargs) -> ModuleResult:
         """Execute DocumentProcessor.load_pdf()"""
@@ -2180,9 +2180,9 @@ class AnalyzerOneAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # ResultsExporter Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # ResultsExporter Method Implementations
+        # ========================================================================
 
     def _execute_export_to_json(self, results: Dict, output_path: str, **kwargs) -> ModuleResult:
         """Execute ResultsExporter.export_to_json()"""
@@ -2229,9 +2229,9 @@ class AnalyzerOneAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # ConfigurationManager Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # ConfigurationManager Method Implementations
+        # ========================================================================
 
     def _execute_load_config(self, config_path: str = None, **kwargs) -> ModuleResult:
         """Execute ConfigurationManager.load_config()"""
@@ -2267,9 +2267,9 @@ class AnalyzerOneAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # BatchProcessor Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # BatchProcessor Method Implementations
+        # ========================================================================
 
     def _execute_process_directory(self, directory_path: str, pattern: str = "*.txt", **kwargs) -> ModuleResult:
         """Execute BatchProcessor.process_directory()"""
@@ -2322,9 +2322,9 @@ class AnalyzerOneAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # MunicipalOntology Method Implementation
-    # ========================================================================
+        # ========================================================================
+        # MunicipalOntology Method Implementation
+        # ========================================================================
 
     def _execute_create_ontology(self, **kwargs) -> ModuleResult:
         """Execute MunicipalOntology.__init__()"""
@@ -2763,9 +2763,9 @@ class EmbeddingPolicyAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # BayesianNumericalAnalyzer Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # BayesianNumericalAnalyzer Method Implementations
+        # ========================================================================
 
     def _execute_evaluate_policy_metric(self, metric_value: float, context: dict = None, **kwargs) -> ModuleResult:
         """Execute BayesianNumericalAnalyzer.evaluate_policy_metric()"""
@@ -2883,9 +2883,9 @@ class EmbeddingPolicyAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # PolicyCrossEncoderReranker Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # PolicyCrossEncoderReranker Method Implementations
+        # ========================================================================
 
     def _execute_rerank(self, query: str, candidates: List[dict], top_k: int = 10, **kwargs) -> ModuleResult:
         """Execute PolicyCrossEncoderReranker.rerank()"""
@@ -2904,9 +2904,9 @@ class EmbeddingPolicyAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # PolicyAnalysisEmbedder Method Implementations  
-    # ========================================================================
+        # ========================================================================
+        # PolicyAnalysisEmbedder Method Implementations  
+        # ========================================================================
 
     def _execute_process_document(self, document_text: str, metadata: dict = None, **kwargs) -> ModuleResult:
         """Execute PolicyAnalysisEmbedder.process_document()"""
@@ -3131,9 +3131,9 @@ class EmbeddingPolicyAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # Helper Function Implementations
-    # ========================================================================
+        # ========================================================================
+        # Helper Function Implementations
+        # ========================================================================
 
     def _execute_create_policy_embedder(self, config: dict = None, **kwargs) -> ModuleResult:
         """Execute create_policy_embedder()"""
@@ -3416,9 +3416,9 @@ class SemanticChunkingPolicyAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # BayesianEvidenceIntegrator Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # BayesianEvidenceIntegrator Method Implementations
+        # ========================================================================
 
     def _execute_integrate_evidence(self, evidence_list: List[dict], **kwargs) -> ModuleResult:
         """Execute BayesianEvidenceIntegrator.integrate_evidence()"""
@@ -3509,9 +3509,9 @@ class SemanticChunkingPolicyAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # PolicyDocumentAnalyzer Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # PolicyDocumentAnalyzer Method Implementations
+        # ========================================================================
 
     def _execute_analyze(self, document_text: str, **kwargs) -> ModuleResult:
         """Execute PolicyDocumentAnalyzer.analyze()"""
@@ -3865,9 +3865,9 @@ class FinancialViabilityAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # Financial Analysis - Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # Financial Analysis - Method Implementations
+        # ========================================================================
 
     def _execute_analyze_financial_feasibility(self, tables, text, **kwargs) -> ModuleResult:
         """Execute PDETMunicipalPlanAnalyzer.analyze_financial_feasibility()"""
@@ -4001,8 +4001,8 @@ class FinancialViabilityAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # Entity & Responsibility methods continue below...
-    # (Implementations for the remaining 20 methods in this section)
+        # Entity & Responsibility methods continue below...
+        # (Implementations for the remaining 20 methods in this section)
 
     def _execute_identify_responsible_entities(self, text: str, tables, **kwargs) -> ModuleResult:
         """Execute PDETMunicipalPlanAnalyzer.identify_responsible_entities()"""
@@ -5305,9 +5305,9 @@ class ContradictionDetectionAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # TemporalLogicVerifier Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # TemporalLogicVerifier Method Implementations
+        # ========================================================================
 
     def _execute_verify_temporal_consistency(self, statements: List[dict], **kwargs) -> ModuleResult:
         """Execute TemporalLogicVerifier.verify_temporal_consistency()"""
@@ -5454,7 +5454,9 @@ class ContradictionDetectionAdapter(BaseAdapter):
             data={"temporal_type": temporal_type, "marker": marker},
             evidence=[{"type": "temporal_classification", "type": temporal_type}],
             confidence=0.85,
-            execution_time=0.0)
+            execution_time=0.0
+        )
+
     def _execute_detect(self, document: str, metadata: dict = None, **kwargs) -> ModuleResult:
         """Execute PolicyContradictionDetector.detect()"""
         model_name = kwargs.get('model_name', 'sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
@@ -6041,9 +6043,9 @@ class ModulosAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # AdvancedDAGValidator Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # AdvancedDAGValidator Method Implementations
+        # ========================================================================
 
     def _execute_add_node(self, name: str, dependencies=None, metadata=None, role="variable", **kwargs) -> ModuleResult:
         """Execute AdvancedDAGValidator.add_node()"""
@@ -6332,9 +6334,9 @@ class ModulosAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # IndustrialGradeValidator Method Implementations
-    # ========================================================================
+        # ========================================================================
+        # IndustrialGradeValidator Method Implementations
+        # ========================================================================
 
     def _execute_execute_suite(self, **kwargs) -> ModuleResult:
         """Execute IndustrialGradeValidator.execute_suite()"""
@@ -6493,9 +6495,9 @@ class ModulosAdapter(BaseAdapter):
             execution_time=0.0
         )
 
-    # ========================================================================
-    # Utility Function Implementations
-    # ========================================================================
+        # ========================================================================
+        # Utility Function Implementations
+        # ========================================================================
 
     def _execute_create_policy_graph(self, **kwargs) -> ModuleResult:
         """Execute create_policy_theory_of_change_graph()"""
