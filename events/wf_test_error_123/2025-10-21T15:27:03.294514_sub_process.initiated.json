@@ -1,0 +1,33 @@
+{
+  "event_type": "sub_process.initiated",
+  "event_data": {
+    "metadata": {
+      "event_id": "evt_e0798a772d87",
+      "event_type": "sub_process.initiated",
+      "timestamp": "2025-10-21T15:27:03.294484",
+      "source": "orchestrator",
+      "version": "1.0.0"
+    },
+    "context": {
+      "correlation_id": "corr_260ec8536372",
+      "workflow_id": "wf_test_error_123",
+      "question_ids": [
+        "P1-D1-Q1",
+        "P1-D1-Q2"
+      ],
+      "dimension": "D1",
+      "policy_area": "P1",
+      "sub_process_id": null,
+      "parent_step_id": null
+    },
+    "sub_process_type": "question_analysis",
+    "input_data": {
+      "plan_text": "Test plan"
+    },
+    "timeout_seconds": 300,
+    "retry_policy": null
+  },
+  "timestamp": "2025-10-21T15:27:03.294514",
+  "correlation_id": "corr_260ec8536372",
+  "workflow_id": "wf_test_error_123"
+}

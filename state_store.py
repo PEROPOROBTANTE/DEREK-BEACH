@@ -50,6 +50,7 @@ class StepStatus(Enum):
     FAILED = "failed"
     SKIPPED = "skipped"
     RETRYING = "retrying"
+    WAITING_FOR_SUB_ANALYSIS = "waiting_for_sub_analysis"  # New state for choreographed sub-processes
 
 
 @dataclass(frozen=True)

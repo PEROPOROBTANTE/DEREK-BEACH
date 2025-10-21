@@ -7,6 +7,25 @@ CORE RESPONSIBILITY: Execute adapter methods in correct dependency order
 Manages parallel execution of independent adapters while respecting dependencies
 defined in the adapter dependency graph (DAG)
 
+ORCHESTRATOR-CHOREOGRAPHER PARTNERSHIP:
+---------------------------------------
+The Choreographer implements the choreography pattern for decentralized execution
+while coordinating with the Orchestrator through event-based communication:
+
+1. BOUNDARY DEFINITION:
+   - Orchestrator: High-level workflow control, state management, decision-making
+   - Choreographer: Adapter execution, dependency resolution, parallel coordination
+
+2. EVENT-BASED COMMUNICATION:
+   - Receives: SubProcessInitiatedEvent from Orchestrator
+   - Emits: SubProcessCompletedEvent (success) or SubProcessFailedEvent (failure)
+   - All events include correlation_id for request-response tracking
+
+3. CONTEXT PROPAGATION:
+   - correlation_id: Links events across boundary
+   - question_ids: Questions being processed
+   - workflow_id: Parent workflow identifier
+
 DEPENDENCY RESOLUTION ORDER (9 Adapters):
 ------------------------------------------
 Wave 1 (Foundation - parallel execution):
@@ -71,6 +90,16 @@ from dataclasses import dataclass, field
 from enum import Enum
 import networkx as nx
 
+from event_schemas import (
+    EventType,
+    SubProcessResult,
+    SubProcessCompletedEvent,
+    SubProcessFailedEvent,
+    create_event_metadata,
+    ContextPropagation
+)
+from event_bus import SyncEventBus
+
 logger = logging.getLogger(__name__)
 
 
@@ -134,17 +163,25 @@ class ExecutionChoreographer:
     Circuit breaker integration at every adapter invocation point
     """
 
-    def __init__(self, max_workers: Optional[int] = None) -> None:
+    def __init__(
+        self,
+        max_workers: Optional[int] = None,
+        event_bus: Optional[SyncEventBus] = None
+    ) -> None:
         """
-        Initialize choreographer with dependency graph
+        Initialize choreographer with dependency graph and event bus
 
         Args:
             max_workers: Maximum parallel workers for wave execution (default: 4)
+            event_bus: Event bus for Orchestrator-Choreographer communication
         """
         self.max_workers = max_workers or 4
         self.execution_graph: nx.DiGraph = nx.DiGraph()
         self._build_dependency_graph()
         self._initialize_adapter_registry()
+        
+        # Event bus for communication with Orchestrator
+        self.event_bus = event_bus or SyncEventBus()
 
         logger.info(
             f"ExecutionChoreographer initialized with {self.max_workers} workers"
@@ -226,6 +263,7 @@ class ExecutionChoreographer:
         plan_text: str,
         module_adapter_registry: Any,
         circuit_breaker: Optional[Any] = None,
+        context_propagation: Optional[ContextPropagation] = None,
     ) -> Dict[str, ExecutionResult]:
         """
         Execute complete execution chain for a single question
@@ -242,11 +280,18 @@ class ExecutionChoreographer:
            f. Record success/failure in circuit breaker
         3. Return dict of all ExecutionResults keyed by "adapter.method"
 
+        EVENT EMISSION:
+        ---------------
+        If context_propagation is provided, emits outcome events:
+        - SubProcessCompletedEvent on success
+        - SubProcessFailedEvent on failure
+
         Args:
             question_spec: Question specification from questionnaire parser
             plan_text: Plan document text
             module_adapter_registry: ModuleAdapterRegistry instance for adapter invocation
             circuit_breaker: Optional CircuitBreaker for fault tolerance
+            context_propagation: Optional context for event emission
 
         Returns:
             Dictionary mapping "adapter.method" to ExecutionResult objects
@@ -262,50 +307,76 @@ class ExecutionChoreographer:
             logger.warning(f"No execution chain for {question_spec.canonical_id}")
             return results
 
-        for step in execution_chain:
-            adapter_name = step.get("adapter")
-            method_name = step.get("method")
-            args = step.get("args", [])
-            kwargs = step.get("kwargs", {})
+        try:
+            for step in execution_chain:
+                adapter_name = step.get("adapter")
+                method_name = step.get("method")
+                args = step.get("args", [])
+                kwargs = step.get("kwargs", {})
 
-            if not adapter_name or not method_name:
-                logger.warning(f"Incomplete step in chain: {step}")
-                continue
+                if not adapter_name or not method_name:
+                    logger.warning(f"Incomplete step in chain: {step}")
+                    continue
 
-            if not self._validate_adapter_method(
-                adapter_name, method_name, module_adapter_registry
-            ):
-                results[f"{adapter_name}.{method_name}"] = ExecutionResult(
-                    module_name=adapter_name,
-                    adapter_class=self.adapter_registry.get(adapter_name, "Unknown"),
+                if not self._validate_adapter_method(
+                    adapter_name, method_name, module_adapter_registry
+                ):
+                    results[f"{adapter_name}.{method_name}"] = ExecutionResult(
+                        module_name=adapter_name,
+                        adapter_class=self.adapter_registry.get(adapter_name, "Unknown"),
+                        method_name=method_name,
+                        status=ExecutionStatus.SKIPPED,
+                        error="Adapter or method not found in registry",
+                        execution_time=0.0,
+                    )
+                    continue
+
+                prepared_args = self._prepare_arguments(args, results, plan_text)
+                prepared_kwargs = self._prepare_arguments(kwargs, results, plan_text)
+
+                result = self._execute_single_step(
+                    adapter_name=adapter_name,
                     method_name=method_name,
-                    status=ExecutionStatus.SKIPPED,
-                    error="Adapter or method not found in registry",
-                    execution_time=0.0,
+                    args=prepared_args,
+                    kwargs=prepared_kwargs,
+                    module_adapter_registry=module_adapter_registry,
+                    circuit_breaker=circuit_breaker,
                 )
-                continue
 
-            prepared_args = self._prepare_arguments(args, results, plan_text)
-            prepared_kwargs = self._prepare_arguments(kwargs, results, plan_text)
+                results[f"{adapter_name}.{method_name}"] = result
 
-            result = self._execute_single_step(
-                adapter_name=adapter_name,
-                method_name=method_name,
-                args=prepared_args,
-                kwargs=prepared_kwargs,
-                module_adapter_registry=module_adapter_registry,
-                circuit_breaker=circuit_breaker,
+            total_time = time.time() - start_time
+            logger.info(
+                f"Completed chain for {question_spec.canonical_id} in {total_time:.2f}s "
+                f"({len(results)} steps)"
             )
+            
+            # Emit outcome event if context provided
+            if context_propagation:
+                self._emit_completion_event(
+                    context=context_propagation,
+                    results=results,
+                    execution_time=total_time
+                )
 
-            results[f"{adapter_name}.{method_name}"] = result
-
-        total_time = time.time() - start_time
-        logger.info(
-            f"Completed chain for {question_spec.canonical_id} in {total_time:.2f}s "
-            f"({len(results)} steps)"
-        )
-
-        return results
+            return results
+            
+        except Exception as e:
+            logger.error(
+                f"Error executing chain for {question_spec.canonical_id}: {e}",
+                exc_info=True
+            )
+            
+            # Emit failure event if context provided
+            if context_propagation:
+                self._emit_failure_event(
+                    context=context_propagation,
+                    error=e,
+                    partial_results=results,
+                    execution_time=time.time() - start_time
+                )
+            
+            raise
 
     def _validate_adapter_method(
         self, adapter_name: str, method_name: str, module_adapter_registry: Any
@@ -703,6 +774,168 @@ class ExecutionChoreographer:
                 if isinstance(e, dict) and e.get("confidence", 0) > 0.7
             ],
         }
+    
+    def _emit_completion_event(
+        self,
+        context: ContextPropagation,
+        results: Dict[str, ExecutionResult],
+        execution_time: float
+    ) -> None:
+        """
+        Emit SubProcessCompletedEvent to Orchestrator
+        
+        Reports successful completion of choreographed sub-process
+        
+        Args:
+            context: Context propagation with correlation_id
+            results: Execution results from all steps
+            execution_time: Total execution time
+        """
+        # Count execution statistics
+        total_steps = len(results)
+        successful_steps = sum(
+            1 for r in results.values() if r.status == ExecutionStatus.COMPLETED
+        )
+        failed_steps = sum(
+            1 for r in results.values() if r.status == ExecutionStatus.FAILED
+        )
+        
+        # Aggregate evidence
+        evidence = self._aggregate_evidence(results)
+        
+        # Compute overall confidence
+        confidences = [r.confidence for r in results.values() if r.confidence > 0]
+        overall_confidence = sum(confidences) / len(confidences) if confidences else 0.0
+        
+        # Prepare output data
+        output_data = {
+            key: result.to_dict()
+            for key, result in results.items()
+        }
+        
+        # Create result payload
+        result_payload = SubProcessResult(
+            status="completed" if failed_steps == 0 else "partial",
+            output_data=output_data,
+            execution_time=execution_time,
+            steps_executed=total_steps,
+            steps_successful=successful_steps,
+            steps_failed=failed_steps,
+            evidence_collected=evidence.get("high_confidence_evidence", []),
+            overall_confidence=overall_confidence
+        )
+        
+        # Create and emit event
+        metadata = create_event_metadata(
+            EventType.SUB_PROCESS_COMPLETED,
+            "choreographer"
+        )
+        
+        event = SubProcessCompletedEvent(
+            metadata=metadata,
+            context=context,
+            result=result_payload
+        )
+        
+        # Publish to event bus
+        success = self.event_bus.publish(
+            EventType.SUB_PROCESS_COMPLETED,
+            event.to_dict()
+        )
+        
+        if success:
+            logger.info(
+                f"Emitted SubProcessCompletedEvent: "
+                f"correlation_id={context.correlation_id}, "
+                f"steps={successful_steps}/{total_steps}"
+            )
+        else:
+            logger.error(
+                f"Failed to emit SubProcessCompletedEvent: "
+                f"correlation_id={context.correlation_id}"
+            )
+    
+    def _emit_failure_event(
+        self,
+        context: ContextPropagation,
+        error: Exception,
+        partial_results: Dict[str, ExecutionResult],
+        execution_time: float
+    ) -> None:
+        """
+        Emit SubProcessFailedEvent to Orchestrator
+        
+        Reports failure of choreographed sub-process
+        
+        Args:
+            context: Context propagation with correlation_id
+            error: Exception that caused failure
+            partial_results: Any results completed before failure
+            execution_time: Execution time before failure
+        """
+        # Count partial execution statistics
+        total_steps = len(partial_results)
+        successful_steps = sum(
+            1 for r in partial_results.values() if r.status == ExecutionStatus.COMPLETED
+        )
+        failed_steps = sum(
+            1 for r in partial_results.values() if r.status == ExecutionStatus.FAILED
+        )
+        
+        # Create partial result if any steps completed
+        partial_result = None
+        if partial_results:
+            output_data = {
+                key: result.to_dict()
+                for key, result in partial_results.items()
+            }
+            
+            partial_result = SubProcessResult(
+                status="failed",
+                output_data=output_data,
+                execution_time=execution_time,
+                steps_executed=total_steps,
+                steps_successful=successful_steps,
+                steps_failed=failed_steps
+            )
+        
+        # Create and emit event
+        metadata = create_event_metadata(
+            EventType.SUB_PROCESS_FAILED,
+            "choreographer"
+        )
+        
+        event = SubProcessFailedEvent(
+            metadata=metadata,
+            context=context,
+            error_code="CHOREOGRAPHER_EXECUTION_ERROR",
+            error_message=str(error),
+            error_details={
+                "exception_type": type(error).__name__,
+                "steps_completed": successful_steps,
+                "steps_failed": failed_steps,
+                "total_steps": total_steps
+            },
+            partial_result=partial_result
+        )
+        
+        # Publish to event bus
+        success = self.event_bus.publish(
+            EventType.SUB_PROCESS_FAILED,
+            event.to_dict()
+        )
+        
+        if success:
+            logger.info(
+                f"Emitted SubProcessFailedEvent: "
+                f"correlation_id={context.correlation_id}, "
+                f"error={str(error)[:100]}"
+            )
+        else:
+            logger.error(
+                f"Failed to emit SubProcessFailedEvent: "
+                f"correlation_id={context.correlation_id}"
+            )
 
 
 if __name__ == "__main__":

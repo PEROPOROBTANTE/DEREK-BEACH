@@ -1,0 +1,33 @@
+{
+  "event_type": "sub_process.initiated",
+  "event_data": {
+    "metadata": {
+      "event_id": "evt_ce25f16ba013",
+      "event_type": "sub_process.initiated",
+      "timestamp": "2025-10-21T15:24:03.493259",
+      "source": "orchestrator",
+      "version": "1.0.0"
+    },
+    "context": {
+      "correlation_id": "corr_0a3f83846f6c",
+      "workflow_id": "test_wf_123",
+      "question_ids": [
+        "P1-D1-Q1",
+        "P1-D1-Q2"
+      ],
+      "dimension": "D1",
+      "policy_area": "P1",
+      "sub_process_id": null,
+      "parent_step_id": null
+    },
+    "sub_process_type": "question_analysis",
+    "input_data": {
+      "plan_text": "Sample plan text"
+    },
+    "timeout_seconds": 300,
+    "retry_policy": null
+  },
+  "timestamp": "2025-10-21T15:24:03.493315",
+  "correlation_id": "corr_0a3f83846f6c",
+  "workflow_id": "test_wf_123"
+}

@@ -28,6 +28,7 @@ import random
 
 from circuit_breaker import CircuitBreaker, CircuitState, FailureSeverity
 from metadata_service import QuestionContext, ErrorStrategy
+from event_schemas import SubProcessFailedEvent
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +39,7 @@ class FailureType(Enum):
     VALIDATION = "validation"  # Validation rule violations
     BUSINESS_LOGIC = "business_logic"  # Business rule violations
     RESOURCE = "resource"  # Resource exhaustion (memory, CPU)
+    CHOREOGRAPHER_ERROR = "choreographer_error"  # Errors from choreographed sub-processes
 
 
 class RetryStrategy(Enum):
@@ -301,6 +303,7 @@ class ResilienceManager:
             FailureType.VALIDATION: FailureSeverity.DEGRADED,
             FailureType.BUSINESS_LOGIC: FailureSeverity.DEGRADED,
             FailureType.RESOURCE: FailureSeverity.CRITICAL,
+            FailureType.CHOREOGRAPHER_ERROR: FailureSeverity.TRANSIENT,  # Often retryable
         }
         return mapping.get(failure_type, FailureSeverity.TRANSIENT)
     
@@ -612,6 +615,114 @@ class ResilienceManager:
         
         self._failure_history.clear()
         self._compensation_log.clear()
+    
+    def handle_choreographer_failure(
+        self,
+        failed_event: SubProcessFailedEvent,
+        context: QuestionContext,
+        retry_config: Optional[RetryConfig] = None
+    ) -> Dict[str, Any]:
+        """
+        Handle failure reported by choreographed sub-process
+        
+        Applies resilience strategies based on error code and context:
+        - Retry for transient errors
+        - Fallback for non-critical errors
+        - Fail-fast for critical errors
+        - Compensation if enabled
+        
+        Args:
+            failed_event: SubProcessFailedEvent from choreographer
+            context: QuestionContext for the failed sub-process
+            retry_config: Optional retry configuration
+            
+        Returns:
+            Dictionary with handling result and recommended action
+        """
+        logger.warning(
+            f"Handling choreographer failure: "
+            f"correlation_id={failed_event.context.correlation_id}, "
+            f"error={failed_event.error_message}"
+        )
+        
+        # Record the failure
+        self._record_failure(
+            step_id=failed_event.context.sub_process_id or "choreographer_subprocess",
+            question_id=", ".join(failed_event.context.question_ids),
+            failure_type=FailureType.CHOREOGRAPHER_ERROR,
+            error_message=failed_event.error_message,
+            retry_attempt=0,
+        )
+        
+        # Update metrics
+        self._metrics["by_failure_type"][FailureType.CHOREOGRAPHER_ERROR.value] += 1
+        
+        # Determine action based on error code and strategy
+        error_code = failed_event.error_code
+        error_strategy = context.error_strategy
+        
+        # Check if we have partial results
+        has_partial_results = failed_event.partial_result is not None
+        
+        # Decide on action
+        if error_strategy == ErrorStrategy.RETRY:
+            # Attempt retry with backoff
+            retry_config = retry_config or self.default_retry_config
+            
+            return {
+                "action": "retry",
+                "should_retry": True,
+                "retry_config": retry_config,
+                "reason": f"Choreographer error is retryable: {error_code}",
+                "partial_results": failed_event.partial_result.to_dict() if has_partial_results else None
+            }
+        
+        elif error_strategy == ErrorStrategy.FALLBACK:
+            # Use partial results if available, otherwise degraded result
+            if has_partial_results:
+                return {
+                    "action": "fallback",
+                    "should_retry": False,
+                    "use_partial_results": True,
+                    "partial_results": failed_event.partial_result.to_dict(),
+                    "reason": "Using partial results from choreographer"
+                }
+            else:
+                return {
+                    "action": "fallback",
+                    "should_retry": False,
+                    "use_degraded_result": True,
+                    "reason": "Choreographer failed with no partial results, using degraded output"
+                }
+        
+        elif error_strategy == ErrorStrategy.COMPENSATE:
+            # Trigger compensation for any completed steps
+            logger.info("Triggering compensation for choreographer failure")
+            
+            return {
+                "action": "compensate",
+                "should_retry": False,
+                "should_compensate": True,
+                "partial_results": failed_event.partial_result.to_dict() if has_partial_results else None,
+                "reason": "Compensating for choreographer failure"
+            }
+        
+        elif error_strategy == ErrorStrategy.SKIP:
+            # Skip this sub-process
+            return {
+                "action": "skip",
+                "should_retry": False,
+                "reason": f"Skipping choreographer sub-process due to: {error_code}"
+            }
+        
+        else:  # FAIL_FAST or default
+            # Fail immediately
+            return {
+                "action": "fail",
+                "should_retry": False,
+                "reason": f"Choreographer failure: {failed_event.error_message}",
+                "error_details": failed_event.error_details
+            }
 
 
 if __name__ == "__main__":
