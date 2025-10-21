@@ -1,0 +1,1209 @@
+{
+  "metadata": {
+    "generated_at": "2025-10-21T19:14:25.461440",
+    "source_file": "/home/runner/work/DEREK-BEACH/DEREK-BEACH/teoria_cambio.py",
+    "python_version": "3.12.3 (main, Aug 14 2025, 17:47:21) [GCC 13.3.0]"
+  },
+  "inventory": {
+    "file": "/home/runner/work/DEREK-BEACH/DEREK-BEACH/teoria_cambio.py",
+    "timestamp": "2025-10-21T19:14:24.704278",
+    "classes": {
+      "TeoriaCambio": {
+        "name": "TeoriaCambio",
+        "lineno": 184,
+        "end_lineno": 314,
+        "docstring": "Motor para la construcci\u00f3n y validaci\u00f3n estructural de teor\u00edas de cambio.\nValida la coherencia l\u00f3gica de grafos causales contra un modelo axiom\u00e1tico\nde categor\u00edas jer\u00e1rquicas, crucial para el an\u00e1lisis de pol\u00edticas p\u00fablicas.",
+        "decorators": [],
+        "bases": [],
+        "methods": {
+          "__init__": {
+            "lineno": 200,
+            "end_lineno": 204,
+            "signature": "def __init__(self) -> None",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "None",
+            "docstring": "Inicializa el motor con un sistema de cache optimizado.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "_es_conexion_valida": {
+            "lineno": 207,
+            "end_lineno": 209,
+            "signature": "def _es_conexion_valida(origen: CategoriaCausal, destino: CategoriaCausal) -> bool",
+            "params": [
+              {
+                "name": "origen",
+                "annotation": "CategoriaCausal"
+              },
+              {
+                "name": "destino",
+                "annotation": "CategoriaCausal"
+              }
+            ],
+            "return_type": "bool",
+            "docstring": "Verifica la validez de una conexi\u00f3n causal seg\u00fan la jerarqu\u00eda estructural.",
+            "is_static": true,
+            "is_classmethod": false,
+            "decorators": [
+              "staticmethod"
+            ]
+          },
+          "construir_grafo_causal": {
+            "lineno": 212,
+            "end_lineno": 233,
+            "signature": "def construir_grafo_causal(self) -> nx.DiGraph",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "nx.DiGraph",
+            "docstring": "Construye y cachea el grafo causal can\u00f3nico.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": [
+              "lru_cache"
+            ]
+          },
+          "validacion_completa": {
+            "lineno": 235,
+            "end_lineno": 248,
+            "signature": "def validacion_completa(self, grafo: nx.DiGraph) -> ValidacionResultado",
+            "params": [
+              {
+                "name": "self"
+              },
+              {
+                "name": "grafo",
+                "annotation": "nx.DiGraph"
+              }
+            ],
+            "return_type": "ValidacionResultado",
+            "docstring": "Ejecuta una validaci\u00f3n estructural exhaustiva de la teor\u00eda de cambio.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "_extraer_categorias": {
+            "lineno": 251,
+            "end_lineno": 257,
+            "signature": "def _extraer_categorias(grafo: nx.DiGraph) -> Set[str]",
+            "params": [
+              {
+                "name": "grafo",
+                "annotation": "nx.DiGraph"
+              }
+            ],
+            "return_type": "Set[str]",
+            "docstring": "Extrae el conjunto de categor\u00edas presentes en el grafo.",
+            "is_static": true,
+            "is_classmethod": false,
+            "decorators": [
+              "staticmethod"
+            ]
+          },
+          "_validar_orden_causal": {
+            "lineno": 260,
+            "end_lineno": 268,
+            "signature": "def _validar_orden_causal(grafo: nx.DiGraph) -> List[Tuple[str, str]]",
+            "params": [
+              {
+                "name": "grafo",
+                "annotation": "nx.DiGraph"
+              }
+            ],
+            "return_type": "List[Tuple[str, str]]",
+            "docstring": "Identifica las aristas que violan el orden causal axiom\u00e1tico.",
+            "is_static": true,
+            "is_classmethod": false,
+            "decorators": [
+              "staticmethod"
+            ]
+          },
+          "_encontrar_caminos_completos": {
+            "lineno": 271,
+            "end_lineno": 292,
+            "signature": "def _encontrar_caminos_completos(grafo: nx.DiGraph) -> List[List[str]]",
+            "params": [
+              {
+                "name": "grafo",
+                "annotation": "nx.DiGraph"
+              }
+            ],
+            "return_type": "List[List[str]]",
+            "docstring": "Encuentra todos los caminos simples desde nodos INSUMOS a CAUSALIDAD.",
+            "is_static": true,
+            "is_classmethod": false,
+            "decorators": [
+              "staticmethod"
+            ]
+          },
+          "_generar_sugerencias_internas": {
+            "lineno": 295,
+            "end_lineno": 314,
+            "signature": "def _generar_sugerencias_internas(validacion: ValidacionResultado) -> List[str]",
+            "params": [
+              {
+                "name": "validacion",
+                "annotation": "ValidacionResultado"
+              }
+            ],
+            "return_type": "List[str]",
+            "docstring": "Genera un listado de sugerencias accionables basadas en los resultados.",
+            "is_static": true,
+            "is_classmethod": false,
+            "decorators": [
+              "staticmethod"
+            ]
+          }
+        },
+        "attributes": [
+          {
+            "name": "_MATRIZ_VALIDACION",
+            "annotation": "Dict[CategoriaCausal, FrozenSet[CategoriaCausal]]"
+          }
+        ]
+      },
+      "AdvancedDAGValidator": {
+        "name": "AdvancedDAGValidator",
+        "lineno": 354,
+        "end_lineno": 640,
+        "docstring": "Motor para la validaci\u00f3n estoc\u00e1stica y an\u00e1lisis de sensibilidad de DAGs.\nUtiliza simulaciones Monte Carlo para cuantificar la robustez y aciclicidad\nde modelos causales complejos.",
+        "decorators": [],
+        "bases": [],
+        "methods": {
+          "__init__": {
+            "lineno": 361,
+            "end_lineno": 370,
+            "signature": "def __init__(self, graph_type: GraphType = GraphType.CAUSAL_DAG) -> None",
+            "params": [
+              {
+                "name": "self"
+              },
+              {
+                "name": "graph_type",
+                "annotation": "GraphType"
+              }
+            ],
+            "return_type": "None",
+            "docstring": null,
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "add_node": {
+            "lineno": 372,
+            "end_lineno": 382,
+            "signature": "def add_node(self, name: str, dependencies: Optional[Set[str]] = None, role: str = 'variable', metadata: Optional[Dict[str, Any]] = None) -> None",
+            "params": [
+              {
+                "name": "self"
+              },
+              {
+                "name": "name",
+                "annotation": "str"
+              },
+              {
+                "name": "dependencies",
+                "annotation": "Optional[Set[str]]"
+              },
+              {
+                "name": "role",
+                "annotation": "str"
+              },
+              {
+                "name": "metadata",
+                "annotation": "Optional[Dict[str, Any]]"
+              }
+            ],
+            "return_type": "None",
+            "docstring": "Agrega un nodo enriquecido al grafo.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "add_edge": {
+            "lineno": 384,
+            "end_lineno": 391,
+            "signature": "def add_edge(self, from_node: str, to_node: str, weight: float = 1.0) -> None",
+            "params": [
+              {
+                "name": "self"
+              },
+              {
+                "name": "from_node",
+                "annotation": "str"
+              },
+              {
+                "name": "to_node",
+                "annotation": "str"
+              },
+              {
+                "name": "weight",
+                "annotation": "float"
+              }
+            ],
+            "return_type": "None",
+            "docstring": "Agrega una arista dirigida con peso opcional.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "_initialize_rng": {
+            "lineno": 393,
+            "end_lineno": 417,
+            "signature": "def _initialize_rng(self, plan_name: str, salt: str = '') -> int",
+            "params": [
+              {
+                "name": "self"
+              },
+              {
+                "name": "plan_name",
+                "annotation": "str"
+              },
+              {
+                "name": "salt",
+                "annotation": "str"
+              }
+            ],
+            "return_type": "int",
+            "docstring": "Inicializa el generador de n\u00fameros aleatorios con una semilla determinista.\n\nAudit Point 1.1: Deterministic Seeding (RNG)\nInitializes numpy/random RNG with deterministic seed for reproducibility.\nSets reproducible=True in MonteCarloAdvancedResult.\n\nArgs:\n    plan_name: Plan identifier for seed derivation\n    salt: Optional salt for sensitivity analysis\n\nReturns:\n    Generated seed value for audit logging",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "_is_acyclic": {
+            "lineno": 420,
+            "end_lineno": 441,
+            "signature": "def _is_acyclic(nodes: Dict[str, AdvancedGraphNode]) -> bool",
+            "params": [
+              {
+                "name": "nodes",
+                "annotation": "Dict[str, AdvancedGraphNode]"
+              }
+            ],
+            "return_type": "bool",
+            "docstring": "Detecci\u00f3n de ciclos mediante el algoritmo de Kahn (ordenaci\u00f3n topol\u00f3gica).",
+            "is_static": true,
+            "is_classmethod": false,
+            "decorators": [
+              "staticmethod"
+            ]
+          },
+          "_generate_subgraph": {
+            "lineno": 443,
+            "end_lineno": 461,
+            "signature": "def _generate_subgraph(self) -> Dict[str, AdvancedGraphNode]",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "Dict[str, AdvancedGraphNode]",
+            "docstring": "Genera un subgrafo aleatorio del grafo principal.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "calculate_acyclicity_pvalue": {
+            "lineno": 463,
+            "end_lineno": 508,
+            "signature": "def calculate_acyclicity_pvalue(self, plan_name: str, iterations: int) -> MonteCarloAdvancedResult",
+            "params": [
+              {
+                "name": "self"
+              },
+              {
+                "name": "plan_name",
+                "annotation": "str"
+              },
+              {
+                "name": "iterations",
+                "annotation": "int"
+              }
+            ],
+            "return_type": "MonteCarloAdvancedResult",
+            "docstring": "C\u00e1lculo avanzado de p-value con un marco estad\u00edstico completo.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "_perform_sensitivity_analysis_internal": {
+            "lineno": 510,
+            "end_lineno": 550,
+            "signature": "def _perform_sensitivity_analysis_internal(self, plan_name: str, base_p_value: float, iterations: int) -> Dict[str, Any]",
+            "params": [
+              {
+                "name": "self"
+              },
+              {
+                "name": "plan_name",
+                "annotation": "str"
+              },
+              {
+                "name": "base_p_value",
+                "annotation": "float"
+              },
+              {
+                "name": "iterations",
+                "annotation": "int"
+              }
+            ],
+            "return_type": "Dict[str, Any]",
+            "docstring": "An\u00e1lisis de sensibilidad interno optimizado para evitar c\u00e1lculos redundantes.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "_calculate_confidence_interval": {
+            "lineno": 553,
+            "end_lineno": 564,
+            "signature": "def _calculate_confidence_interval(s: int, n: int, conf: float) -> Tuple[float, float]",
+            "params": [
+              {
+                "name": "s",
+                "annotation": "int"
+              },
+              {
+                "name": "n",
+                "annotation": "int"
+              },
+              {
+                "name": "conf",
+                "annotation": "float"
+              }
+            ],
+            "return_type": "Tuple[float, float]",
+            "docstring": "Calcula el intervalo de confianza de Wilson.",
+            "is_static": true,
+            "is_classmethod": false,
+            "decorators": [
+              "staticmethod"
+            ]
+          },
+          "_calculate_statistical_power": {
+            "lineno": 567,
+            "end_lineno": 575,
+            "signature": "def _calculate_statistical_power(s: int, n: int, alpha: float = 0.05) -> float",
+            "params": [
+              {
+                "name": "s",
+                "annotation": "int"
+              },
+              {
+                "name": "n",
+                "annotation": "int"
+              },
+              {
+                "name": "alpha",
+                "annotation": "float"
+              }
+            ],
+            "return_type": "float",
+            "docstring": "Calcula el poder estad\u00edstico a posteriori.",
+            "is_static": true,
+            "is_classmethod": false,
+            "decorators": [
+              "staticmethod"
+            ]
+          },
+          "_calculate_bayesian_posterior": {
+            "lineno": 578,
+            "end_lineno": 584,
+            "signature": "def _calculate_bayesian_posterior(likelihood: float, prior: float = 0.5) -> float",
+            "params": [
+              {
+                "name": "likelihood",
+                "annotation": "float"
+              },
+              {
+                "name": "prior",
+                "annotation": "float"
+              }
+            ],
+            "return_type": "float",
+            "docstring": "Calcula la probabilidad posterior Bayesiana simple.",
+            "is_static": true,
+            "is_classmethod": false,
+            "decorators": [
+              "staticmethod"
+            ]
+          },
+          "_calculate_node_importance": {
+            "lineno": 586,
+            "end_lineno": 605,
+            "signature": "def _calculate_node_importance(self) -> Dict[str, float]",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "Dict[str, float]",
+            "docstring": "Calcula una m\u00e9trica de importancia para cada nodo.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "get_graph_stats": {
+            "lineno": 607,
+            "end_lineno": 615,
+            "signature": "def get_graph_stats(self) -> Dict[str, Any]",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "Dict[str, Any]",
+            "docstring": "Obtiene estad\u00edsticas estructurales del grafo.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "_create_empty_result": {
+            "lineno": 617,
+            "end_lineno": 640,
+            "signature": "def _create_empty_result(self, plan_name: str, seed: int, timestamp: str) -> MonteCarloAdvancedResult",
+            "params": [
+              {
+                "name": "self"
+              },
+              {
+                "name": "plan_name",
+                "annotation": "str"
+              },
+              {
+                "name": "seed",
+                "annotation": "int"
+              },
+              {
+                "name": "timestamp",
+                "annotation": "str"
+              }
+            ],
+            "return_type": "MonteCarloAdvancedResult",
+            "docstring": "Crea un resultado vac\u00edo para grafos sin nodos.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          }
+        },
+        "attributes": []
+      },
+      "IndustrialGradeValidator": {
+        "name": "IndustrialGradeValidator",
+        "lineno": 648,
+        "end_lineno": 799,
+        "docstring": "Orquesta una validaci\u00f3n de grado industrial para el motor de Teor\u00eda de Cambio.",
+        "decorators": [],
+        "bases": [],
+        "methods": {
+          "__init__": {
+            "lineno": 653,
+            "end_lineno": 661,
+            "signature": "def __init__(self) -> None",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "None",
+            "docstring": null,
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "execute_suite": {
+            "lineno": 663,
+            "end_lineno": 693,
+            "signature": "def execute_suite(self) -> bool",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "bool",
+            "docstring": "Ejecuta la suite completa de validaci\u00f3n industrial.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "validate_engine_readiness": {
+            "lineno": 695,
+            "end_lineno": 712,
+            "signature": "def validate_engine_readiness(self) -> bool",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "bool",
+            "docstring": "Valida la disponibilidad y tiempo de instanciaci\u00f3n de los motores de an\u00e1lisis.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "validate_causal_categories": {
+            "lineno": 714,
+            "end_lineno": 729,
+            "signature": "def validate_causal_categories(self) -> bool",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "bool",
+            "docstring": "Valida la completitud y el orden axiom\u00e1tico de las categor\u00edas causales.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "validate_connection_matrix": {
+            "lineno": 731,
+            "end_lineno": 749,
+            "signature": "def validate_connection_matrix(self) -> bool",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "bool",
+            "docstring": "Valida la matriz de transiciones causales.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "run_performance_benchmarks": {
+            "lineno": 751,
+            "end_lineno": 778,
+            "signature": "def run_performance_benchmarks(self) -> bool",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "bool",
+            "docstring": "Ejecuta benchmarks de rendimiento para las operaciones cr\u00edticas del motor.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "_benchmark_operation": {
+            "lineno": 780,
+            "end_lineno": 788,
+            "signature": "def _benchmark_operation(self, operation_name: str, callable_obj, threshold: float)",
+            "params": [
+              {
+                "name": "self"
+              },
+              {
+                "name": "operation_name",
+                "annotation": "str"
+              },
+              {
+                "name": "callable_obj"
+              },
+              {
+                "name": "threshold",
+                "annotation": "float"
+              }
+            ],
+            "return_type": null,
+            "docstring": "Mide el tiempo de ejecuci\u00f3n de una operaci\u00f3n y registra la m\u00e9trica.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          },
+          "_log_metric": {
+            "lineno": 790,
+            "end_lineno": 799,
+            "signature": "def _log_metric(self, name: str, value: float, unit: str, threshold: float)",
+            "params": [
+              {
+                "name": "self"
+              },
+              {
+                "name": "name",
+                "annotation": "str"
+              },
+              {
+                "name": "value",
+                "annotation": "float"
+              },
+              {
+                "name": "unit",
+                "annotation": "str"
+              },
+              {
+                "name": "threshold",
+                "annotation": "float"
+              }
+            ],
+            "return_type": null,
+            "docstring": "Registra y reporta una m\u00e9trica de validaci\u00f3n.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          }
+        },
+        "attributes": []
+      }
+    },
+    "dataclasses": {
+      "ValidacionResultado": {
+        "name": "ValidacionResultado",
+        "lineno": 112,
+        "end_lineno": 119,
+        "docstring": "Encapsula el resultado de la validaci\u00f3n estructural de una teor\u00eda de cambio.",
+        "decorators": [
+          "dataclass"
+        ],
+        "bases": [],
+        "methods": {},
+        "attributes": [
+          {
+            "name": "es_valida",
+            "annotation": "bool"
+          },
+          {
+            "name": "violaciones_orden",
+            "annotation": "List[Tuple[str, str]]"
+          },
+          {
+            "name": "caminos_completos",
+            "annotation": "List[List[str]]"
+          },
+          {
+            "name": "categorias_faltantes",
+            "annotation": "List[CategoriaCausal]"
+          },
+          {
+            "name": "sugerencias",
+            "annotation": "List[str]"
+          }
+        ]
+      },
+      "ValidationMetric": {
+        "name": "ValidationMetric",
+        "lineno": 123,
+        "end_lineno": 131,
+        "docstring": "Define una m\u00e9trica de validaci\u00f3n con umbrales y ponderaci\u00f3n.",
+        "decorators": [
+          "dataclass"
+        ],
+        "bases": [],
+        "methods": {},
+        "attributes": [
+          {
+            "name": "name",
+            "annotation": "str"
+          },
+          {
+            "name": "value",
+            "annotation": "float"
+          },
+          {
+            "name": "unit",
+            "annotation": "str"
+          },
+          {
+            "name": "threshold",
+            "annotation": "float"
+          },
+          {
+            "name": "status",
+            "annotation": "str"
+          },
+          {
+            "name": "weight",
+            "annotation": "float"
+          }
+        ]
+      },
+      "AdvancedGraphNode": {
+        "name": "AdvancedGraphNode",
+        "lineno": 135,
+        "end_lineno": 146,
+        "docstring": "Nodo de grafo enriquecido con metadatos y rol sem\u00e1ntico.",
+        "decorators": [
+          "dataclass"
+        ],
+        "bases": [],
+        "methods": {
+          "__post_init__": {
+            "lineno": 143,
+            "end_lineno": 146,
+            "signature": "def __post_init__(self) -> None",
+            "params": [
+              {
+                "name": "self"
+              }
+            ],
+            "return_type": "None",
+            "docstring": "Inicializa metadatos por defecto si no son provistos.",
+            "is_static": false,
+            "is_classmethod": false,
+            "decorators": []
+          }
+        },
+        "attributes": [
+          {
+            "name": "name",
+            "annotation": "str"
+          },
+          {
+            "name": "dependencies",
+            "annotation": "Set[str]"
+          },
+          {
+            "name": "metadata",
+            "annotation": "Dict[str, Any]"
+          },
+          {
+            "name": "role",
+            "annotation": "str"
+          }
+        ]
+      },
+      "MonteCarloAdvancedResult": {
+        "name": "MonteCarloAdvancedResult",
+        "lineno": 150,
+        "end_lineno": 176,
+        "docstring": "Resultado exhaustivo de una simulaci\u00f3n Monte Carlo.\n\nAudit Point 1.1: Deterministic Seeding (RNG)\nField 'reproducible' confirms that seed was deterministically generated\nand results can be reproduced with identical inputs.",
+        "decorators": [
+          "dataclass"
+        ],
+        "bases": [],
+        "methods": {},
+        "attributes": [
+          {
+            "name": "plan_name",
+            "annotation": "str"
+          },
+          {
+            "name": "seed",
+            "annotation": "int"
+          },
+          {
+            "name": "timestamp",
+            "annotation": "str"
+          },
+          {
+            "name": "total_iterations",
+            "annotation": "int"
+          },
+          {
+            "name": "acyclic_count",
+            "annotation": "int"
+          },
+          {
+            "name": "p_value",
+            "annotation": "float"
+          },
+          {
+            "name": "bayesian_posterior",
+            "annotation": "float"
+          },
+          {
+            "name": "confidence_interval",
+            "annotation": "Tuple[float, float]"
+          },
+          {
+            "name": "statistical_power",
+            "annotation": "float"
+          },
+          {
+            "name": "edge_sensitivity",
+            "annotation": "Dict[str, float]"
+          },
+          {
+            "name": "node_importance",
+            "annotation": "Dict[str, float]"
+          },
+          {
+            "name": "robustness_score",
+            "annotation": "float"
+          },
+          {
+            "name": "reproducible",
+            "annotation": "bool"
+          },
+          {
+            "name": "convergence_achieved",
+            "annotation": "bool"
+          },
+          {
+            "name": "adequate_power",
+            "annotation": "bool"
+          },
+          {
+            "name": "computation_time",
+            "annotation": "float"
+          },
+          {
+            "name": "graph_statistics",
+            "annotation": "Dict[str, Any]"
+          },
+          {
+            "name": "test_parameters",
+            "annotation": "Dict[str, Any]"
+          }
+        ]
+      }
+    },
+    "enums": {
+      "CategoriaCausal": {
+        "name": "CategoriaCausal",
+        "lineno": 89,
+        "end_lineno": 99,
+        "docstring": "Jerarqu\u00eda axiom\u00e1tica de categor\u00edas causales en una teor\u00eda de cambio.\nEl orden num\u00e9rico impone la secuencia l\u00f3gica obligatoria.",
+        "decorators": [],
+        "bases": [
+          "Enum"
+        ],
+        "methods": {},
+        "attributes": []
+      },
+      "GraphType": {
+        "name": "GraphType",
+        "lineno": 102,
+        "end_lineno": 108,
+        "docstring": "Tipolog\u00eda de grafos para la aplicaci\u00f3n de an\u00e1lisis especializados.",
+        "decorators": [],
+        "bases": [
+          "Enum"
+        ],
+        "methods": {},
+        "attributes": []
+      }
+    },
+    "functions": {
+      "configure_logging": {
+        "lineno": 67,
+        "end_lineno": 74,
+        "signature": "def configure_logging() -> None",
+        "params": [],
+        "return_type": "None",
+        "docstring": "Configura un sistema de logging de alto rendimiento para la salida est\u00e1ndar.",
+        "is_static": false,
+        "is_classmethod": false,
+        "decorators": []
+      },
+      "_create_advanced_seed": {
+        "lineno": 322,
+        "end_lineno": 351,
+        "signature": "def _create_advanced_seed(plan_name: str, salt: str = '') -> int",
+        "params": [
+          {
+            "name": "plan_name",
+            "annotation": "str"
+          },
+          {
+            "name": "salt",
+            "annotation": "str"
+          }
+        ],
+        "return_type": "int",
+        "docstring": "Genera una semilla determinista de alta entrop\u00eda usando SHA-512.\n\nAudit Point 1.1: Deterministic Seeding (RNG)\nGlobal random seed generated deterministically from plan_name and optional salt.\nConfirms reproducibility across numpy/torch/PyMC stochastic elements.\n\nArgs:\n    plan_name: Plan identifier for deterministic derivation\n    salt: Optional salt for sensitivity analysis (varies to bound variance)\n\nReturns:\n    64-bit unsigned integer seed derived from SHA-512 hash\n\nQuality Evidence:\n    Re-run pipeline twice with identical inputs/salt \u2192 output hashes must match 100%\n    Achieves MMR-level determinism per Beach & Pedersen 2019",
+        "is_static": false,
+        "is_classmethod": false,
+        "decorators": []
+      },
+      "create_policy_theory_of_change_graph": {
+        "lineno": 807,
+        "end_lineno": 839,
+        "signature": "def create_policy_theory_of_change_graph() -> AdvancedDAGValidator",
+        "params": [],
+        "return_type": "AdvancedDAGValidator",
+        "docstring": "Construye un grafo causal de demostraci\u00f3n alineado con la pol\u00edtica P1:\n\"Derechos de las mujeres e igualdad de g\u00e9nero\".",
+        "is_static": false,
+        "is_classmethod": false,
+        "decorators": []
+      },
+      "main": {
+        "lineno": 842,
+        "end_lineno": 906,
+        "signature": "def main() -> None",
+        "params": [],
+        "return_type": "None",
+        "docstring": "Punto de entrada principal para la interfaz de l\u00ednea de comandos (CLI).",
+        "is_static": false,
+        "is_classmethod": false,
+        "decorators": []
+      }
+    }
+  },
+  "verification": {
+    "timestamp": "2025-10-21T19:14:24.714885",
+    "verified_items": [
+      {
+        "type": "enum",
+        "name": "CategoriaCausal",
+        "location": "line 89"
+      },
+      {
+        "type": "enum",
+        "name": "GraphType",
+        "location": "line 102"
+      },
+      {
+        "type": "dataclass",
+        "name": "ValidacionResultado",
+        "location": "line 112"
+      },
+      {
+        "type": "dataclass",
+        "name": "ValidationMetric",
+        "location": "line 123"
+      },
+      {
+        "type": "dataclass",
+        "name": "AdvancedGraphNode",
+        "location": "line 135"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedGraphNode.__post_init__",
+        "location": "line 143",
+        "signature": "def __post_init__(self) -> None"
+      },
+      {
+        "type": "dataclass",
+        "name": "MonteCarloAdvancedResult",
+        "location": "line 150"
+      },
+      {
+        "type": "class",
+        "name": "TeoriaCambio",
+        "location": "line 184"
+      },
+      {
+        "type": "method",
+        "name": "TeoriaCambio.__init__",
+        "location": "line 200",
+        "signature": "def __init__(self) -> None"
+      },
+      {
+        "type": "method",
+        "name": "TeoriaCambio._es_conexion_valida",
+        "location": "line 207",
+        "signature": "def _es_conexion_valida(origen: CategoriaCausal, destino: CategoriaCausal) -> bool"
+      },
+      {
+        "type": "method",
+        "name": "TeoriaCambio.construir_grafo_causal",
+        "location": "line 212",
+        "signature": "def construir_grafo_causal(self) -> nx.DiGraph"
+      },
+      {
+        "type": "method",
+        "name": "TeoriaCambio.validacion_completa",
+        "location": "line 235",
+        "signature": "def validacion_completa(self, grafo: nx.DiGraph) -> ValidacionResultado"
+      },
+      {
+        "type": "method",
+        "name": "TeoriaCambio._extraer_categorias",
+        "location": "line 251",
+        "signature": "def _extraer_categorias(grafo: nx.DiGraph) -> Set[str]"
+      },
+      {
+        "type": "method",
+        "name": "TeoriaCambio._validar_orden_causal",
+        "location": "line 260",
+        "signature": "def _validar_orden_causal(grafo: nx.DiGraph) -> List[Tuple[str, str]]"
+      },
+      {
+        "type": "method",
+        "name": "TeoriaCambio._encontrar_caminos_completos",
+        "location": "line 271",
+        "signature": "def _encontrar_caminos_completos(grafo: nx.DiGraph) -> List[List[str]]"
+      },
+      {
+        "type": "method",
+        "name": "TeoriaCambio._generar_sugerencias_internas",
+        "location": "line 295",
+        "signature": "def _generar_sugerencias_internas(validacion: ValidacionResultado) -> List[str]"
+      },
+      {
+        "type": "class",
+        "name": "AdvancedDAGValidator",
+        "location": "line 354"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator.__init__",
+        "location": "line 361",
+        "signature": "def __init__(self, graph_type: GraphType = GraphType.CAUSAL_DAG) -> None"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator.add_node",
+        "location": "line 372",
+        "signature": "def add_node(self, name: str, dependencies: Optional[Set[str]] = None, role: str = 'variable', metadata: Optional[Dict[str, Any]] = None) -> None"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator.add_edge",
+        "location": "line 384",
+        "signature": "def add_edge(self, from_node: str, to_node: str, weight: float = 1.0) -> None"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator._initialize_rng",
+        "location": "line 393",
+        "signature": "def _initialize_rng(self, plan_name: str, salt: str = '') -> int"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator._is_acyclic",
+        "location": "line 420",
+        "signature": "def _is_acyclic(nodes: Dict[str, AdvancedGraphNode]) -> bool"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator._generate_subgraph",
+        "location": "line 443",
+        "signature": "def _generate_subgraph(self) -> Dict[str, AdvancedGraphNode]"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator.calculate_acyclicity_pvalue",
+        "location": "line 463",
+        "signature": "def calculate_acyclicity_pvalue(self, plan_name: str, iterations: int) -> MonteCarloAdvancedResult"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator._perform_sensitivity_analysis_internal",
+        "location": "line 510",
+        "signature": "def _perform_sensitivity_analysis_internal(self, plan_name: str, base_p_value: float, iterations: int) -> Dict[str, Any]"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator._calculate_confidence_interval",
+        "location": "line 553",
+        "signature": "def _calculate_confidence_interval(s: int, n: int, conf: float) -> Tuple[float, float]"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator._calculate_statistical_power",
+        "location": "line 567",
+        "signature": "def _calculate_statistical_power(s: int, n: int, alpha: float = 0.05) -> float"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator._calculate_bayesian_posterior",
+        "location": "line 578",
+        "signature": "def _calculate_bayesian_posterior(likelihood: float, prior: float = 0.5) -> float"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator._calculate_node_importance",
+        "location": "line 586",
+        "signature": "def _calculate_node_importance(self) -> Dict[str, float]"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator.get_graph_stats",
+        "location": "line 607",
+        "signature": "def get_graph_stats(self) -> Dict[str, Any]"
+      },
+      {
+        "type": "method",
+        "name": "AdvancedDAGValidator._create_empty_result",
+        "location": "line 617",
+        "signature": "def _create_empty_result(self, plan_name: str, seed: int, timestamp: str) -> MonteCarloAdvancedResult"
+      },
+      {
+        "type": "class",
+        "name": "IndustrialGradeValidator",
+        "location": "line 648"
+      },
+      {
+        "type": "method",
+        "name": "IndustrialGradeValidator.__init__",
+        "location": "line 653",
+        "signature": "def __init__(self) -> None"
+      },
+      {
+        "type": "method",
+        "name": "IndustrialGradeValidator.execute_suite",
+        "location": "line 663",
+        "signature": "def execute_suite(self) -> bool"
+      },
+      {
+        "type": "method",
+        "name": "IndustrialGradeValidator.validate_engine_readiness",
+        "location": "line 695",
+        "signature": "def validate_engine_readiness(self) -> bool"
+      },
+      {
+        "type": "method",
+        "name": "IndustrialGradeValidator.validate_causal_categories",
+        "location": "line 714",
+        "signature": "def validate_causal_categories(self) -> bool"
+      },
+      {
+        "type": "method",
+        "name": "IndustrialGradeValidator.validate_connection_matrix",
+        "location": "line 731",
+        "signature": "def validate_connection_matrix(self) -> bool"
+      },
+      {
+        "type": "method",
+        "name": "IndustrialGradeValidator.run_performance_benchmarks",
+        "location": "line 751",
+        "signature": "def run_performance_benchmarks(self) -> bool"
+      },
+      {
+        "type": "method",
+        "name": "IndustrialGradeValidator._benchmark_operation",
+        "location": "line 780",
+        "signature": "def _benchmark_operation(self, operation_name: str, callable_obj, threshold: float)"
+      },
+      {
+        "type": "method",
+        "name": "IndustrialGradeValidator._log_metric",
+        "location": "line 790",
+        "signature": "def _log_metric(self, name: str, value: float, unit: str, threshold: float)"
+      },
+      {
+        "type": "function",
+        "name": "configure_logging",
+        "location": "line 67",
+        "signature": "def configure_logging() -> None"
+      },
+      {
+        "type": "function",
+        "name": "_create_advanced_seed",
+        "location": "line 322",
+        "signature": "def _create_advanced_seed(plan_name: str, salt: str = '') -> int"
+      },
+      {
+        "type": "function",
+        "name": "create_policy_theory_of_change_graph",
+        "location": "line 807",
+        "signature": "def create_policy_theory_of_change_graph() -> AdvancedDAGValidator"
+      }
+    ],
+    "missing_items": [
+      {
+        "type": "function",
+        "name": "main",
+        "location": "line 842",
+        "signature": "def main() -> None"
+      }
+    ],
+    "issues": [],
+    "statistics": {
+      "total_items": 44,
+      "verified_items": 43,
+      "missing_items": 1,
+      "verification_rate": 97.72727272727273
+    }
+  }
+}
