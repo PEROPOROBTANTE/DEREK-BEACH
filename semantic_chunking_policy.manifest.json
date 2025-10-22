@@ -1,0 +1,282 @@
+{
+  "file": "semantic_chunking_policy.py",
+  "version": "1.0",
+  "description": "Semantic Chunking and Policy Analysis Framework for Colombian Municipal Development Plans",
+  "classes": {
+    "SemanticProcessor": {
+      "line": 101,
+      "docstring": "State-of-the-art semantic processing with:\n- BGE-M3 embeddings (2024 SOTA)\n- Policy-aware chunking (respects PDM structure)\n- Efficient batching with FP16",
+      "bases": [],
+      "methods": {
+        "__init__": {
+          "line": 109,
+          "signature": "def __init__(self, config: SemanticConfig)",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Verify __init__ accepts correct input types",
+            "Test __init__ with valid data",
+            "Test __init__ with edge cases",
+            "Verify __init__ output format and types",
+            "Check __init__ error handling"
+          ]
+        },
+        "_lazy_load": {
+          "line": 115,
+          "signature": "def _lazy_load(self) -> None",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Verify _lazy_load accepts correct input types",
+            "Test _lazy_load with valid data",
+            "Test _lazy_load with edge cases",
+            "Verify _lazy_load output format and types",
+            "Check _lazy_load error handling"
+          ]
+        },
+        "chunk_text": {
+          "line": 142,
+          "signature": "def chunk_text(self, text: str, preserve_structure: bool) -> list[dict[str, Any]]",
+          "docstring": "Policy-aware semantic chunking:\n- Respects section boundaries (numbered lists, headers)\n- Maintains table integrity\n- Preserves reference links between text segments",
+          "verification_steps": [
+            "Verify chunk_text accepts correct input types",
+            "Test chunk_text with valid data",
+            "Test chunk_text with edge cases",
+            "Verify chunk_text output format and types",
+            "Check chunk_text error handling"
+          ]
+        },
+        "_detect_pdm_structure": {
+          "line": 180,
+          "signature": "def _detect_pdm_structure(self, text: str) -> list[dict[str, Any]]",
+          "docstring": "Detect PDM sections using Colombian policy document patterns",
+          "verification_steps": [
+            "Verify _detect_pdm_structure accepts correct input types",
+            "Test _detect_pdm_structure with valid data",
+            "Test _detect_pdm_structure with edge cases",
+            "Verify _detect_pdm_structure output format and types",
+            "Check _detect_pdm_structure error handling"
+          ]
+        },
+        "_detect_table": {
+          "line": 207,
+          "signature": "def _detect_table(self, text: str) -> bool",
+          "docstring": "Detect if chunk contains tabular data",
+          "verification_steps": [
+            "Verify _detect_table accepts correct input types",
+            "Test _detect_table with valid data",
+            "Test _detect_table with edge cases",
+            "Verify _detect_table output format and types",
+            "Check _detect_table error handling"
+          ]
+        },
+        "_detect_numerical_data": {
+          "line": 214,
+          "signature": "def _detect_numerical_data(self, text: str) -> bool",
+          "docstring": "Detect if chunk contains significant numerical/financial data",
+          "verification_steps": [
+            "Verify _detect_numerical_data accepts correct input types",
+            "Test _detect_numerical_data with valid data",
+            "Test _detect_numerical_data with edge cases",
+            "Verify _detect_numerical_data output format and types",
+            "Check _detect_numerical_data error handling"
+          ]
+        },
+        "_embed_batch": {
+          "line": 224,
+          "signature": "def _embed_batch(self, texts: list[str]) -> list[NDArray[np.floating[Any]]]",
+          "docstring": "Batch embedding with BGE-M3",
+          "verification_steps": [
+            "Verify _embed_batch accepts correct input types",
+            "Test _embed_batch with valid data",
+            "Test _embed_batch with edge cases",
+            "Verify _embed_batch output format and types",
+            "Check _embed_batch error handling"
+          ]
+        },
+        "embed_single": {
+          "line": 251,
+          "signature": "def embed_single(self, text: str) -> NDArray[np.floating[Any]]",
+          "docstring": "Single text embedding",
+          "verification_steps": [
+            "Verify embed_single accepts correct input types",
+            "Test embed_single with valid data",
+            "Test embed_single with edge cases",
+            "Verify embed_single output format and types",
+            "Check embed_single error handling"
+          ]
+        }
+      }
+    },
+    "BayesianEvidenceIntegrator": {
+      "line": 261,
+      "docstring": "Information-theoretic Bayesian evidence accumulation:\n- Dirichlet-Multinomial for multi-hypothesis tracking\n- KL divergence for belief update quantification\n- Entropy-based confidence calibration\n- No simplifications or heuristics",
+      "bases": [],
+      "methods": {
+        "__init__": {
+          "line": 270,
+          "signature": "def __init__(self, prior_concentration: float)",
+          "docstring": "Args:\n    prior_concentration: Dirichlet concentration (α).\n        Lower = more uncertain prior (conservative)",
+          "verification_steps": [
+            "Verify __init__ accepts correct input types",
+            "Test __init__ with valid data",
+            "Test __init__ with edge cases",
+            "Verify __init__ output format and types",
+            "Check __init__ error handling"
+          ]
+        },
+        "integrate_evidence": {
+          "line": 285,
+          "signature": "def integrate_evidence(self, similarities: NDArray[np.float64], chunk_metadata: list[dict[str, Any]]) -> dict[str, float]",
+          "docstring": "Bayesian evidence integration with information-theoretic rigor:\n1. Map similarities to likelihood space via monotonic transform\n2. Weight evidence by chunk reliability (position, structure, content type)\n3. Update Dirichlet posterior\n4. Compute information gain (KL divergence from prior)\n5. Calculate calibrated confidence with epistemic uncertainty",
+          "verification_steps": [
+            "Verify integrate_evidence accepts correct input types",
+            "Test integrate_evidence with valid data",
+            "Test integrate_evidence with edge cases",
+            "Verify integrate_evidence output format and types",
+            "Check integrate_evidence error handling"
+          ]
+        },
+        "_similarity_to_probability": {
+          "line": 340,
+          "signature": "def _similarity_to_probability(self, sims: NDArray[np.float64]) -> NDArray[np.float64]",
+          "docstring": "Calibrated transform from cosine similarity [-1,1] to probability [0,1]\nUsing sigmoid with empirically derived temperature",
+          "verification_steps": [
+            "Verify _similarity_to_probability accepts correct input types",
+            "Test _similarity_to_probability with valid data",
+            "Test _similarity_to_probability with edge cases",
+            "Verify _similarity_to_probability output format and types",
+            "Check _similarity_to_probability error handling"
+          ]
+        },
+        "_compute_reliability_weights": {
+          "line": 350,
+          "signature": "def _compute_reliability_weights(self, metadata: list[dict[str, Any]]) -> NDArray[np.float64]",
+          "docstring": "Evidence reliability based on:\n- Position in document (early sections more diagnostic)\n- Content type (tables/numbers more reliable for quantitative claims)\n- Section type (plan sections more reliable than diagnostics)",
+          "verification_steps": [
+            "Verify _compute_reliability_weights accepts correct input types",
+            "Test _compute_reliability_weights with valid data",
+            "Test _compute_reliability_weights with edge cases",
+            "Verify _compute_reliability_weights output format and types",
+            "Check _compute_reliability_weights error handling"
+          ]
+        },
+        "_null_evidence": {
+          "line": 378,
+          "signature": "def _null_evidence(self) -> dict[str, float]",
+          "docstring": "Return prior state (no evidence)",
+          "verification_steps": [
+            "Verify _null_evidence accepts correct input types",
+            "Test _null_evidence with valid data",
+            "Test _null_evidence with edge cases",
+            "Verify _null_evidence output format and types",
+            "Check _null_evidence error handling"
+          ]
+        },
+        "causal_strength": {
+          "line": 392,
+          "signature": "def causal_strength(self, cause_emb: NDArray[np.floating[Any]], effect_emb: NDArray[np.floating[Any]], context_emb: NDArray[np.floating[Any]]) -> float",
+          "docstring": "Causal strength via conditional independence approximation:\nstrength = sim(cause, effect) * [1 - |sim(cause,ctx) - sim(effect,ctx)|]\nIntuition: Strong causal link if cause-effect similar AND\nboth relate similarly to context (conditional independence test proxy)",
+          "verification_steps": [
+            "Verify causal_strength accepts correct input types",
+            "Test causal_strength with valid data",
+            "Test causal_strength with edge cases",
+            "Verify causal_strength output format and types",
+            "Check causal_strength error handling"
+          ]
+        }
+      }
+    },
+    "PolicyDocumentAnalyzer": {
+      "line": 419,
+      "docstring": "Colombian Municipal Development Plan Analyzer:\n- BGE-M3 semantic processing\n- Policy-aware chunking (respects PDM structure)\n- Bayesian evidence integration with information theory\n- Causal dimension analysis per Marco Lógico",
+      "bases": [],
+      "methods": {
+        "__init__": {
+          "line": 428,
+          "signature": "def __init__(self, config: SemanticConfig | None)",
+          "docstring": "(No docstring provided)",
+          "verification_steps": [
+            "Verify __init__ accepts correct input types",
+            "Test __init__ with valid data",
+            "Test __init__ with edge cases",
+            "Verify __init__ output format and types",
+            "Check __init__ error handling"
+          ]
+        },
+        "_init_dimension_embeddings": {
+          "line": 437,
+          "signature": "def _init_dimension_embeddings(self) -> dict[CausalDimension, NDArray[np.floating[Any]]]",
+          "docstring": "Canonical embeddings for Marco Lógico dimensions\nUsing Colombian policy-specific terminology",
+          "verification_steps": [
+            "Verify _init_dimension_embeddings accepts correct input types",
+            "Test _init_dimension_embeddings with valid data",
+            "Test _init_dimension_embeddings with edge cases",
+            "Verify _init_dimension_embeddings output format and types",
+            "Check _init_dimension_embeddings error handling"
+          ]
+        },
+        "analyze": {
+          "line": 473,
+          "signature": "def analyze(self, text: str) -> dict[str, Any]",
+          "docstring": "Full pipeline: chunking → embedding → dimension analysis → evidence integration",
+          "verification_steps": [
+            "Verify analyze accepts correct input types",
+            "Test analyze with valid data",
+            "Test analyze with edge cases",
+            "Verify analyze output format and types",
+            "Check analyze error handling"
+          ]
+        },
+        "_extract_key_excerpts": {
+          "line": 518,
+          "signature": "def _extract_key_excerpts(self, chunks: list[dict[str, Any]], dimension_results: dict[str, dict[str, Any]]) -> dict[str, list[str]]",
+          "docstring": "Extract most relevant text excerpts per dimension",
+          "verification_steps": [
+            "Verify _extract_key_excerpts accepts correct input types",
+            "Test _extract_key_excerpts with valid data",
+            "Test _extract_key_excerpts with edge cases",
+            "Verify _extract_key_excerpts output format and types",
+            "Check _extract_key_excerpts error handling"
+          ]
+        }
+      }
+    }
+  },
+  "enums": {
+    "CausalDimension": {
+      "line": 57,
+      "docstring": "Marco Lógico standard (DNP Colombia)",
+      "bases": [
+        "Enum"
+      ],
+      "methods": {}
+    },
+    "PDMSection": {
+      "line": 67,
+      "docstring": "Enumerates the typical sections of a Colombian Municipal Development Plan (PDM),\nas defined by Ley 152/1994. Each member represents a key structural component\nof the PDM document, facilitating semantic analysis and policy structure recognition.",
+      "bases": [
+        "Enum"
+      ],
+      "methods": {}
+    }
+  },
+  "dataclasses": {
+    "SemanticConfig": {
+      "line": 82,
+      "docstring": "Configuración calibrada para análisis de políticas públicas",
+      "bases": [],
+      "methods": {}
+    }
+  },
+  "functions": {
+    "main": {
+      "line": 546,
+      "signature": "def main()",
+      "docstring": "Example usage",
+      "verification_steps": [
+        "Test main execution",
+        "Verify main output",
+        "Check main error handling"
+      ]
+    }
+  }
+}
