@@ -1,0 +1,845 @@
+{
+  "module": "policy_segmenter",
+  "description": "State-of-the-Art Document Segmenter for Colombian Municipal Development Plans",
+  "version": "1.0.0",
+  "python_version": "3.10+",
+  "file": "policy_segmenter.py",
+  "total_lines": 1507,
+  "components": {
+    "enums": [
+      {
+        "name": "SectionType",
+        "line": 47,
+        "base": "Enum",
+        "docstring": "Section types aligned with DECALOGO dimensions (D1-D6).",
+        "members": [
+          "DIAGNOSTIC", "BASELINE", "RESOURCES", "CAPACITY", "BUDGET", "PARTICIPATION",
+          "ACTIVITY", "MECHANISM", "INTERVENTION", "STRATEGY", "TIMELINE",
+          "PRODUCT", "OUTPUT",
+          "RESULT", "OUTCOME", "INDICATOR", "MONITORING",
+          "IMPACT", "LONG_TERM_EFFECT",
+          "CAUSAL_THEORY", "CAUSAL_LINK",
+          "VISION", "OBJECTIVE", "RESPONSIBILITY"
+        ],
+        "methods": [],
+        "verification_steps": [
+          "Verify all 24 enum members are defined",
+          "Verify enum inherits from Enum",
+          "Verify member values are strings",
+          "Verify alignment with DECALOGO dimensions D1-D6"
+        ]
+      }
+    ],
+    "dataclasses": [
+      {
+        "name": "SegmentMetrics",
+        "line": 90,
+        "frozen": true,
+        "docstring": "Immutable metrics for document segment.",
+        "fields": [
+          {"name": "char_count", "type": "int"},
+          {"name": "sentence_count", "type": "int"},
+          {"name": "word_count", "type": "int"},
+          {"name": "token_count", "type": "int"},
+          {"name": "semantic_coherence", "type": "float", "range": "0.0-1.0"},
+          {"name": "boundary_confidence", "type": "float", "range": "0.0-1.0", "description": "Bayesian posterior"},
+          {"name": "section_type", "type": "str"},
+          {"name": "has_table", "type": "bool", "default": false},
+          {"name": "has_list", "type": "bool", "default": false},
+          {"name": "has_numbers", "type": "bool", "default": false}
+        ],
+        "methods": [],
+        "verification_steps": [
+          "Verify dataclass is frozen (immutable)",
+          "Verify all 10 fields are defined with correct types",
+          "Verify default values for optional fields",
+          "Verify semantic_coherence and boundary_confidence are in [0.0, 1.0]"
+        ]
+      },
+      {
+        "name": "SegmentationStats",
+        "line": 106,
+        "frozen": false,
+        "docstring": "Statistics for segmentation quality assessment.",
+        "fields": [
+          {"name": "total_segments", "type": "int", "default": 0},
+          {"name": "avg_char_length", "type": "float", "default": 0.0},
+          {"name": "avg_sentence_count", "type": "float", "default": 0.0},
+          {"name": "segments_in_target_range", "type": "int", "default": 0},
+          {"name": "segments_with_target_sentences", "type": "int", "default": 0},
+          {"name": "char_distribution", "type": "dict[str, int]", "default": "field(default_factory=dict)"},
+          {"name": "sentence_distribution", "type": "dict[str, int]", "default": "field(default_factory=dict)"},
+          {"name": "consistency_score", "type": "float", "default": 0.0},
+          {"name": "target_adherence_score", "type": "float", "default": 0.0},
+          {"name": "overall_quality", "type": "float", "default": 0.0}
+        ],
+        "methods": [],
+        "verification_steps": [
+          "Verify all 10 fields are defined with correct types",
+          "Verify default values for all fields",
+          "Verify dict fields use default_factory",
+          "Verify score fields are floats in reasonable range"
+        ]
+      },
+      {
+        "name": "SegmenterConfig",
+        "line": 122,
+        "frozen": true,
+        "docstring": "Immutable configuration for document segmenter.",
+        "fields": [
+          {"name": "target_char_min", "type": "int", "default": 700},
+          {"name": "target_char_max", "type": "int", "default": 900},
+          {"name": "target_sentences", "type": "int", "default": 3},
+          {"name": "max_segment_chars", "type": "int", "default": 1200},
+          {"name": "min_segment_chars", "type": "int", "default": 350},
+          {"name": "embedding_model", "type": "str", "default": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"},
+          {"name": "boundary_threshold", "type": "float", "default": 0.5, "description": "Minimum confidence for cuts"},
+          {"name": "preserve_tables", "type": "bool", "default": true},
+          {"name": "preserve_lists", "type": "bool", "default": true}
+        ],
+        "methods": [],
+        "verification_steps": [
+          "Verify dataclass is frozen (immutable)",
+          "Verify all 9 fields are defined with correct types",
+          "Verify default values are sensible for PDM documents",
+          "Verify embedding_model is a valid sentence-transformers model",
+          "Verify boundary_threshold is in [0.0, 1.0]"
+        ]
+      }
+    ],
+    "classes": [
+      {
+        "name": "SpanishSentenceSegmenter",
+        "line": 141,
+        "docstring": "Advanced sentence segmentation for Spanish policy documents. Handles: Abbreviations, Decimal numbers, Enumerations, Complex punctuation.",
+        "class_variables": [
+          {"name": "ABBREVIATIONS", "type": "set[str]", "description": "Spanish abbreviations"},
+          {"name": "SENTENCE_END", "type": "re.Pattern", "description": "Sentence boundary pattern"}
+        ],
+        "methods": [
+          {
+            "name": "segment",
+            "line": 171,
+            "decorator": "classmethod",
+            "signature": "segment(cls, text: str) -> list[str]",
+            "docstring": "Segment text into sentences with Spanish-specific rules.",
+            "parameters": [
+              {"name": "cls", "type": "type"},
+              {"name": "text", "type": "str"}
+            ],
+            "returns": "list[str]",
+            "verification_steps": [
+              "Test with empty string (returns [])",
+              "Test with Spanish text containing abbreviations",
+              "Test with decimal numbers (e.g., 3.5)",
+              "Test with enumerations (1., 2., a., b.)",
+              "Test with complex punctuation",
+              "Verify minimum sentence length (>10 chars)",
+              "Verify abbreviation protection/restoration cycle"
+            ]
+          },
+          {
+            "name": "_protect_abbreviations",
+            "line": 192,
+            "decorator": "classmethod",
+            "signature": "_protect_abbreviations(cls, text: str) -> str",
+            "docstring": "Replace abbreviation periods with placeholder.",
+            "parameters": [
+              {"name": "cls", "type": "type"},
+              {"name": "text", "type": "str"}
+            ],
+            "returns": "str",
+            "verification_steps": [
+              "Verify all abbreviations in ABBREVIATIONS set are replaced",
+              "Verify case-insensitive replacement",
+              "Verify placeholder format (©PROTECTED©)"
+            ]
+          },
+          {
+            "name": "_restore_abbreviations",
+            "line": 205,
+            "decorator": "classmethod",
+            "signature": "_restore_abbreviations(cls, text: str) -> str",
+            "docstring": "Restore original abbreviation periods.",
+            "parameters": [
+              {"name": "cls", "type": "type"},
+              {"name": "text", "type": "str"}
+            ],
+            "returns": "str",
+            "verification_steps": [
+              "Verify placeholder is replaced with period",
+              "Verify roundtrip: text == _restore(_protect(text)) for valid text"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "BayesianBoundaryScorer",
+        "line": 215,
+        "docstring": "Bayesian uncertainty-aware boundary scoring using semantic embeddings. Implements: Sentence embedding with SOTA multilingual model, Cosine distance as boundary strength indicator, Beta posterior for boundary confidence, Structural features.",
+        "instance_variables": [
+          {"name": "model", "type": "SentenceTransformer"},
+          {"name": "strong_markers", "type": "re.Pattern"},
+          {"name": "alpha_prior", "type": "float", "value": 2.0},
+          {"name": "beta_prior", "type": "float", "value": 2.0}
+        ],
+        "methods": [
+          {
+            "name": "__init__",
+            "line": 226,
+            "signature": "__init__(self, model_name: str)",
+            "docstring": "",
+            "parameters": [
+              {"name": "self", "type": "BayesianBoundaryScorer"},
+              {"name": "model_name", "type": "str"}
+            ],
+            "returns": "None",
+            "verification_steps": [
+              "Verify SentenceTransformer model is loaded",
+              "Verify model.max_seq_length is set to 256",
+              "Verify strong_markers regex is compiled",
+              "Verify prior hyperparameters are set (alpha=2.0, beta=2.0)"
+            ]
+          },
+          {
+            "name": "score_boundaries",
+            "line": 244,
+            "signature": "score_boundaries(self, sentences: list[str]) -> tuple[NDArray[np.float32], NDArray[np.float32]]",
+            "docstring": "Score potential boundaries between sentences. Returns: boundary_scores (N-1), confidence_intervals (N-1, 2).",
+            "parameters": [
+              {"name": "self", "type": "BayesianBoundaryScorer"},
+              {"name": "sentences", "type": "list[str]"}
+            ],
+            "returns": "tuple[NDArray[np.float32], NDArray[np.float32]]",
+            "verification_steps": [
+              "Test with < 2 sentences (returns empty arrays)",
+              "Test with 10 Spanish sentences (verify array lengths N-1)",
+              "Verify boundary_scores dtype is np.float32",
+              "Verify confidence_intervals shape is (N-1, 2)",
+              "Verify all scores are in [0.0, 1.0]",
+              "Verify confidence intervals are valid (lower <= upper)",
+              "Test with real PDM text"
+            ]
+          },
+          {
+            "name": "_semantic_boundary_scores",
+            "line": 279,
+            "signature": "_semantic_boundary_scores(self, embeddings: NDArray[np.float32]) -> NDArray[np.float32]",
+            "docstring": "Compute semantic boundary scores from embeddings. High cosine distance = strong boundary (topic shift).",
+            "parameters": [
+              {"name": "self", "type": "BayesianBoundaryScorer"},
+              {"name": "embeddings", "type": "NDArray[np.float32]"}
+            ],
+            "returns": "NDArray[np.float32]",
+            "verification_steps": [
+              "Test with normalized embeddings",
+              "Verify output length is len(embeddings) - 1",
+              "Verify scores are in [0.0, 1.0]",
+              "Verify high similarity -> low score (weak boundary)",
+              "Verify low similarity -> high score (strong boundary)"
+            ]
+          },
+          {
+            "name": "_structural_boundary_scores",
+            "line": 301,
+            "signature": "_structural_boundary_scores(self, sentences: list[str]) -> NDArray[np.float32]",
+            "docstring": "Compute structural boundary scores based on: Punctuation, Sentence length, Section markers.",
+            "parameters": [
+              {"name": "self", "type": "BayesianBoundaryScorer"},
+              {"name": "sentences", "type": "list[str]"}
+            ],
+            "returns": "NDArray[np.float32]",
+            "verification_steps": [
+              "Test with sentences ending in different punctuation (., ?, !, :, ;)",
+              "Test with section markers (capítulo, objetivo, etc.)",
+              "Verify output length is len(sentences) - 1",
+              "Verify scores are in [0.0, 1.0]",
+              "Verify period scores higher than colon",
+              "Verify section markers increase score"
+            ]
+          },
+          {
+            "name": "_bayesian_posterior",
+            "line": 343,
+            "signature": "_bayesian_posterior(self, semantic_scores: NDArray[np.float32], structural_scores: NDArray[np.float32]) -> tuple[NDArray[np.float32], NDArray[np.float32]]",
+            "docstring": "Compute Bayesian posterior distribution for boundary probabilities. Uses Beta-Binomial conjugate prior model.",
+            "parameters": [
+              {"name": "self", "type": "BayesianBoundaryScorer"},
+              {"name": "semantic_scores", "type": "NDArray[np.float32]"},
+              {"name": "structural_scores", "type": "NDArray[np.float32]"}
+            ],
+            "returns": "tuple[NDArray[np.float32], NDArray[np.float32]]",
+            "verification_steps": [
+              "Verify combined evidence is weighted (0.7 semantic + 0.3 structural)",
+              "Verify posterior parameters (alpha_post, beta_post) are computed correctly",
+              "Verify posterior means are in [0.0, 1.0]",
+              "Verify credible intervals are in [0.0, 1.0]",
+              "Verify lower <= mean <= upper for all intervals",
+              "Test edge cases (all zeros, all ones)"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "StructureDetector",
+        "line": 390,
+        "docstring": "Detect and preserve document structures (tables, lists, sections).",
+        "class_variables": [
+          {"name": "TABLE_PATTERN", "type": "re.Pattern"},
+          {"name": "LIST_PATTERN", "type": "re.Pattern"},
+          {"name": "NUMBER_PATTERN", "type": "re.Pattern"},
+          {"name": "SECTION_HEADER", "type": "re.Pattern"}
+        ],
+        "methods": [
+          {
+            "name": "detect_structures",
+            "line": 421,
+            "decorator": "classmethod",
+            "signature": "detect_structures(cls, text: str) -> dict[str, Any]",
+            "docstring": "Detect structural elements in text. Returns dict with: has_table, has_list, has_numbers, section_headers, table_regions, list_regions.",
+            "parameters": [
+              {"name": "cls", "type": "type"},
+              {"name": "text", "type": "str"}
+            ],
+            "returns": "dict[str, Any]",
+            "verification_steps": [
+              "Test with text containing 'Tabla 1'",
+              "Test with text containing bullet lists",
+              "Test with text containing numbers and percentages",
+              "Test with text containing section headers",
+              "Verify all 6 keys are present in result",
+              "Verify has_* fields are booleans",
+              "Verify section_headers is list of tuples (start, end, text)",
+              "Verify table_regions and list_regions are lists of tuples (start, end)"
+            ]
+          },
+          {
+            "name": "_find_table_regions",
+            "line": 446,
+            "decorator": "classmethod",
+            "signature": "_find_table_regions(cls, text: str) -> list[tuple[int, int]]",
+            "docstring": "Heuristically identify table regions (marker + ~500 chars).",
+            "parameters": [
+              {"name": "cls", "type": "type"},
+              {"name": "text", "type": "str"}
+            ],
+            "returns": "list[tuple[int, int]]",
+            "verification_steps": [
+              "Test with text containing multiple table markers",
+              "Verify regions extend ~500 chars from marker",
+              "Verify regions don't exceed text length",
+              "Verify return format is list of (start, end) tuples"
+            ]
+          },
+          {
+            "name": "_find_list_regions",
+            "line": 456,
+            "decorator": "classmethod",
+            "signature": "_find_list_regions(cls, text: str) -> list[tuple[int, int]]",
+            "docstring": "Identify contiguous list regions.",
+            "parameters": [
+              {"name": "cls", "type": "type"},
+              {"name": "text", "type": "str"}
+            ],
+            "returns": "list[tuple[int, int]]",
+            "verification_steps": [
+              "Test with contiguous bullet list",
+              "Test with numbered list (1., 2., 3.)",
+              "Test with interrupted list (non-list lines between items)",
+              "Verify regions are line indices, not character positions",
+              "Verify contiguous items are merged into single region"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "DPSegmentOptimizer",
+        "line": 483,
+        "docstring": "Dynamic programming optimizer for segment boundary placement. Calibrated for Colombian PDM documents with weights derived from empirical analysis.",
+        "class_variables": [
+          {"name": "WEIGHT_LENGTH_DEVIATION", "type": "float", "value": 0.45},
+          {"name": "WEIGHT_SENTENCE_DEVIATION", "type": "float", "value": 0.25},
+          {"name": "WEIGHT_BOUNDARY_WEAKNESS", "type": "float", "value": 0.30}
+        ],
+        "instance_variables": [
+          {"name": "config", "type": "SegmenterConfig"},
+          {"name": "target_length_mid", "type": "float"}
+        ],
+        "methods": [
+          {
+            "name": "__init__",
+            "line": 498,
+            "signature": "__init__(self, config: SegmenterConfig)",
+            "docstring": "",
+            "parameters": [
+              {"name": "self", "type": "DPSegmentOptimizer"},
+              {"name": "config", "type": "SegmenterConfig"}
+            ],
+            "returns": "None",
+            "verification_steps": [
+              "Verify config is stored",
+              "Verify target_length_mid is computed correctly",
+              "Verify weights sum to 1.0"
+            ]
+          },
+          {
+            "name": "optimize_cuts",
+            "line": 506,
+            "signature": "optimize_cuts(self, sentences: list[str], boundary_scores: NDArray[np.float32]) -> tuple[list[int], float]",
+            "docstring": "Find optimal segment boundaries using dynamic programming. Returns: cut_indices, global_confidence.",
+            "parameters": [
+              {"name": "self", "type": "DPSegmentOptimizer"},
+              {"name": "sentences", "type": "list[str]"},
+              {"name": "boundary_scores", "type": "NDArray[np.float32]"}
+            ],
+            "returns": "tuple[list[int], float]",
+            "verification_steps": [
+              "Test with empty sentences (returns [], 0.0)",
+              "Test with 10 sentences and boundary_scores of length 9",
+              "Verify cut_indices are sorted and within valid range",
+              "Verify global_confidence is in [0.0, 1.0]",
+              "Test with long text (100+ sentences)",
+              "Verify segments respect min/max char constraints",
+              "Test determinism (same input -> same output)"
+            ]
+          },
+          {
+            "name": "_cumulative_chars",
+            "line": 577,
+            "signature": "_cumulative_chars(self, sentences: list[str]) -> list[int]",
+            "docstring": "Compute cumulative character counts (with spaces between sentences).",
+            "parameters": [
+              {"name": "self", "type": "DPSegmentOptimizer"},
+              {"name": "sentences", "type": "list[str]"}
+            ],
+            "returns": "list[int]",
+            "verification_steps": [
+              "Test with known sentences",
+              "Verify cumul[0] == 0",
+              "Verify cumul[i+1] = cumul[i] + len(sentences[i]) + 1",
+              "Verify length is len(sentences) + 1"
+            ]
+          },
+          {
+            "name": "_segment_cost",
+            "line": 584,
+            "signature": "_segment_cost(self, start_idx: int, end_idx: int, cumul_chars: list[int], boundary_scores: NDArray[np.float32], sentences: list[str]) -> float",
+            "docstring": "Compute cost for segment [start_idx, end_idx]. Lower cost = better segment.",
+            "parameters": [
+              {"name": "self", "type": "DPSegmentOptimizer"},
+              {"name": "start_idx", "type": "int"},
+              {"name": "end_idx", "type": "int"},
+              {"name": "cumul_chars", "type": "list[int]"},
+              {"name": "boundary_scores", "type": "NDArray[np.float32]"},
+              {"name": "sentences", "type": "list[str]"}
+            ],
+            "returns": "float",
+            "verification_steps": [
+              "Test segment within target range (low cost)",
+              "Test segment above max_segment_chars (very high cost 1e9)",
+              "Test segment below min_segment_chars (high cost 1e6)",
+              "Verify cost is non-negative",
+              "Verify cost components are weighted correctly"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "DocumentSegmenter",
+        "line": 639,
+        "docstring": "Production-ready document segmenter for Colombian PDM analysis. Features: Advanced Spanish sentence segmentation, Bayesian boundary scoring, Structure-aware chunking, DP optimization, P-D-Q canonical notation awareness.",
+        "instance_variables": [
+          {"name": "config", "type": "SegmenterConfig"},
+          {"name": "sentence_segmenter", "type": "SpanishSentenceSegmenter"},
+          {"name": "boundary_scorer", "type": "BayesianBoundaryScorer"},
+          {"name": "structure_detector", "type": "StructureDetector"},
+          {"name": "optimizer", "type": "DPSegmentOptimizer"},
+          {"name": "_last_segments", "type": "list[dict[str, Any]]"},
+          {"name": "_last_stats", "type": "SegmentationStats | None"}
+        ],
+        "methods": [
+          {
+            "name": "__init__",
+            "line": 651,
+            "signature": "__init__(self, config: SegmenterConfig | None = None)",
+            "docstring": "",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "config", "type": "SegmenterConfig | None", "default": "None"}
+            ],
+            "returns": "None",
+            "verification_steps": [
+              "Verify default config is created if None",
+              "Verify all sub-components are initialized",
+              "Verify _last_segments and _last_stats are initialized"
+            ]
+          },
+          {
+            "name": "segment",
+            "line": 666,
+            "signature": "segment(self, text: str) -> list[dict[str, Any]]",
+            "docstring": "Segment document into optimal chunks. Returns list of segment dicts with: text, metrics, segment_type.",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "text", "type": "str"}
+            ],
+            "returns": "list[dict[str, Any]]",
+            "verification_steps": [
+              "Test with empty text (returns [])",
+              "Test with short text (uses fallback)",
+              "Test with typical PDM document (~2000 chars)",
+              "Test with long PDM document (~5000 chars)",
+              "Verify all segments have required keys: text, metrics, segment_type",
+              "Verify segment lengths respect constraints",
+              "Verify post-processing is applied",
+              "Test with text containing tables and lists"
+            ]
+          },
+          {
+            "name": "get_segmentation_report",
+            "line": 719,
+            "signature": "get_segmentation_report(self) -> dict[str, Any]",
+            "docstring": "Get comprehensive segmentation quality report.",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"}
+            ],
+            "returns": "dict[str, Any]",
+            "verification_steps": [
+              "Test before segmentation (returns error dict)",
+              "Test after segmentation",
+              "Verify report has summary, quality_metrics, distributions",
+              "Verify all scores are in valid ranges",
+              "Verify distributions sum correctly"
+            ]
+          },
+          {
+            "name": "_normalize_text",
+            "line": 750,
+            "decorator": "staticmethod",
+            "signature": "_normalize_text(text: str) -> str",
+            "docstring": "Normalize text preserving structure.",
+            "parameters": [
+              {"name": "text", "type": "str"}
+            ],
+            "returns": "str",
+            "verification_steps": [
+              "Test with excessive whitespace",
+              "Test with multiple blank lines",
+              "Verify trailing/leading whitespace is removed",
+              "Verify paragraph breaks are preserved"
+            ]
+          },
+          {
+            "name": "_materialize_segments",
+            "line": 757,
+            "signature": "_materialize_segments(self, sentences: list[str], cut_indices: list[int], boundary_scores: NDArray[np.float32], structures: dict[str, Any]) -> list[dict[str, Any]]",
+            "docstring": "Convert cut indices into actual segment dicts.",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "sentences", "type": "list[str]"},
+              {"name": "cut_indices", "type": "list[int]"},
+              {"name": "boundary_scores", "type": "NDArray[np.float32]"},
+              {"name": "structures", "type": "dict[str, Any]"}
+            ],
+            "returns": "list[dict[str, Any]]",
+            "verification_steps": [
+              "Verify each segment has text, metrics, segment_type",
+              "Verify segment texts are joined correctly",
+              "Verify boundary confidence is extracted correctly",
+              "Verify metrics are computed for each segment"
+            ]
+          },
+          {
+            "name": "_compute_metrics",
+            "line": 800,
+            "signature": "_compute_metrics(self, text: str, sentence_count: int, boundary_confidence: float, structures: dict[str, Any]) -> SegmentMetrics",
+            "docstring": "Compute comprehensive metrics for segment.",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "text", "type": "str"},
+              {"name": "sentence_count", "type": "int"},
+              {"name": "boundary_confidence", "type": "float"},
+              {"name": "structures", "type": "dict[str, Any]"}
+            ],
+            "returns": "SegmentMetrics",
+            "verification_steps": [
+              "Verify all SegmentMetrics fields are populated",
+              "Verify char_count matches text length",
+              "Verify semantic_coherence is in [0.0, 1.0]",
+              "Verify structure flags are detected correctly"
+            ]
+          },
+          {
+            "name": "_infer_section_type",
+            "line": 837,
+            "decorator": "staticmethod",
+            "signature": "_infer_section_type(text: str) -> str",
+            "docstring": "Infer section type from content (heuristic).",
+            "parameters": [
+              {"name": "text", "type": "str"}
+            ],
+            "returns": "str",
+            "verification_steps": [
+              "Test with diagnostic keywords",
+              "Test with activity keywords",
+              "Test with result keywords",
+              "Test with impact keywords",
+              "Test with causal keywords",
+              "Test with generic text (returns 'general')"
+            ]
+          },
+          {
+            "name": "_fallback_segmentation",
+            "line": 868,
+            "signature": "_fallback_segmentation(self, text: str, structures: dict[str, Any]) -> list[dict[str, Any]]",
+            "docstring": "Fallback segmentation for edge cases (very short documents).",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "text", "type": "str"},
+              {"name": "structures", "type": "dict[str, Any]"}
+            ],
+            "returns": "list[dict[str, Any]]",
+            "verification_steps": [
+              "Test with short text",
+              "Verify word-based splitting",
+              "Verify segments respect max_segment_chars",
+              "Verify segment_type is 'fallback'"
+            ]
+          },
+          {
+            "name": "_post_process_segments",
+            "line": 936,
+            "signature": "_post_process_segments(self, segments: list[dict[str, Any]]) -> list[dict[str, Any]]",
+            "docstring": "Post-process segments to enforce constraints. Merge tiny, split oversized, ensure minimum diversity.",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "segments", "type": "list[dict[str, Any]]"}
+            ],
+            "returns": "list[dict[str, Any]]",
+            "verification_steps": [
+              "Test with tiny segments (should merge)",
+              "Test with oversized segments (should split)",
+              "Test with single large segment (should force split)",
+              "Verify constraints are enforced"
+            ]
+          },
+          {
+            "name": "_merge_tiny_segments",
+            "line": 961,
+            "signature": "_merge_tiny_segments(self, segments: list[dict[str, Any]]) -> list[dict[str, Any]]",
+            "docstring": "Merge segments that are below minimum threshold.",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "segments", "type": "list[dict[str, Any]]"}
+            ],
+            "returns": "list[dict[str, Any]]",
+            "verification_steps": [
+              "Test with segment below min_segment_chars",
+              "Verify merging with previous segment",
+              "Verify combined length doesn't exceed max",
+              "Verify metrics are recomputed"
+            ]
+          },
+          {
+            "name": "_split_oversized_segments",
+            "line": 1013,
+            "signature": "_split_oversized_segments(self, segments: list[dict[str, Any]]) -> list[dict[str, Any]]",
+            "docstring": "Split segments that exceed maximum threshold.",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "segments", "type": "list[dict[str, Any]]"}
+            ],
+            "returns": "list[dict[str, Any]]",
+            "verification_steps": [
+              "Test with segment above max_segment_chars",
+              "Verify splitting is applied",
+              "Verify resulting segments respect constraints"
+            ]
+          },
+          {
+            "name": "_force_split_segment",
+            "line": 1029,
+            "signature": "_force_split_segment(self, segment: dict[str, Any]) -> list[dict[str, Any]]",
+            "docstring": "Force split a segment (used for oversized segments).",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "segment", "type": "dict[str, Any]"}
+            ],
+            "returns": "list[dict[str, Any]]",
+            "verification_steps": [
+              "Test with multi-sentence segment",
+              "Test with single-sentence segment (falls back to word split)",
+              "Verify sentence-based splitting",
+              "Verify segment_type is 'split'"
+            ]
+          },
+          {
+            "name": "_split_by_words",
+            "line": 1094,
+            "signature": "_split_by_words(self, text: str, original_segment: dict[str, Any]) -> list[dict[str, Any]]",
+            "docstring": "Split text by words when sentence splitting fails.",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "text", "type": "str"},
+              {"name": "original_segment", "type": "dict[str, Any]"}
+            ],
+            "returns": "list[dict[str, Any]]",
+            "verification_steps": [
+              "Test with long text without sentence boundaries",
+              "Verify word-based splitting",
+              "Verify segments respect max_segment_chars",
+              "Verify segment_type is 'word_split'"
+            ]
+          },
+          {
+            "name": "_compute_stats",
+            "line": 1155,
+            "signature": "_compute_stats(self, segments: list[dict[str, Any]]) -> SegmentationStats",
+            "docstring": "Compute comprehensive statistics for segmentation quality.",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "segments", "type": "list[dict[str, Any]]"}
+            ],
+            "returns": "SegmentationStats",
+            "verification_steps": [
+              "Test with empty segments (returns default stats)",
+              "Test with multiple segments",
+              "Verify all SegmentationStats fields are populated",
+              "Verify counts and averages are correct",
+              "Verify distributions are computed",
+              "Verify quality scores are in [0.0, 1.0]"
+            ]
+          },
+          {
+            "name": "_compute_char_distribution",
+            "line": 1202,
+            "decorator": "staticmethod",
+            "signature": "_compute_char_distribution(lengths: list[int]) -> dict[str, int]",
+            "docstring": "Compute character length distribution buckets.",
+            "parameters": [
+              {"name": "lengths", "type": "list[int]"}
+            ],
+            "returns": "dict[str, int]",
+            "verification_steps": [
+              "Test with lengths in different ranges",
+              "Verify all 5 buckets are present",
+              "Verify counts sum to len(lengths)"
+            ]
+          },
+          {
+            "name": "_compute_sentence_distribution",
+            "line": 1227,
+            "decorator": "staticmethod",
+            "signature": "_compute_sentence_distribution(counts: list[int]) -> dict[str, int]",
+            "docstring": "Compute sentence count distribution buckets.",
+            "parameters": [
+              {"name": "counts", "type": "list[int]"}
+            ],
+            "returns": "dict[str, int]",
+            "verification_steps": [
+              "Test with counts in different ranges",
+              "Verify all 5 buckets are present",
+              "Verify counts sum to len(counts)"
+            ]
+          },
+          {
+            "name": "_compute_consistency_score",
+            "line": 1251,
+            "signature": "_compute_consistency_score(self, lengths: list[int]) -> float",
+            "docstring": "Compute consistency score based on length variance. Lower variance = higher consistency.",
+            "parameters": [
+              {"name": "self", "type": "DocumentSegmenter"},
+              {"name": "lengths", "type": "list[int]"}
+            ],
+            "returns": "float",
+            "verification_steps": [
+              "Test with single element (returns 1.0)",
+              "Test with uniform lengths (high score)",
+              "Test with varied lengths (lower score)",
+              "Verify score is in [0.0, 1.0]"
+            ]
+          },
+          {
+            "name": "_compute_adherence_score",
+            "line": 1272,
+            "decorator": "staticmethod",
+            "signature": "_compute_adherence_score(in_range: int, with_target: int, total: int) -> float",
+            "docstring": "Compute target adherence score. Measures how well segments meet target criteria.",
+            "parameters": [
+              {"name": "in_range", "type": "int"},
+              {"name": "with_target", "type": "int"},
+              {"name": "total", "type": "int"}
+            ],
+            "returns": "float",
+            "verification_steps": [
+              "Test with total=0 (returns 0.0)",
+              "Test with all segments in range (high score)",
+              "Test with no segments in range (low score)",
+              "Verify weighted average (0.6 char + 0.4 sent)",
+              "Verify score is in [0.0, 1.0]"
+            ]
+          }
+        ]
+      }
+    ],
+    "functions": [
+      {
+        "name": "create_segmenter",
+        "line": 1297,
+        "signature": "create_segmenter(target_char_min: int = 700, target_char_max: int = 900, target_sentences: int = 3, model: str = 'paraphrase-multilingual-mpnet-base-v2') -> DocumentSegmenter",
+        "docstring": "Factory function for creating production-ready segmenter.",
+        "parameters": [
+          {"name": "target_char_min", "type": "int", "default": 700},
+          {"name": "target_char_max", "type": "int", "default": 900},
+          {"name": "target_sentences", "type": "int", "default": 3},
+          {"name": "model", "type": "str", "default": "paraphrase-multilingual-mpnet-base-v2"}
+        ],
+        "returns": "DocumentSegmenter",
+        "verification_steps": [
+          "Test with default parameters",
+          "Test with custom parameters",
+          "Verify SegmenterConfig is created correctly",
+          "Verify DocumentSegmenter is initialized",
+          "Verify model name is prefixed with 'sentence-transformers/'"
+        ]
+      },
+      {
+        "name": "example_pdm_segmentation",
+        "line": 1332,
+        "signature": "example_pdm_segmentation() -> None",
+        "docstring": "Complete example: segmenting Colombian PDM document.",
+        "parameters": [],
+        "returns": "None",
+        "verification_steps": [
+          "Run the example function",
+          "Verify it completes without errors",
+          "Verify it produces output",
+          "Verify segmentation report is generated"
+        ]
+      }
+    ]
+  },
+  "dependencies": {
+    "standard_library": [
+      "hashlib", "logging", "math", "re", "collections.Counter", "dataclasses", "enum", "typing"
+    ],
+    "external": [
+      {"name": "numpy", "version": ">=1.21.0", "usage": "Array operations, type hints"},
+      {"name": "sentence-transformers", "version": ">=2.2.0", "usage": "Multilingual embeddings"}
+    ]
+  },
+  "notes": [
+    "All classes and functions are implemented with production-ready code",
+    "No mocks or placeholders - all functionality is real",
+    "Bayesian boundary scoring uses real embeddings from sentence-transformers",
+    "Dynamic programming optimization is fully implemented",
+    "Spanish sentence segmentation handles complex cases",
+    "Structure detection uses real regex patterns",
+    "All type hints are complete and accurate",
+    "Reproducibility: sentence-transformers uses fixed seeds internally",
+    "GPU/CPU fallback: sentence-transformers automatically handles device selection",
+    "All components are immutable where appropriate (frozen dataclasses)",
+    "Comprehensive error handling with logging",
+    "Deterministic behavior guaranteed for same inputs"
+  ]
+}

@@ -192,10 +192,14 @@ class SpanishSentenceSegmenter:
     def _protect_abbreviations(cls, text: str) -> str:
         """Replace abbreviation periods with placeholder."""
         for abbr in cls.ABBREVIATIONS:
-            # Case insensitive replacement
+            # Case insensitive replacement - match preserving case
+            def replace_with_case(match):
+                """Preserve original case in replacement."""
+                return match.group(0)[:-1] + "©PROTECTED©"
+            
             text = re.sub(
                 rf"\b{abbr}\.",
-                f"{abbr}©PROTECTED©",
+                replace_with_case,
                 text,
                 flags=re.IGNORECASE,
             )
